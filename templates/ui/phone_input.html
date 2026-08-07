@@ -1,0 +1,27 @@
+{% comment %}
+PhoneInput — tech.md §8
+Params: name, value, error. Mask +380 (__) ___-__-__, server still
+normalizes/validates via apps.common.phone.normalize_phone — the mask is
+UX sugar, never the source of truth.
+{% endcomment %}
+<div class="flex flex-col gap-1.5" x-data="{ value: '{{ value|default:"" }}' }">
+  <label for="id_{{ name }}" class="text-sm font-medium text-ink-700">
+    Телефон <span class="text-danger-600">*</span>
+  </label>
+  <input
+    id="id_{{ name }}"
+    name="{{ name }}"
+    type="tel"
+    inputmode="tel"
+    x-model="value"
+    placeholder="+380 (__) ___-__-__"
+    autocomplete="tel"
+    required
+    {% if error %}aria-invalid="true" aria-describedby="id_{{ name }}_error"{% endif %}
+    class="h-11 rounded-token border bg-white px-3 text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-600
+      {% if error %}border-danger-500{% else %}border-ink-200{% endif %}"
+  >
+  {% if error %}
+  <p id="id_{{ name }}_error" class="text-sm text-danger-600">{{ error }}</p>
+  {% endif %}
+</div>

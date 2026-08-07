@@ -1,0 +1,30 @@
+{% comment %}
+Button — tech.md §8
+Params: variant (primary|secondary|ghost|danger, default primary),
+        size (sm|md|lg, default md), label, href (renders <a> instead of
+        <button>), disabled, type (button|submit, default button),
+        hx_get, hx_post, hx_target, hx_swap
+{% endcomment %}
+{% with variant=variant|default:"primary" size=size|default:"md" %}
+{% if href %}
+<a
+  href="{{ href }}"
+  {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+  class="inline-flex items-center justify-center gap-2 rounded-token font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:pointer-events-none disabled:opacity-50
+    {% if size == 'sm' %}h-9 px-3 text-sm{% elif size == 'lg' %}h-12 px-6 text-base{% else %}h-10 px-4 text-sm{% endif %}
+    {% if variant == 'primary' %}bg-brand-600 text-white hover:bg-brand-700{% elif variant == 'secondary' %}bg-ink-100 text-ink-900 hover:bg-ink-200{% elif variant == 'ghost' %}bg-transparent text-brand-700 hover:bg-brand-50{% elif variant == 'danger' %}bg-danger-600 text-white hover:bg-danger-700{% endif %}"
+>{{ label }}</a>
+{% else %}
+<button
+  type="{{ type|default:"button" }}"
+  {% if hx_get %}hx-get="{{ hx_get }}"{% endif %}
+  {% if hx_post %}hx-post="{{ hx_post }}"{% endif %}
+  {% if hx_target %}hx-target="{{ hx_target }}"{% endif %}
+  {% if hx_swap %}hx-swap="{{ hx_swap }}"{% endif %}
+  {% if disabled %}disabled{% endif %}
+  class="inline-flex items-center justify-center gap-2 rounded-token font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:pointer-events-none disabled:opacity-50
+    {% if size == 'sm' %}h-9 px-3 text-sm{% elif size == 'lg' %}h-12 px-6 text-base{% else %}h-10 px-4 text-sm{% endif %}
+    {% if variant == 'primary' %}bg-brand-600 text-white hover:bg-brand-700{% elif variant == 'secondary' %}bg-ink-100 text-ink-900 hover:bg-ink-200{% elif variant == 'ghost' %}bg-transparent text-brand-700 hover:bg-brand-50{% elif variant == 'danger' %}bg-danger-600 text-white hover:bg-danger-700{% endif %}"
+>{{ label }}</button>
+{% endif %}
+{% endwith %}

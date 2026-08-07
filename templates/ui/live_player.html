@@ -1,0 +1,48 @@
+{% comment %}
+LivePlayer — tech.md §8, full spec §8.1.
+Params: state (live|closed|offline|disabled — from live.domain.resolve_state,
+        never computed here), poster_url, aspect_ratio (CSS ratio, e.g.
+        "16/9" — convert LiveStream.aspect_ratio "16:9" to this in Python,
+        not in the template), compact (bool), message (closed/offline
+        copy), store_name, phone_href (preformatted "tel:+380...", or
+        omit to hide the call button).
+Stage 0 (S0.5): posters only, four states, no hls.js — playback wiring is
+stage 2 (S2.5).
+{% endcomment %}
+{% if state != "disabled" %}
+<div class="relative overflow-hidden rounded-token-xl bg-ink-900 shadow-live-glow" style="aspect-ratio: {{ aspect_ratio|default:"16/9" }};">
+  <img src="{{ poster_url }}" alt="" class="absolute inset-0 h-full w-full object-cover {% if state != 'live' %}opacity-50{% endif %}">
+  <div class="absolute inset-0 bg-gradient-to-b from-ink-950/60 via-transparent to-ink-950/70"></div>
+
+  <div class="absolute left-3 top-3">
+    {% include "ui/live_badge.html" with state=state %}
+  </div>
+  {% if store_name and not compact %}
+  <div class="absolute right-3 top-3 text-right text-xs text-white/90">
+    <p class="font-semibold">{{ store_name }}</p>
+  </div>
+  {% endif %}
+
+  {% if state == "closed" %}
+  <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center text-white">
+    <p class="text-base font-semibold">{{ message|default:"Зараз зачинено" }}</p>
+    {% include "ui/button.html" with label="Дивитись галерею робіт" href="/gallery/" variant="secondary" size="sm" %}
+  </div>
+  {% elif state == "offline" %}
+  <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center text-white">
+    <p class="text-base font-semibold">{{ message|default:"Камера тимчасово недоступна, ми вже розбираємось" }}</p>
+    {% include "ui/button.html" with label="Дивитись галерею робіт" href="/gallery/" variant="secondary" size="sm" %}
+  </div>
+  {% elif state == "live" and not compact %}
+  <div class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 p-3">
+    <div class="flex items-center gap-2">
+      <button type="button" aria-label="Повноекранний режим" class="flex h-9 w-9 items-center justify-center rounded-token bg-ink-950/40 text-white hover:bg-ink-950/60">⛶</button>
+      <button type="button" aria-label="Оновити" class="flex h-9 w-9 items-center justify-center rounded-token bg-ink-950/40 text-white hover:bg-ink-950/60">↻</button>
+    </div>
+    {% if phone_href %}
+    {% include "ui/button.html" with label="Зателефонувати і запитати" href=phone_href variant="primary" size="sm" %}
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}

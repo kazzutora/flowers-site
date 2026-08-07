@@ -1,0 +1,19 @@
+{% comment %}
+LiveBadge — tech.md §8, §8.1. `state` always comes from live.domain.resolve_state
+— never computed in the template.
+Params: state (live|closed|offline|disabled), label (optional text override)
+{% endcomment %}
+{% if state != "disabled" %}
+<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-white backdrop-blur
+  {% if state == 'live' %}bg-danger-600{% elif state == 'offline' %}bg-ink-700{% else %}bg-ink-500{% endif %}">
+  {% if state == 'live' %}
+  <span class="relative flex h-2 w-2">
+    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75 motion-reduce:animate-none"></span>
+    <span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+  </span>
+  {% endif %}
+  {% if label %}{{ label }}{% else %}
+    {% if state == 'live' %}НАЖИВО{% elif state == 'closed' %}Зачинено{% elif state == 'offline' %}Офлайн{% endif %}
+  {% endif %}
+</span>
+{% endif %}

@@ -1,0 +1,12 @@
+{% comment %}
+PriceTag — tech.md §8
+Params: amount (Decimal/str, UAH), old_amount (optional, strike-through), size (sm|md|lg, default md)
+{% endcomment %}
+{% with size=size|default:"md" %}
+<span class="inline-flex items-baseline gap-2">
+  <span class="font-semibold text-ink-900 {% if size == 'sm' %}text-sm{% elif size == 'lg' %}text-2xl{% else %}text-lg{% endif %}">{{ amount }}&nbsp;грн</span>
+  {% if old_amount %}
+  <span class="text-sm text-ink-400 line-through">{{ old_amount }}&nbsp;грн</span>
+  {% endif %}
+</span>
+{% endwith %}

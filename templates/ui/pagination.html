@@ -1,0 +1,21 @@
+{% comment %}
+Pagination — tech.md §8
+Params: page_obj (Django Paginator Page), query (querystring to preserve, no leading/trailing &, optional)
+{% endcomment %}
+{% if page_obj.paginator.num_pages > 1 %}
+<nav aria-label="Сторінки" class="flex items-center justify-center gap-1">
+  {% if page_obj.has_previous %}
+  <a href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.previous_page_number }}" class="flex h-9 w-9 items-center justify-center rounded-token text-sm text-ink-600 hover:bg-ink-100" aria-label="Попередня сторінка">‹</a>
+  {% endif %}
+  {% for page_number in page_obj.paginator.page_range %}
+  <a
+    href="?{% if query %}{{ query }}&{% endif %}page={{ page_number }}"
+    class="flex h-9 w-9 items-center justify-center rounded-token text-sm {% if page_number == page_obj.number %}bg-brand-600 text-white{% else %}text-ink-600 hover:bg-ink-100{% endif %}"
+    {% if page_number == page_obj.number %}aria-current="page"{% endif %}
+  >{{ page_number }}</a>
+  {% endfor %}
+  {% if page_obj.has_next %}
+  <a href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.next_page_number }}" class="flex h-9 w-9 items-center justify-center rounded-token text-sm text-ink-600 hover:bg-ink-100" aria-label="Наступна сторінка">›</a>
+  {% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,18 @@
+{% comment %}
+Stepper — tech.md §8. Checkout progress (5 blocks per DEV.md S4.3).
+Params: steps (list of {label}), current (1-based index of the active step)
+{% endcomment %}
+<ol class="flex items-center gap-2">
+  {% for step in steps %}
+  <li class="flex flex-1 items-center gap-2 {% if forloop.last %}flex-none{% endif %}">
+    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold
+      {% if forloop.counter < current %}bg-brand-600 text-white
+      {% elif forloop.counter == current %}border-2 border-brand-600 text-brand-700
+      {% else %}bg-ink-100 text-ink-400{% endif %}">
+      {% if forloop.counter < current %}✓{% else %}{{ forloop.counter }}{% endif %}
+    </span>
+    <span class="hidden text-sm sm:inline {% if forloop.counter == current %}font-semibold text-ink-900{% else %}text-ink-500{% endif %}">{{ step.label }}</span>
+    {% if not forloop.last %}<span class="h-px flex-1 bg-ink-200" aria-hidden="true"></span>{% endif %}
+  </li>
+  {% endfor %}
+</ol>

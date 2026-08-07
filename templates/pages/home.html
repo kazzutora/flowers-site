@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
+  <h1 class="text-3xl font-bold text-ink-900 sm:text-4xl">Квіти, які видно наживо</h1>
+  <p class="mx-auto mt-4 max-w-xl text-base text-ink-600">
+    Букет за 5 хвилин з телефону. Дивіться, що зараз стоїть у холодильнику, ще до замовлення.
+  </p>
+  <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+    {% include "ui/button.html" with variant="primary" size="lg" label="Перейти в каталог" href="/catalog/" %}
+    {% include "ui/button.html" with variant="secondary" size="lg" label="Наші магазини" href="/stores/" %}
+  </div>
+</section>
+
+<section class="mx-auto max-w-5xl px-4 pb-16 sm:px-6 lg:px-8">
+  <div class="grid gap-4 sm:grid-cols-3">
+    <div class="rounded-token-lg border border-ink-200 bg-white p-5">
+      <p class="text-sm font-semibold text-ink-900">Наживо з магазину</p>
+      <p class="mt-1 text-sm text-ink-500">Камера в залі — видно живі квіти, а не ретуш.</p>
+    </div>
+    <div class="rounded-token-lg border border-ink-200 bg-white p-5">
+      <p class="text-sm font-semibold text-ink-900">Дві точки в Києві</p>
+      <p class="mt-1 text-sm text-ink-500">Асортимент відрізняється — оберіть зручну.</p>
+    </div>
+    <div class="rounded-token-lg border border-ink-200 bg-white p-5">
+      <p class="text-sm font-semibold text-ink-900">Чесна доставка</p>
+      <p class="mt-1 text-sm text-ink-500">Самовивіз, таксі за тарифом або домовленість з менеджером.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

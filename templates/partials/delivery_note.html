@@ -1,0 +1,19 @@
+{% comment %}
+DeliveryNote — tech.md §1.2, §8. The one and only copy of this text:
+product card, checkout step 2, and /payment-delivery/ all {% include %}
+this partial. Never re-typed inline.
+Params: options (list of {code, title, description, price_hint})
+{% endcomment %}
+<div class="rounded-token-lg border border-ink-200 bg-ink-50 p-4">
+  <p class="mb-3 text-sm font-semibold text-ink-900">Як отримати букет</p>
+  <ul class="space-y-2">
+    {% for option in options %}
+    <li class="flex gap-2 text-sm text-ink-600">
+      <span aria-hidden="true">—</span>
+      <span>
+        <span class="font-medium text-ink-900">{{ option.title }}</span>{% if option.price_hint %} <span class="text-ink-500">({{ option.price_hint }})</span>{% endif %} — {{ option.description }}
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

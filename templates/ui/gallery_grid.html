@@ -1,0 +1,24 @@
+{% comment %}
+GalleryGrid — tech.md §8. Grid of gallery works.
+Params: items (list of {id, title, image_url, price_from}), columns (2|3|4, default 3), lazy (default True)
+{% endcomment %}
+{% with columns=columns|default:3 %}
+<div class="grid gap-4
+  {% if columns == 2 %}grid-cols-2
+  {% elif columns == 4 %}grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
+  {% else %}grid-cols-2 sm:grid-cols-3{% endif %}">
+  {% for item in items %}
+  <figure class="overflow-hidden rounded-token-lg border border-ink-200 bg-white">
+    <img src="{{ item.image_url }}" alt="{{ item.title }}" {% if lazy|default:True %}loading="lazy"{% endif %} class="aspect-[4/5] w-full object-cover">
+    <figcaption class="flex items-center justify-between gap-2 p-2">
+      <span class="line-clamp-1 text-xs text-ink-600">{{ item.title }}</span>
+      {% if item.price_from %}<span class="shrink-0 text-xs font-semibold text-ink-900">від {{ item.price_from }} грн</span>{% endif %}
+    </figcaption>
+  </figure>
+  {% empty %}
+  <div class="col-span-full">
+    {% include "ui/empty_state.html" with icon="🌷" title="Робіт поки немає" text="Спробуйте інші фільтри." %}
+  </div>
+  {% endfor %}
+</div>
+{% endwith %}

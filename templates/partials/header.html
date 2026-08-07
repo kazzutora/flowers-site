@@ -1,0 +1,52 @@
+{% load static %}
+<header class="sticky top-0 z-40 border-b border-ink-200 bg-ink-50/95 backdrop-blur" x-data="{ mobileNavOpen: false }">
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <a href="/" class="flex shrink-0 items-center gap-2 text-lg font-semibold text-brand-700">
+      <span aria-hidden="true">🌸</span>
+      <span>Квіти</span>
+    </a>
+
+    <nav aria-label="Основна навігація" class="hidden flex-1 items-center justify-center gap-6 lg:flex">
+      {% for item in main_nav %}
+        <a href="{{ item.url }}" class="text-sm font-medium text-ink-600 transition-colors hover:text-brand-700">
+          {{ item.label }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    <div class="hidden shrink-0 lg:block">
+      {% include "ui/store_switcher.html" with stores=header_stores current=header_current_store %}
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-token text-ink-700 hover:bg-ink-100 lg:hidden"
+      @click="mobileNavOpen = !mobileNavOpen"
+      :aria-expanded="mobileNavOpen"
+      aria-controls="mobile-nav"
+      aria-label="Відкрити меню"
+    >
+      <svg x-show="!mobileNavOpen" class="h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
+      <svg x-show="mobileNavOpen" x-cloak class="h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M6.4 4.986 4.986 6.4 10.586 12l-5.6 5.6 1.414 1.414L12 13.414l5.6 5.6 1.414-1.414-5.6-5.6 5.6-5.6-1.414-1.414-5.6 5.6z"/></svg>
+    </button>
+  </div>
+
+  <div
+    id="mobile-nav"
+    x-show="mobileNavOpen"
+    x-cloak
+    x-transition
+    class="border-t border-ink-200 bg-ink-50 lg:hidden"
+  >
+    <nav aria-label="Мобільна навігація" class="flex flex-col gap-1 px-4 py-3">
+      {% for item in main_nav %}
+        <a href="{{ item.url }}" class="rounded-token px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-100">
+          {{ item.label }}
+        </a>
+      {% endfor %}
+    </nav>
+    <div class="border-t border-ink-200 px-4 py-3">
+      {% include "ui/store_switcher.html" with stores=header_stores current=header_current_store %}
+    </div>
+  </div>
+</header>

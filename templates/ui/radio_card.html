@@ -1,0 +1,21 @@
+{% comment %}
+RadioCard — tech.md §8. Used for the three fulfillment options.
+Params: name, value, title, description, price_hint, checked
+{% endcomment %}
+<label class="flex cursor-pointer items-start gap-3 rounded-token-lg border p-4 transition-colors has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50
+    {% if checked %}border-brand-600 bg-brand-50{% else %}border-ink-200 bg-white{% endif %}">
+  <input
+    type="radio"
+    name="{{ name }}"
+    value="{{ value }}"
+    {% if checked %}checked{% endif %}
+    class="mt-1 h-4 w-4 shrink-0 accent-brand-600"
+  >
+  <span class="flex-1">
+    <span class="flex items-center justify-between gap-2">
+      <span class="text-sm font-semibold text-ink-900">{{ title }}</span>
+      {% if price_hint %}<span class="text-xs font-medium text-ink-500">{{ price_hint }}</span>{% endif %}
+    </span>
+    {% if description %}<span class="mt-1 block text-sm text-ink-600">{{ description }}</span>{% endif %}
+  </span>
+</label>

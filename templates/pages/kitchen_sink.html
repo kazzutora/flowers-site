@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load static component_tags %}
+
+{% block title %}Kitchen sink — UI primitives{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-5xl space-y-14 px-4 py-10 sm:px-6 lg:px-8">
+  <div>
+    <h1 class="text-2xl font-bold text-ink-900">Kitchen sink</h1>
+    <p class="mt-1 text-sm text-ink-500">Every primitive from tech.md §8, every documented variant. DEBUG/staff only.</p>
+  </div>
+
+  <section id="button" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Button</h2>
+    <div class="flex flex-wrap items-center gap-3">
+      {% include "ui/button.html" with variant="primary" size="sm" label="Primary sm" %}
+      {% include "ui/button.html" with variant="primary" size="md" label="Primary md" %}
+      {% include "ui/button.html" with variant="primary" size="lg" label="Primary lg" %}
+      {% include "ui/button.html" with variant="secondary" label="Secondary" %}
+      {% include "ui/button.html" with variant="ghost" label="Ghost" %}
+      {% include "ui/button.html" with variant="danger" label="Danger" %}
+      {% include "ui/button.html" with variant="primary" label="Disabled" disabled=True %}
+      {% include "ui/button.html" with variant="secondary" label="Link href" href="/stores/" %}
+    </div>
+  </section>
+
+  <section id="input" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Input</h2>
+    <div class="grid max-w-md gap-4">
+      {% include "ui/input.html" with name="name" label="Ім'я отримувача" placeholder="Олена" required=True %}
+      {% include "ui/input.html" with name="recipient_name" label="З помилкою" value="" error="Обов'язкове поле" required=True %}
+    </div>
+  </section>
+
+  <section id="phone-input" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">PhoneInput</h2>
+    <div class="max-w-md">
+      {% include "ui/phone_input.html" with name="recipient_phone" %}
+    </div>
+  </section>
+
+  <section id="textarea" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Textarea</h2>
+    <div class="max-w-md">
+      {% include "ui/textarea.html" with name="card_text" label="Текст листівки" maxlength=500 counter=True %}
+    </div>
+  </section>
+
+  <section id="select" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Select</h2>
+    <div class="max-w-xs">
+      {% include "ui/select.html" with name="slot" label="Інтервал" value="13-16" options=select_demo_options %}
+    </div>
+  </section>
+
+  <section id="radio-card" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">RadioCard</h2>
+    <div class="grid max-w-md gap-3">
+      {% for option in delivery_options %}
+      {% include "ui/radio_card.html" with name="fulfillment_type" value=option.code title=option.title description=option.description price_hint=option.price_hint checked=forloop.first %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="product-card" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">ProductCard</h2>
+    <div class="grid max-w-xs gap-4">
+      {% include "ui/product_card.html" with product=sample_product %}
+    </div>
+  </section>
+
+  <section id="badge" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Badge</h2>
+    <div class="flex flex-wrap gap-2">
+      {% include "ui/badge.html" with text="Neutral" tone="neutral" %}
+      {% include "ui/badge.html" with text="Success" tone="success" %}
+      {% include "ui/badge.html" with text="Warning" tone="warning" %}
+      {% include "ui/badge.html" with text="Danger" tone="danger" %}
+    </div>
+  </section>
+
+  <section id="modal" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Modal</h2>
+    <span x-data @click="$dispatch('open-modal-demo')" class="inline-block cursor-pointer">
+      {% include "ui/button.html" with variant="secondary" label="Відкрити модалку" %}
+    </span>
+    {% capture as demo_modal_body %}
+      <p class="text-sm text-ink-600">Приклад вмісту модального вікна, переданий через body_slot.</p>
+    {% endcapture %}
+    {% include "ui/modal.html" with id="demo" title="Приклад модалки" body_slot=demo_modal_body size="md" %}
+  </section>
+
+  <section id="drawer" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Drawer</h2>
+    <span x-data @click="$dispatch('open-drawer-demo')" class="inline-block cursor-pointer">
+      {% include "ui/button.html" with variant="secondary" label="Відкрити drawer" %}
+    </span>
+    {% capture as demo_drawer_body %}
+      <p class="text-sm text-ink-600">Вміст drawer — фільтри або кошик.</p>
+    {% endcapture %}
+    {% include "ui/drawer.html" with id="demo" side="right" title="Приклад drawer" body_slot=demo_drawer_body %}
+  </section>
+
+  <section id="toast" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Toast</h2>
+    <div class="flex flex-col gap-2">
+      {% include "ui/toast.html" with message="Товар додано в кошик" tone="success" %}
+      {% include "ui/toast.html" with message="Перевірте поля форми" tone="danger" %}
+    </div>
+  </section>
+
+  <section id="store-switcher" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">StoreSwitcher</h2>
+    {% include "ui/store_switcher.html" with stores=sample_stores current=sample_stores.0 %}
+  </section>
+
+  <section id="live-player" class="space-y-6">
+    <h2 class="text-lg font-semibold text-ink-900">LivePlayer + LiveBadge — усі чотири стани</h2>
+    <div class="grid gap-6 sm:grid-cols-2">
+      {% for demo in live_states %}
+      <div>
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-400">{{ demo.state }}</p>
+        {% include "ui/live_player.html" with state=demo.state poster_url=demo.poster_url message=demo.message store_name="Центр" phone_href="tel:+380671234567" aspect_ratio="16/9" %}
+      </div>
+      {% endfor %}
+    </div>
+    <div>
+      <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-400">loading (Skeleton over poster)</p>
+      <div class="max-w-md">{% include "ui/skeleton.html" with kind="image" %}</div>
+    </div>
+  </section>
+
+  <section id="gallery-grid" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">GalleryGrid</h2>
+    {% include "ui/gallery_grid.html" with items=sample_gallery_items columns=4 %}
+  </section>
+
+  <section id="filter-chips" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">FilterChips</h2>
+    {% include "ui/filter_chips.html" with groups=filter_groups %}
+  </section>
+
+  <section id="price-tag" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">PriceTag</h2>
+    <div class="flex flex-wrap items-center gap-6">
+      {% include "ui/price_tag.html" with amount=sample_product.price size="sm" %}
+      {% include "ui/price_tag.html" with amount=sample_product.price old_amount=sample_product.old_price size="md" %}
+      {% include "ui/price_tag.html" with amount=sample_product.price old_amount=sample_product.old_price size="lg" %}
+    </div>
+  </section>
+
+  <section id="qty-stepper" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">QtyStepper</h2>
+    {% include "ui/qty_stepper.html" with name="qty" value=3 min=1 max=10 %}
+  </section>
+
+  <section id="stepper" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Stepper</h2>
+    {% include "ui/stepper.html" with steps=checkout_steps current=2 %}
+  </section>
+
+  <section id="empty-state" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">EmptyState</h2>
+    {% capture as demo_empty_action %}
+      {% include "ui/button.html" with variant="primary" label="Перейти в каталог" href="/catalog/" %}
+    {% endcapture %}
+    {% include "ui/empty_state.html" with icon="🌷" title="Нічого не знайдено" text="Спробуйте прибрати частину фільтрів." action_slot=demo_empty_action %}
+  </section>
+
+  <section id="skeleton" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Skeleton</h2>
+    <div class="grid max-w-2xl grid-cols-3 gap-4">
+      {% include "ui/skeleton.html" with kind="card" %}
+      <div class="col-span-2 space-y-2">
+        {% include "ui/skeleton.html" with kind="line" %}
+        {% include "ui/skeleton.html" with kind="image" %}
+      </div>
+    </div>
+  </section>
+
+  <section id="breadcrumbs" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Breadcrumbs</h2>
+    {% include "ui/breadcrumbs.html" with items=breadcrumb_items %}
+  </section>
+
+  <section id="pagination" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">Pagination</h2>
+    {% include "ui/pagination.html" with page_obj=page_obj %}
+  </section>
+
+  <section id="delivery-note" class="space-y-3">
+    <h2 class="text-lg font-semibold text-ink-900">DeliveryNote</h2>
+    <div class="max-w-md">
+      {% include "partials/delivery_note.html" with options=delivery_options %}
+    </div>
+  </section>
+</div>
+{% endblock %}

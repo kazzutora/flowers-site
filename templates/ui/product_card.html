@@ -1,0 +1,23 @@
+{% comment %}
+ProductCard — tech.md §8
+Params: product (title, slug, price, old_price, image_url, badge), store, show_price (default True), lazy (default True)
+{% endcomment %}
+<a href="/catalog/{{ product.slug }}/" class="group flex flex-col overflow-hidden rounded-token-lg border border-ink-200 bg-white shadow-card transition-shadow hover:shadow-card-hover">
+  <div class="aspect-square overflow-hidden bg-ink-100">
+    <img
+      src="{{ product.image_url }}"
+      alt="{{ product.title }}"
+      {% if lazy|default:True %}loading="lazy"{% endif %}
+      class="h-full w-full object-cover transition-transform group-hover:scale-105"
+    >
+  </div>
+  <div class="flex flex-1 flex-col gap-2 p-3">
+    {% if product.badge %}
+    {% include "ui/badge.html" with text=product.badge tone="success" %}
+    {% endif %}
+    <p class="line-clamp-2 text-sm font-medium text-ink-900">{{ product.title }}</p>
+    {% if show_price|default:True %}
+    {% include "ui/price_tag.html" with amount=product.price old_amount=product.old_price size="sm" %}
+    {% endif %}
+  </div>
+</a>

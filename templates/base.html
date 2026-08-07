@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Квіти — інтернет-магазин квітів{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Букети з двох магазинів у Києві. Самовивіз, таксі або домовленість з менеджером.{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="flex min-h-screen flex-col bg-ink-50 font-sans text-ink-900 antialiased">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-token focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white">
+    Перейти до змісту
+  </a>
+
+  {% include "partials/header.html" %}
+
+  <main id="main-content" class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.html" %}
+
+  <div id="toast-root" class="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex flex-col items-center gap-2 px-4" hx-swap-oob-preserve>
+    {% block toasts %}{% endblock %}
+  </div>
+
+  <script defer src="{% static 'vendor/alpine.min.js' %}"></script>
+  {% block extra_body %}{% endblock %}
+</body>
+</html>

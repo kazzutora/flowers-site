@@ -1,0 +1,31 @@
+{% comment %}
+QtyStepper — tech.md §8
+Params: name, value (default 1), min (default 1), max (default 99)
+{% endcomment %}
+<div
+  class="inline-flex items-center rounded-token border border-ink-200 bg-white"
+  x-data="{ value: {{ value|default:1 }}, min: {{ min|default:1 }}, max: {{ max|default:99 }} }"
+>
+  <button
+    type="button"
+    class="flex h-9 w-9 items-center justify-center text-ink-600 hover:text-brand-700 disabled:opacity-30"
+    @click="value = Math.max(min, value - 1)"
+    :disabled="value <= min"
+    aria-label="Зменшити кількість"
+  >−</button>
+  <input
+    type="number"
+    name="{{ name }}"
+    x-model.number="value"
+    :min="min"
+    :max="max"
+    class="h-9 w-12 border-x border-ink-200 text-center text-sm focus:outline-none"
+  >
+  <button
+    type="button"
+    class="flex h-9 w-9 items-center justify-center text-ink-600 hover:text-brand-700 disabled:opacity-30"
+    @click="value = Math.min(max, value + 1)"
+    :disabled="value >= max"
+    aria-label="Збільшити кількість"
+  >+</button>
+</div>

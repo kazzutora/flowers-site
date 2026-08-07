@@ -1,0 +1,10 @@
+{% comment %}
+EmptyState — tech.md §8
+Params: icon (emoji/glyph), title, text, action_slot (safe HTML — build with {% capture as %})
+{% endcomment %}
+<div class="flex flex-col items-center gap-3 rounded-token-lg border border-dashed border-ink-200 bg-white px-6 py-12 text-center">
+  {% if icon %}<span class="text-4xl" aria-hidden="true">{{ icon }}</span>{% endif %}
+  <p class="text-base font-semibold text-ink-900">{{ title }}</p>
+  {% if text %}<p class="max-w-sm text-sm text-ink-500">{{ text }}</p>{% endif %}
+  {% if action_slot %}<div class="mt-2">{{ action_slot }}</div>{% endif %}
+</div>

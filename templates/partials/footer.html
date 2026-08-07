@@ -1,0 +1,33 @@
+<footer class="border-t border-ink-200 bg-white">
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <p class="text-lg font-semibold text-brand-700">Квіти</p>
+        <p class="mt-2 text-sm text-ink-500">Букети з двох магазинів у Києві.</p>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-ink-900">Навігація</p>
+        <ul class="mt-3 space-y-2">
+          {% for item in main_nav %}
+            <li><a href="{{ item.url }}" class="text-sm text-ink-600 hover:text-brand-700">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-ink-900">Магазини</p>
+        <ul class="mt-3 space-y-2">
+          {% for store in header_stores %}
+            <li class="text-sm text-ink-600">{{ store.name }} — {{ store.address }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-ink-900">Правова інформація</p>
+        <ul class="mt-3 space-y-2">
+          <li><a href="/privacy/" class="text-sm text-ink-600 hover:text-brand-700">Політика конфіденційності</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="mt-8 border-t border-ink-200 pt-6 text-xs text-ink-400">© {% now "Y" %} Квіти. Усі права захищені.</p>
+  </div>
+</footer>

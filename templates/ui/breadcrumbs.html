@@ -1,0 +1,14 @@
+{% comment %}
+Breadcrumbs — tech.md §8
+Params: items (list of {label, url}); current page item should omit url
+{% endcomment %}
+<nav aria-label="Хлібні крихти" class="flex flex-wrap items-center gap-1 text-sm text-ink-500">
+  {% for item in items %}
+  {% if not forloop.first %}<span aria-hidden="true">/</span>{% endif %}
+  {% if item.url and not forloop.last %}
+  <a href="{{ item.url }}" class="hover:text-brand-700">{{ item.label }}</a>
+  {% else %}
+  <span class="text-ink-900" aria-current="page">{{ item.label }}</span>
+  {% endif %}
+  {% endfor %}
+</nav>

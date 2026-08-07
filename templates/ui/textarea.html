@@ -1,0 +1,20 @@
+{% comment %}
+Textarea — tech.md §8
+Params: name, label, value, maxlength, counter (bool — show live char count)
+{% endcomment %}
+<div class="flex flex-col gap-1.5" {% if counter %}x-data="{ len: {{ value|default:""|length }} }"{% endif %}>
+  {% if label %}
+  <label for="id_{{ name }}" class="text-sm font-medium text-ink-700">{{ label }}</label>
+  {% endif %}
+  <textarea
+    id="id_{{ name }}"
+    name="{{ name }}"
+    rows="4"
+    {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+    {% if counter %}x-on:input="len = $event.target.value.length"{% endif %}
+    class="rounded-token border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-600"
+  >{{ value|default:"" }}</textarea>
+  {% if counter and maxlength %}
+  <p class="text-right text-xs text-ink-400"><span x-text="len"></span>/{{ maxlength }}</p>
+  {% endif %}
+</div>
