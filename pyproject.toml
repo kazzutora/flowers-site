@@ -1,0 +1,97 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "S", "C4", "DJ", "PT", "RUF"]
+ignore = [
+    # RUF001-003: "ambiguous unicode character" fires on every Cyrillic
+    # character. tech.md §9.2 mandates Ukrainian user-facing strings, so
+    # Cyrillic is expected content throughout, not a homoglyph attack.
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    # RUF012: wants `ClassVar` on mutable class attributes. Django's own
+    # `Meta` inner classes and `ModelAdmin`/`unfold.ModelAdmin` attributes
+    # (ordering, indexes, list_filter, inlines, ...) are unannotated
+    # class-level containers by framework convention, not the
+    # shared-mutable-state bug this rule targets.
+    "RUF012",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S101", "S106"]
+"**/migrations/**" = ["N806"]
+"scripts/seed.py" = ["S106"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main", "pydantic.mypy"]
+warn_unused_ignores = true
+warn_redundant_casts = true
+exclude = ["migrations/"]
+
+[[tool.mypy.overrides]]
+module = "apps.*.domain"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "apps.*.services"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "apps.*.schemas"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "apps.*.clients.*"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "factory.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# unfold ships no py.typed/stubs; subclassing its Any-typed ModelAdmin
+# trips mypy's "cannot subclass has type Any" check in every admin.py
+# in the project. admin.py isn't in tech.md's strict-module list.
+module = "unfold.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "apps.*.admin"
+disable_error_code = ["misc"]
+
+[[tool.mypy.overrides]]
+# factory-boy's partial type info makes every apps/*/tests/** fail the
+# same handful of checks, both defining factories (untyped Sequence/
+# SubFactory/...) and calling them (untyped-call at every call site).
+# Tests aren't in tech.md's strict-module list.
+module = "apps.*.tests.*"
+disable_error_code = ["attr-defined", "no-untyped-call", "type-arg"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py"]
+testpaths = ["apps", "tests"]
+pythonpath = ["."]
+markers = [
+    "e2e: Playwright browser tests, excluded from the default fast run",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations", ".venv"]
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*"]

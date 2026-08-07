@@ -1,0 +1,15 @@
+-r base.txt
+
+pytest==9.1.1
+pytest-django==4.13.0
+pytest-playwright==0.8.0
+factory-boy==3.3.3
+hypothesis==6.165.2
+freezegun==1.5.5
+
+ruff==0.7.4
+mypy==1.13.0
+django-stubs[compatible-mypy]==5.1.3
+celery-types==0.22.0
+bandit==1.7.10
+pip-audit==2.7.3

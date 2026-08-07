@@ -1,0 +1,17 @@
+# Direct dependencies pinned exact; transitive deps resolve via pip from
+# these (tech.md §10.7: "зависимости пинуются"). Verified together in one
+# resolve — see requirements/README.md for how to refresh.
+Django==5.2.17
+psycopg[binary]==3.2.13
+redis==5.2.1
+django-redis==5.4.0
+celery==5.4.0
+django-celery-beat==2.9.0
+pydantic==2.13.4
+pydantic-settings==2.15.0
+django-unfold==0.44.0
+Pillow==12.3.0
+gunicorn==23.0.0
+whitenoise==6.8.2
+django-health-check==3.18.3
+sentry-sdk==2.66.1
