@@ -1,0 +1,16 @@
+# Auto-TLS reverse proxy (tech.md §2). SITE_DOMAIN is required, passed
+# through from the VPS .env — no domain is guessed or hardcoded here.
+{$SITE_DOMAIN} {
+	encode gzip
+
+	handle_path /static/* {
+		root * /srv/static
+		file_server
+	}
+	handle_path /media/* {
+		root * /srv/media
+		file_server
+	}
+
+	reverse_proxy web:8000
+}

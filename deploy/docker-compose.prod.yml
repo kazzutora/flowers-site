@@ -1,0 +1,100 @@
+# Runs on the VPS. Pulls the image built and pushed by
+# .github/workflows/deploy.yml — never builds from source on the VPS.
+# `IMAGE` and `SITE_DOMAIN` are exported by the deploy step / VPS .env.
+
+x-worker: &worker
+  image: ${IMAGE}
+  env_file: .env
+  environment:
+    DJANGO_SETTINGS_MODULE: config.settings.prod
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-flowers}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    <<: *worker
+    volumes:
+      - static_data:/app/staticfiles
+      - media_data:/app/mediafiles
+
+  celery-default:
+    <<: *worker
+    command: ["celery", "-A", "config", "worker", "-Q", "default", "-l", "info"]
+
+  celery-notifications:
+    <<: *worker
+    command: ["celery", "-A", "config", "worker", "-Q", "notifications", "-l", "info"]
+
+  celery-payments:
+    <<: *worker
+    command: ["celery", "-A", "config", "worker", "-Q", "payments", "-l", "info"]
+
+  celery-media:
+    <<: *worker
+    command: ["celery", "-A", "config", "worker", "-Q", "media", "-l", "info"]
+
+  celery-beat:
+    <<: *worker
+    command:
+      [
+        "celery",
+        "-A",
+        "config",
+        "beat",
+        "-l",
+        "info",
+        "--scheduler",
+        "django_celery_beat.schedulers:DatabaseScheduler",
+      ]
+
+  caddy:
+    image: caddy:2-alpine
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - static_data:/srv/static:ro
+      - media_data:/srv/media:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_data:
+  media_data:
+  caddy_data:
+  caddy_config:
