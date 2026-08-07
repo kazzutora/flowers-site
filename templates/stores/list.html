@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Наші магазини — Квіти{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumb_items %}
+
+  <h1 class="mt-4 text-2xl font-bold text-ink-900">Наші магазини</h1>
+  <p class="mt-1 text-sm text-ink-500">Асортимент на точках відрізняється — оберіть зручну.</p>
+
+  {% if stores %}
+  <div class="mt-8 grid gap-6 sm:grid-cols-2">
+    {% for store in stores %}
+    <article class="overflow-hidden rounded-token-lg border border-ink-200 bg-white shadow-card" data-testid="store-card">
+      {% if store.map_embed_url %}
+      <iframe
+        class="h-48 w-full border-0"
+        loading="lazy"
+        title="Карта: {{ store.name }}"
+        src="{{ store.map_embed_url }}"
+      ></iframe>
+      {% endif %}
+      <div class="p-5">
+        <div class="flex items-start justify-between gap-3">
+          <h2 class="text-lg font-semibold text-ink-900">{{ store.name }}</h2>
+          {% if store.is_open_now %}
+          {% include "ui/badge.html" with text="Відчинено" tone="success" %}
+          {% else %}
+          {% include "ui/badge.html" with text="Зачинено" tone="neutral" %}
+          {% endif %}
+        </div>
+        <p class="mt-2 text-sm text-ink-600">{{ store.address }}</p>
+        <a href="tel:{{ store.phone }}" class="mt-1 block text-sm font-medium text-brand-700">{{ store.phone }}</a>
+
+        <dl class="mt-4 space-y-1 text-sm text-ink-500">
+          {% for label, hours in store.work_hours_rows %}
+          <div class="flex justify-between gap-4">
+            <dt>{{ label }}</dt>
+            <dd>{{ hours }}</dd>
+          </div>
+          {% endfor %}
+        </dl>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  {% include "ui/empty_state.html" with icon="🏬" title="Магазинів поки немає" text="Скоро тут з'являться наші точки." %}
+  {% endif %}
+</div>
+{% endblock %}

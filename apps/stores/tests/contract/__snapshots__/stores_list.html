@@ -1,0 +1,241 @@
+
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Наші магазини — Квіти</title>
+  <meta name="description" content="Букети з двох магазинів у Києві. Самовивіз, таксі або домовленість з менеджером.">
+  <link rel="stylesheet" href="/static/css/tailwind.css">
+  
+</head>
+<body class="flex min-h-screen flex-col bg-ink-50 font-sans text-ink-900 antialiased">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-token focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white">
+    Перейти до змісту
+  </a>
+
+  
+<header class="sticky top-0 z-40 border-b border-ink-200 bg-ink-50/95 backdrop-blur" x-data="{ mobileNavOpen: false }">
+  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <a href="/" class="flex shrink-0 items-center gap-2 text-lg font-semibold text-brand-700">
+      <span aria-hidden="true">🌸</span>
+      <span>Квіти</span>
+    </a>
+
+    <nav aria-label="Основна навігація" class="hidden flex-1 items-center justify-center gap-6 lg:flex">
+      
+    </nav>
+
+    <div class="hidden shrink-0 lg:block">
+      
+<div x-data="{ open: false }" class="relative">
+  <button
+    type="button"
+    @click="open = !open"
+    :aria-expanded="open"
+    class="flex items-center gap-2 rounded-token border border-ink-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:border-brand-300"
+  >
+    <span aria-hidden="true">📍</span>
+    <span>Оберіть магазин</span>
+    <svg class="h-4 w-4 fill-current text-ink-400" viewBox="0 0 20 20"><path d="M5.5 7.5l4.5 5 4.5-5z"/></svg>
+  </button>
+  <div
+    x-show="open"
+    x-cloak
+    @click.outside="open = false"
+    x-transition
+    class="absolute right-0 z-20 mt-2 w-56 rounded-token-lg border border-ink-200 bg-white p-1 shadow-card-hover"
+  >
+    
+    <p class="px-3 py-2 text-sm text-ink-400">Магазинів поки немає</p>
+    
+  </div>
+</div>
+
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-token text-ink-700 hover:bg-ink-100 lg:hidden"
+      @click="mobileNavOpen = !mobileNavOpen"
+      :aria-expanded="mobileNavOpen"
+      aria-controls="mobile-nav"
+      aria-label="Відкрити меню"
+    >
+      <svg x-show="!mobileNavOpen" class="h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
+      <svg x-show="mobileNavOpen" x-cloak class="h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M6.4 4.986 4.986 6.4 10.586 12l-5.6 5.6 1.414 1.414L12 13.414l5.6 5.6 1.414-1.414-5.6-5.6 5.6-5.6-1.414-1.414-5.6 5.6z"/></svg>
+    </button>
+  </div>
+
+  <div
+    id="mobile-nav"
+    x-show="mobileNavOpen"
+    x-cloak
+    x-transition
+    class="border-t border-ink-200 bg-ink-50 lg:hidden"
+  >
+    <nav aria-label="Мобільна навігація" class="flex flex-col gap-1 px-4 py-3">
+      
+    </nav>
+    <div class="border-t border-ink-200 px-4 py-3">
+      
+<div x-data="{ open: false }" class="relative">
+  <button
+    type="button"
+    @click="open = !open"
+    :aria-expanded="open"
+    class="flex items-center gap-2 rounded-token border border-ink-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:border-brand-300"
+  >
+    <span aria-hidden="true">📍</span>
+    <span>Оберіть магазин</span>
+    <svg class="h-4 w-4 fill-current text-ink-400" viewBox="0 0 20 20"><path d="M5.5 7.5l4.5 5 4.5-5z"/></svg>
+  </button>
+  <div
+    x-show="open"
+    x-cloak
+    @click.outside="open = false"
+    x-transition
+    class="absolute right-0 z-20 mt-2 w-56 rounded-token-lg border border-ink-200 bg-white p-1 shadow-card-hover"
+  >
+    
+    <p class="px-3 py-2 text-sm text-ink-400">Магазинів поки немає</p>
+    
+  </div>
+</div>
+
+    </div>
+  </div>
+</header>
+
+
+  <main id="main-content" class="flex-1">
+    
+<div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+  
+<nav aria-label="Хлібні крихти" class="flex flex-wrap items-center gap-1 text-sm text-ink-500">
+  
+  
+  
+  <a href="/" class="hover:text-brand-700">Головна</a>
+  
+  
+  <span aria-hidden="true">/</span>
+  
+  <span class="text-ink-900" aria-current="page">Наші магазини</span>
+  
+  
+</nav>
+
+
+  <h1 class="mt-4 text-2xl font-bold text-ink-900">Наші магазини</h1>
+  <p class="mt-1 text-sm text-ink-500">Асортимент на точках відрізняється — оберіть зручну.</p>
+
+  
+  <div class="mt-8 grid gap-6 sm:grid-cols-2">
+    
+    <article class="overflow-hidden rounded-token-lg border border-ink-200 bg-white shadow-card" data-testid="store-card">
+      
+      <div class="p-5">
+        <div class="flex items-start justify-between gap-3">
+          <h2 class="text-lg font-semibold text-ink-900">Центр</h2>
+          
+          
+
+<span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+  bg-success-50 text-success-700
+  ">
+  Відчинено
+</span>
+
+
+          
+        </div>
+        <p class="mt-2 text-sm text-ink-600">вул. Хрещатик, 1</p>
+        <a href="tel:+380671234567" class="mt-1 block text-sm font-medium text-brand-700">+380671234567</a>
+
+        <dl class="mt-4 space-y-1 text-sm text-ink-500">
+          
+          <div class="flex justify-between gap-4">
+            <dt>Пн</dt>
+            <dd>09:00–20:00</dd>
+          </div>
+          
+          <div class="flex justify-between gap-4">
+            <dt>Вт</dt>
+            <dd>09:00–20:00</dd>
+          </div>
+          
+          <div class="flex justify-between gap-4">
+            <dt>Ср</dt>
+            <dd>09:00–20:00</dd>
+          </div>
+          
+          <div class="flex justify-between gap-4">
+            <dt>Чт</dt>
+            <dd>09:00–20:00</dd>
+          </div>
+          
+          <div class="flex justify-between gap-4">
+            <dt>Пт</dt>
+            <dd>09:00–20:00</dd>
+          </div>
+          
+          <div class="flex justify-between gap-4">
+            <dt>Сб</dt>
+            <dd>10:00–18:00</dd>
+          </div>
+          
+          <div class="flex justify-between gap-4">
+            <dt>Нд</dt>
+            <dd>вихідний</dd>
+          </div>
+          
+        </dl>
+      </div>
+    </article>
+    
+  </div>
+  
+</div>
+
+  </main>
+
+  <footer class="border-t border-ink-200 bg-white">
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <p class="text-lg font-semibold text-brand-700">Квіти</p>
+        <p class="mt-2 text-sm text-ink-500">Букети з двох магазинів у Києві.</p>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-ink-900">Навігація</p>
+        <ul class="mt-3 space-y-2">
+          
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-ink-900">Магазини</p>
+        <ul class="mt-3 space-y-2">
+          
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-ink-900">Правова інформація</p>
+        <ul class="mt-3 space-y-2">
+          <li><a href="/privacy/" class="text-sm text-ink-600 hover:text-brand-700">Політика конфіденційності</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="mt-8 border-t border-ink-200 pt-6 text-xs text-ink-400">© 2026 Квіти. Усі права захищені.</p>
+  </div>
+</footer>
+
+
+  <div id="toast-root" class="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex flex-col items-center gap-2 px-4" hx-swap-oob-preserve>
+    
+  </div>
+
+  <script defer src="/static/vendor/alpine.min.js"></script>
+  
+</body>
+</html>
