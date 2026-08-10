@@ -1,0 +1,24 @@
+.env
+
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+
+# Build artefacts: compiled by the image build and by the dev entrypoint.
+static/css/app.css
+staticfiles/
+locale/*/LC_MESSAGES/*.mo
+
+media/
+
+.idea/
+.vscode/
+.DS_Store

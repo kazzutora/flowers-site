@@ -1,0 +1,10 @@
+# Line endings stay LF in the repository and in the working copy: the same files
+# are copied into Linux containers, where CRLF breaks shell scripts and make.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.mo binary
