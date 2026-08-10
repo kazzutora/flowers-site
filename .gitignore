@@ -31,6 +31,9 @@ htmlcov/
 .vscode/
 *.swp
 
+# Local editor tooling: pins a machine-specific localhost port
+.mcp.json
+
 node_modules/
 
 .DS_Store
