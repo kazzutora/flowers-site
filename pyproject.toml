@@ -62,7 +62,33 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+exclude = ["/migrations/", "\\.venv"]
+
+# Strict where the logic lives; templates, admin and views stay pragmatic.
+[[tool.mypy.overrides]]
+module = [
+    "apps.*.services.*",
+    "apps.*.contracts",
+    "apps.*.filters",
+    "apps.*.seo",
+    "clients.*",
+]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_any_generics = true
+warn_return_any = true
+strict_equality = true
+no_implicit_optional = true
+
+[tool.django-stubs]
+django_settings_module = "config.settings"
+
 [tool.pytest.ini_options]
 addopts = "-q --strict-markers"
 python_files = ["test_*.py"]
 testpaths = ["apps", "clients", "tests"]
+DJANGO_SETTINGS_MODULE = "config.settings"
