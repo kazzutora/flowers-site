@@ -9,6 +9,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PATH="/venv/bin:$PATH" \
+    # django-admin, celery and gunicorn do not all add the workdir themselves.
+    PYTHONPATH=/app \
     DJANGO_SETTINGS_MODULE=config.settings
 # gettext provides msgfmt for compilemessages; curl is used by healthchecks.
 RUN apt-get update \
