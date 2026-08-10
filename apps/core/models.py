@@ -30,7 +30,7 @@ class TranslatedMixin:
         return getattr(self, f"{field}_{lang}", "") or getattr(self, f"{field}_uk", "") or ""
 
 
-class SiteSettings(models.Model):
+class SiteSettings(TranslatedMixin, models.Model):
     """Singleton (pk=1) with everything the owner edits without a developer."""
 
     CACHE_KEY = "site_settings:v1"
