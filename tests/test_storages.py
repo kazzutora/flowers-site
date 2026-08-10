@@ -19,7 +19,7 @@ def isolated_media(settings: Any, tmp_path: Path) -> None:
             "OPTIONS": {"location": tmp_path / "public", "base_url": "/media/"},
         },
         "private": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "BACKEND": "config.storages.PrivateFileSystemStorage",
             "OPTIONS": {"location": tmp_path / "private"},
         },
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},

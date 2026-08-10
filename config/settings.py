@@ -84,6 +84,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.core.context_processors.site_settings",
             ],
         },
     },
@@ -163,7 +164,7 @@ else:
         # Never served over HTTP: nginx does not map it and urls.py does not
         # expose it, not even under DEBUG.
         "private": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "BACKEND": "config.storages.PrivateFileSystemStorage",
             "OPTIONS": {"location": MEDIA_PRIVATE_ROOT},
         },
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
