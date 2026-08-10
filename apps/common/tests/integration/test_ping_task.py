@@ -1,6 +1,8 @@
 import uuid
 
 import pytest
+from django.core.cache import cache
+from django.db import DatabaseError, transaction
 
 from apps.common.models import PingRecord
 from apps.common.tasks import ping
@@ -29,3 +31,23 @@ def test_different_nonces_each_execute() -> None:
     ping.run({"nonce": nonce_b})
 
     assert PingRecord.objects.filter(nonce__in=[nonce_a, nonce_b]).count() == 2
+
+
+def test_failed_work_releases_key_so_a_retry_can_still_do_it() -> None:
+    """Error path: the claim is taken before the work, so a run whose work
+    blows up must hand the key back — otherwise ``autoretry_for`` re-enters,
+    sees its own claim and reports success for an effect that never landed.
+    """
+    # Longer than PingRecord.nonce's max_length, so the INSERT itself fails
+    # in the database. No patching: the failure is real (tech.md §11.2).
+    nonce = "x" * 100
+    key = f"task:common.ping:{nonce}"
+    cache.delete(key)
+
+    # atomic() contains the broken transaction so the assertions below
+    # still have a usable connection.
+    with pytest.raises(DatabaseError), transaction.atomic():
+        ping.run({"nonce": nonce})
+
+    assert cache.get(key) is None, "failed run left its idempotency key claimed"
+    assert PingRecord.objects.filter(nonce=nonce).count() == 0

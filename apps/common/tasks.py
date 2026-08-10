@@ -9,7 +9,7 @@ import logging
 
 from celery import shared_task
 
-from apps.common.idempotency import acquire_idempotency_key
+from apps.common.idempotency import acquire_idempotency_key, release_idempotency_key
 from apps.common.models import PingRecord
 from apps.common.schemas import PingPayload
 
@@ -36,6 +36,14 @@ def ping(payload: dict[str, object]) -> str:
         logger.info("common.ping duplicate nonce=%s", data.nonce)
         return "duplicate"
 
-    PingRecord.objects.create(nonce=data.nonce)
+    try:
+        PingRecord.objects.create(nonce=data.nonce)
+    except Exception:
+        # Hand the key back so the autoretry above can actually redo the
+        # work; without this the retry sees this run's own claim and
+        # reports "duplicate" for an effect that never happened.
+        release_idempotency_key(key)
+        raise
+
     logger.info("common.ping executed nonce=%s", data.nonce)
     return "executed"
