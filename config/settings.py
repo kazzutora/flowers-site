@@ -21,7 +21,8 @@ def _explain(exc: ValidationError) -> str:
 
 
 try:
-    ENV = Settings()
+    # Values come from the environment, not from arguments.
+    ENV = Settings()  # type: ignore[call-arg]
 except ValidationError as exc:  # start-up must fail loudly, not at request time
     raise ImproperlyConfigured(_explain(exc)) from exc
 
@@ -115,6 +116,16 @@ CACHES = {
         "OPTIONS": {"socket_connect_timeout": 1, "socket_timeout": 1},
     }
 }
+
+
+# --- celery -------------------------------------------------------------------
+# Queues, routes, retries and the beat schedule live in config/celery.py.
+
+CELERY_BROKER_URL = str(ENV.celery_broker_url)
+CELERY_RESULT_BACKEND = str(ENV.celery_result_backend)
+CELERY_TIMEZONE = ENV.time_zone
+CELERY_TASK_ACKS_LATE = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 
 # --- i18n ---------------------------------------------------------------------
