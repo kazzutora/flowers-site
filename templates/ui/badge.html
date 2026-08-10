@@ -1,0 +1,7 @@
+{% comment %}Parameters: label, tone (neutral|accent|success|danger|leaf).{% endcomment %}
+<span class="inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium
+             {% if tone == 'accent' %}bg-accentSoft text-accent
+             {% elif tone == 'success' %}bg-white text-success
+             {% elif tone == 'danger' %}bg-white text-danger
+             {% elif tone == 'leaf' %}bg-white text-leaf
+             {% else %}bg-line text-ink{% endif %}">{{ label }}</span>

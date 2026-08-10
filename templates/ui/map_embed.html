@@ -1,0 +1,7 @@
+{% comment %}Parameters: src, title. Loads only when it scrolls into view.{% endcomment %}
+{% if src %}
+<div class="aspect-video w-full overflow-hidden rounded-md border border-line">
+  <iframe src="{{ src }}" title="{{ title }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          class="h-full w-full border-0" allowfullscreen></iframe>
+</div>
+{% endif %}

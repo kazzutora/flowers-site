@@ -1,0 +1,15 @@
+{% comment %}
+Parameters: name, label, checked, error, value, attrs.
+A label built with mark_safe (a policy link, for example) renders as markup.
+{% endcomment %}<div class="space-y-1">
+  <label class="flex min-h-11 cursor-pointer items-start gap-3 text-sm text-ink">
+    <input type="checkbox" id="id_{{ name }}" name="{{ name }}"{% if value %} value="{{ value }}"{% endif %}
+           {% if checked %}checked{% endif %}
+           {% if error %}aria-invalid="true" aria-describedby="err_{{ name }}"{% endif %}
+           class="mt-1 h-5 w-5 shrink-0 rounded-sm border text-accent
+                  {% if error %}border-danger{% else %}border-line{% endif %}"
+           {{ attrs|safe }}>
+    <span>{{ label }}</span>
+  </label>
+  {% if error %}<p id="err_{{ name }}" class="text-sm text-danger">{{ error }}</p>{% endif %}
+</div>

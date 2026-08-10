@@ -1,0 +1,27 @@
+{% load static i18n project %}{% comment %}
+Parameters: review, compact. `contact_phone` is never rendered.
+{% endcomment %}<article class="flex h-full flex-col gap-3 rounded-md bg-white p-5 shadow-card">
+  <div class="flex items-center gap-3">
+    {% if review.photo %}
+      <span class="h-12 w-12 overflow-hidden rounded-full">
+        {% include "ui/image_simple.html" with field=review.photo alt=review.author_name lazy=True %}
+      </span>
+    {% endif %}
+    <div>
+      <p class="font-medium text-ink">{{ review.author_name }}</p>
+      {% if review.rating %}
+        <p class="flex gap-1" aria-label="{% blocktrans with rating=review.rating %}Rating {{ rating }} of 5{% endblocktrans %}">
+          {% for _ in review.rating|times %}
+            <svg class="h-4 w-4 text-accent" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#star-filled"></use></svg>
+          {% endfor %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+  <p class="flex-1 text-sm text-ink {% if compact %}line-clamp-4{% endif %}">{{ review|tr:"text" }}</p>
+  {% if review.work %}
+    <a href="{{ review.work.get_absolute_url }}" class="text-sm text-accent">
+      {% blocktrans with article=review.work.article %}Work &#8470;{{ article }}{% endblocktrans %}
+    </a>
+  {% endif %}
+</article>

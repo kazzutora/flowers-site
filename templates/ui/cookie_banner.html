@@ -1,0 +1,16 @@
+{% load i18n %}{% comment %}
+No parameters. The choice is kept in localStorage under cookie_consent:v1;
+analytics is loaded only after "Accept".
+{% endcomment %}<div x-data="cookieConsent()" x-show="visible" x-cloak
+     class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-cream p-4 shadow-overlay">
+  <div class="mx-auto flex max-w-site flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <p class="text-sm text-ink">
+      {% trans "We use cookies to see which pages help people find their bouquet." %}
+      <a href="{% url 'static_page' slug='polityka-konfidentsiynosti' %}" class="underline hover:text-accent">{% trans "Privacy policy" %}</a>
+    </p>
+    <div class="flex flex-wrap gap-2">
+      {% include "ui/button.html" with label=_("Accept") variant="primary" size="sm" attrs='@click="accept()"' %}
+      {% include "ui/button.html" with label=_("Necessary only") variant="secondary" size="sm" attrs='@click="reject()"' %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+{% load i18n %}{% comment %}
+Parameters: next_url, label, target (css selector of the grid), indicator.
+Htmx appends the next page and pushes the new address, so Back returns to it.
+{% endcomment %}{% if next_url %}
+<div class="flex justify-center py-8" id="load-more">
+  <button type="button"
+          hx-get="{{ next_url }}"
+          hx-target="{{ target|default:'#work-grid' }}"
+          hx-swap="beforeend"
+          hx-select="#work-grid > *"
+          hx-push-url="{{ next_url }}"
+          hx-indicator="#load-more"
+          class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line bg-white px-6 text-base font-medium text-ink transition hover:bg-accentSoft">
+    {% firstof label _("Show more") %}
+  </button>
+</div>
+{% endif %}

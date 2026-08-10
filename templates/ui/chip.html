@@ -1,0 +1,12 @@
+{% load static i18n %}{% comment %}
+Parameters: label, href, removable, remove_url, color_hex.
+{% endcomment %}<span class="inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm text-ink">
+  {% if color_hex %}<span class="h-4 w-4 shrink-0 rounded-full border border-line" style="background-color: {{ color_hex }}"></span>{% endif %}
+  {% if href %}<a href="{{ href }}" class="hover:text-accent">{{ label }}</a>{% else %}<span>{{ label }}</span>{% endif %}
+  {% if removable %}
+    <a href="{{ remove_url }}" aria-label="{% blocktrans %}Remove filter {{ label }}{% endblocktrans %}"
+       class="inline-flex min-h-11 min-w-11 items-center justify-center text-muted hover:text-accent">
+      <svg class="h-4 w-4" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#close"></use></svg>
+    </a>
+  {% endif %}
+</span>

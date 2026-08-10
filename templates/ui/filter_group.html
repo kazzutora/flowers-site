@@ -1,0 +1,28 @@
+{% load project %}{% comment %}
+Parameters: group (TagGroup), active_slugs (list of active tag slugs).
+Occasions are not rendered here: they live in the path, not in the query.
+{% endcomment %}<fieldset class="border-b border-line py-4">
+  <legend class="mb-3 text-sm font-medium uppercase tracking-wide text-muted">{{ group|tr:"name" }}</legend>
+  {% if group.filter_kind == "color_swatch" %}
+    <div class="flex flex-wrap gap-2">
+      {% for tag in group.tags.all %}
+        {% if tag.slug in active_slugs %}
+          {% include "ui/color_swatch.html" with tag=tag checked=True %}
+        {% else %}
+          {% include "ui/color_swatch.html" with tag=tag checked=False %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="space-y-1">
+      {% for tag in group.tags.all %}
+        <label class="flex min-h-11 cursor-pointer items-center gap-3 text-base text-ink">
+          <input type="checkbox" name="{{ group.slug }}" value="{{ tag.slug }}"
+                 {% if tag.slug in active_slugs %}checked{% endif %}
+                 class="h-5 w-5 shrink-0 rounded-sm border border-line text-accent">
+          <span>{{ tag|tr:"name" }}</span>
+        </label>
+      {% endfor %}
+    </div>
+  {% endif %}
+</fieldset>

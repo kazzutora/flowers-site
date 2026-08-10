@@ -1,0 +1,29 @@
+{% load static i18n %}{% comment %}
+Parameters: id, title, position (bottom|right|left), body_template or body, footer_template.
+Alpine keeps the state; opening one is `$dispatch('drawer-open', '<id>')`.
+{% endcomment %}<div x-data="{ open: false }" x-cloak
+     @drawer-open.window="if ($event.detail === '{{ id }}') open = true"
+     @keydown.escape.window="open = false"
+     x-effect="document.body.classList.toggle('is-locked', open)">
+  <div x-show="open" x-transition.opacity class="fixed inset-0 z-40 bg-ink/40" @click="open = false"></div>
+  <div x-show="open" role="dialog" aria-modal="true" aria-labelledby="drawer-title-{{ id }}"
+       x-transition
+       class="fixed z-50 flex flex-col bg-cream shadow-overlay
+              {% if position == 'right' %}inset-y-0 right-0 w-full max-w-sm
+              {% elif position == 'left' %}inset-y-0 left-0 w-full max-w-sm
+              {% else %}inset-x-0 bottom-0 max-h-drawer rounded-t-lg{% endif %}">
+    <div class="flex items-center justify-between border-b border-line px-4 py-3">
+      <h2 id="drawer-title-{{ id }}" class="text-xl">{{ title }}</h2>
+      <button type="button" @click="open = false" aria-label="{% trans 'Close' %}"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
+        <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#close"></use></svg>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto px-4 py-4">
+      {% if body_template %}{% include body_template %}{% else %}{{ body }}{% endif %}
+    </div>
+    {% if footer_template %}
+      <div class="border-t border-line px-4 py-3">{% include footer_template %}</div>
+    {% endif %}
+  </div>
+</div>

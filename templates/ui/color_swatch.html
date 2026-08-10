@@ -1,0 +1,10 @@
+{% load project %}{% comment %}
+Parameters: tag (a Tag of a color_swatch group), checked.
+The query parameter is the group slug, the value is the tag slug.
+{% endcomment %}<label class="flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-3 text-sm
+              {% if checked %}border-accent bg-accentSoft text-accent{% else %}border-line bg-white text-ink{% endif %}">
+  <input type="checkbox" name="{{ tag.group.slug }}" value="{{ tag.slug }}" {% if checked %}checked{% endif %}
+         class="sr-only">
+  <span class="h-5 w-5 shrink-0 rounded-full border border-line" style="background-color: {{ tag.color_hex }}"></span>
+  <span>{{ tag|tr:"name" }}</span>
+</label>

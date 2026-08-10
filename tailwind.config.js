@@ -21,6 +21,8 @@ module.exports = {
         danger: "#A6413A",
       },
       maxWidth: { site: "1280px" },
+      // The mobile filter panel covers 90% of the viewport (section 10).
+      maxHeight: { drawer: "90vh" },
       aspectRatio: { card: "4 / 5" },
       fontFamily: {
         display: ['"Cormorant Garamond"', "Georgia", "serif"],

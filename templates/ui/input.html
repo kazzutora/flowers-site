@@ -1,0 +1,16 @@
+{% comment %}
+Parameters: name, label, type, value, error, required, hint, autocomplete, attrs.
+{% endcomment %}<div class="space-y-1">
+  <label for="id_{{ name }}" class="block text-sm font-medium text-ink">
+    {{ label }}{% if required %} <span class="text-danger" aria-hidden="true">*</span>{% endif %}
+  </label>
+  <input id="id_{{ name }}" name="{{ name }}" type="{{ type|default:'text' }}" value="{{ value|default:'' }}"
+         {% if required %}required{% endif %}
+         {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+         {% if error %}aria-invalid="true" aria-describedby="err_{{ name }}"{% elif hint %}aria-describedby="hint_{{ name }}"{% endif %}
+         class="min-h-12 w-full rounded-md border bg-white px-4 text-base text-ink placeholder:text-muted
+                {% if error %}border-danger{% else %}border-line{% endif %}"
+         {{ attrs|safe }}>
+  {% if hint and not error %}<p id="hint_{{ name }}" class="text-sm text-muted">{{ hint }}</p>{% endif %}
+  {% if error %}<p id="err_{{ name }}" class="text-sm text-danger">{{ error }}</p>{% endif %}
+</div>

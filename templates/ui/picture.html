@@ -1,0 +1,26 @@
+{% load project %}{% comment %}
+Parameters: image (WorkImage), preset (thumb|card|large|og), sizes, lazy, alt.
+Until the renditions are ready this renders a skeleton, never the original:
+originals live in the private storage and have no URL.
+{% endcomment %}{% if image and image.renditions_ready %}
+  {% rendition image preset "avif" as avif %}
+  {% rendition image preset "webp" as webp %}
+  {% rendition_srcset image "avif" as avif_srcset %}
+  {% rendition_srcset image "webp" as webp_srcset %}
+  {% if webp or avif %}
+    <picture>
+      {% if avif %}<source type="image/avif" srcset="{{ avif_srcset }}"{% if sizes %} sizes="{{ sizes }}"{% endif %}>{% endif %}
+      {% if webp %}<source type="image/webp" srcset="{{ webp_srcset }}"{% if sizes %} sizes="{{ sizes }}"{% endif %}>{% endif %}
+      <img src="{% if webp %}{{ webp.file.url }}{% else %}{{ avif.file.url }}{% endif %}"
+           width="{% if webp %}{{ webp.width }}{% else %}{{ avif.width }}{% endif %}"
+           height="{% if webp %}{{ webp.height }}{% else %}{{ avif.height }}{% endif %}"
+           alt="{{ alt|default:'' }}"
+           {% if lazy %}loading="lazy" decoding="async"{% else %}loading="eager" fetchpriority="high"{% endif %}
+           class="h-full w-full object-cover">
+    </picture>
+  {% else %}
+    {% include "ui/skeleton.html" with kind="image" ratio="card" %}
+  {% endif %}
+{% else %}
+  {% include "ui/skeleton.html" with kind="image" ratio="card" %}
+{% endif %}

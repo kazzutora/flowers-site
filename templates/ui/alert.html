@@ -1,0 +1,12 @@
+{% load static %}{% comment %}Parameters: tone (info|success|danger|accent), text.{% endcomment %}
+<div role="{% if tone == 'danger' %}alert{% else %}status{% endif %}"
+     class="flex items-start gap-3 rounded-md border px-4 py-3 text-sm
+            {% if tone == 'success' %}border-success bg-white text-success
+            {% elif tone == 'danger' %}border-danger bg-white text-danger
+            {% elif tone == 'accent' %}border-accent bg-accentSoft text-accent
+            {% else %}border-line bg-white text-ink{% endif %}">
+  <svg class="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true">
+    <use href="{% static 'img/icons.svg' %}#{% if tone == 'success' %}check-circle{% elif tone == 'danger' %}alert{% else %}info{% endif %}"></use>
+  </svg>
+  <span>{{ text }}</span>
+</div>

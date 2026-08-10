@@ -1,0 +1,13 @@
+{% load i18n project %}{% comment %}Parameters: post.{% endcomment %}
+<article class="flex h-full flex-col overflow-hidden rounded-md bg-white shadow-card">
+  <a href="{{ post.get_absolute_url }}" class="block aspect-video w-full overflow-hidden">
+    {% include "ui/image_simple.html" with field=post.cover alt=post|tr:"title" lazy=True %}
+  </a>
+  <div class="flex flex-1 flex-col gap-2 p-4">
+    <h3 class="text-xl">
+      <a href="{{ post.get_absolute_url }}" class="text-ink hover:text-accent">{{ post|tr:"title" }}</a>
+    </h3>
+    <p class="flex-1 text-sm text-muted">{{ post|tr:"excerpt" }}</p>
+    <a href="{{ post.get_absolute_url }}" class="text-sm font-medium text-accent">{% trans "Read" %}</a>
+  </div>
+</article>

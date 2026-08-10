@@ -1,0 +1,27 @@
+{% load static i18n %}{% comment %}
+Parameters: page_obj, base_url (already carries the query, ends with ? or &).
+{% endcomment %}{% if page_obj.paginator.num_pages > 1 %}
+<nav class="flex items-center justify-center gap-2" aria-label="{% trans 'Pagination' %}">
+  {% if page_obj.has_previous %}
+    <a href="{{ base_url }}page={{ page_obj.previous_page_number }}" rel="prev" aria-label="{% trans 'Previous page' %}"
+       class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-line bg-white text-ink hover:bg-accentSoft">
+      <svg class="h-5 w-5" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#chevron-left"></use></svg>
+    </a>
+  {% endif %}
+  {% for number in page_obj.paginator.page_range %}
+    {% if number == page_obj.number %}
+      <span aria-current="page"
+            class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-accent px-3 text-white">{{ number }}</span>
+    {% else %}
+      <a href="{{ base_url }}page={{ number }}"
+         class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-line bg-white px-3 text-ink hover:bg-accentSoft">{{ number }}</a>
+    {% endif %}
+  {% endfor %}
+  {% if page_obj.has_next %}
+    <a href="{{ base_url }}page={{ page_obj.next_page_number }}" rel="next" aria-label="{% trans 'Next page' %}"
+       class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-line bg-white text-ink hover:bg-accentSoft">
+      <svg class="h-5 w-5" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#chevron-right"></use></svg>
+    </a>
+  {% endif %}
+</nav>
+{% endif %}

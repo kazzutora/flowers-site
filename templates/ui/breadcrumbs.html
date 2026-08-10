@@ -1,0 +1,20 @@
+{% load i18n project %}{% comment %}
+Parameters: items (list of {label, url}; the last one carries no url).
+Renders the visible trail and the BreadcrumbList markup Google reads.
+{% endcomment %}{% if items %}
+<nav aria-label="{% trans 'Breadcrumbs' %}" class="py-4 text-sm text-muted">
+  <ol class="flex flex-wrap items-center gap-2">
+    {% for item in items %}
+      <li class="flex items-center gap-2">
+        {% if not forloop.first %}<span aria-hidden="true">/</span>{% endif %}
+        {% if item.url %}
+          <a href="{{ item.url }}" class="hover:text-accent">{{ item.label }}</a>
+        {% else %}
+          <span aria-current="page" class="text-ink">{{ item.label }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
+<script type="application/ld+json">{% breadcrumb_jsonld items %}</script>
+{% endif %}

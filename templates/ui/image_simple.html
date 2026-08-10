@@ -1,0 +1,9 @@
+{% comment %}
+Parameters: field (any ImageField except WorkImage), alt, lazy, sizes.
+These files are compressed once on upload; no renditions are generated for them.
+{% endcomment %}{% if field %}
+<img src="{{ field.url }}" alt="{{ alt|default:'' }}"
+     {% if sizes %}sizes="{{ sizes }}"{% endif %}
+     {% if lazy %}loading="lazy" decoding="async"{% else %}loading="eager" fetchpriority="high"{% endif %}
+     class="h-full w-full object-cover">
+{% endif %}

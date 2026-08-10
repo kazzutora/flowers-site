@@ -1,0 +1,33 @@
+{% load static %}{% comment %}
+Parameters: variant (primary|secondary|ghost|danger), size (sm|md|lg),
+href or type, label, icon, full_width, disabled, attrs.
+`attrs` is written into the tag verbatim, so only developer authored strings
+(hx-*, x-*, aria-*) may be passed.
+{% endcomment %}{% if href and not disabled %}
+<a href="{{ href }}"
+   class="inline-flex items-center justify-center gap-2 rounded-md font-medium transition
+          {% if size == 'sm' %}min-h-11 px-4 text-sm{% elif size == 'lg' %}min-h-14 px-8 text-lg{% else %}min-h-12 px-6 text-base{% endif %}
+          {% if variant == 'secondary' %}border border-line bg-white text-ink hover:bg-accentSoft
+          {% elif variant == 'ghost' %}text-ink hover:bg-accentSoft
+          {% elif variant == 'danger' %}bg-danger text-white hover:opacity-90
+          {% else %}bg-accent text-white hover:opacity-90{% endif %}
+          {% if full_width %}w-full{% endif %}"
+   {{ attrs|safe }}>
+  {% if icon %}<svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#{{ icon }}"></use></svg>{% endif %}
+  <span>{{ label }}</span>
+</a>
+{% else %}
+<button type="{{ type|default:'button' }}"{% if disabled %} disabled aria-disabled="true"{% endif %}
+   class="inline-flex items-center justify-center gap-2 rounded-md font-medium transition
+          disabled:cursor-not-allowed disabled:opacity-50
+          {% if size == 'sm' %}min-h-11 px-4 text-sm{% elif size == 'lg' %}min-h-14 px-8 text-lg{% else %}min-h-12 px-6 text-base{% endif %}
+          {% if variant == 'secondary' %}border border-line bg-white text-ink hover:bg-accentSoft
+          {% elif variant == 'ghost' %}text-ink hover:bg-accentSoft
+          {% elif variant == 'danger' %}bg-danger text-white hover:opacity-90
+          {% else %}bg-accent text-white hover:opacity-90{% endif %}
+          {% if full_width %}w-full{% endif %}"
+   {{ attrs|safe }}>
+  {% if icon %}<svg class="h-5 w-5 shrink-0" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#{{ icon }}"></use></svg>{% endif %}
+  <span>{{ label }}</span>
+</button>
+{% endif %}

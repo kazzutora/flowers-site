@@ -1,0 +1,23 @@
+{% load static %}{% comment %}
+Parameters: phone, variant (text|button|icon).
+Always active: tel: links stay clickable whatever the site settings say.
+{% endcomment %}{% if phone %}
+{% if variant == "icon" %}
+<a href="tel:{{ phone }}" data-analytics="phone_click" aria-label="{{ phone }}"
+   class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
+  <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#phone"></use></svg>
+</a>
+{% elif variant == "button" %}
+<a href="tel:{{ phone }}" data-analytics="phone_click"
+   class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-base font-medium text-white transition hover:opacity-90">
+  <svg class="h-5 w-5" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#phone"></use></svg>
+  <span>{% firstof phone.as_national phone %}</span>
+</a>
+{% else %}
+<a href="tel:{{ phone }}" data-analytics="phone_click"
+   class="inline-flex min-h-11 items-center gap-2 text-base font-medium text-ink hover:text-accent">
+  <svg class="h-5 w-5" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#phone"></use></svg>
+  <span>{% firstof phone.as_national phone %}</span>
+</a>
+{% endif %}
+{% endif %}

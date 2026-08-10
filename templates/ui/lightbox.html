@@ -1,0 +1,33 @@
+{% load static i18n %}{% comment %}
+Parameters: images (WorkImage list), start_index.
+Thumbnails open the overlay; arrows, swipe and Escape drive it.
+{% endcomment %}<div x-data="lightbox({{ start_index|default:0 }}, {{ images|length }})" x-cloak
+     @lightbox-open.window="openAt($event.detail)"
+     @keydown.escape.window="close()"
+     @keydown.arrow-left.window="prev()"
+     @keydown.arrow-right.window="next()">
+  <div x-show="open" x-transition.opacity class="fixed inset-0 z-50 flex flex-col bg-ink/95"
+       @touchstart="touchStart($event)" @touchend="touchEnd($event)">
+    <div class="flex justify-end p-4">
+      <button type="button" @click="close()" aria-label="{% trans 'Close' %}"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-cream">
+        <svg class="h-7 w-7" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#close"></use></svg>
+      </button>
+    </div>
+    <div class="relative flex flex-1 items-center justify-center px-2 pb-6">
+      <button type="button" @click="prev()" aria-label="{% trans 'Previous photo' %}"
+              class="absolute left-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-cream/20 text-cream">
+        <svg class="h-7 w-7" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#chevron-left"></use></svg>
+      </button>
+      {% for image in images %}
+        <div x-show="index === {{ forloop.counter0 }}" class="max-h-full">
+          {% include "ui/picture.html" with image=image preset="large" lazy=True alt=alt %}
+        </div>
+      {% endfor %}
+      <button type="button" @click="next()" aria-label="{% trans 'Next photo' %}"
+              class="absolute right-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-cream/20 text-cream">
+        <svg class="h-7 w-7" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#chevron-right"></use></svg>
+      </button>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  /* Owner authored HTML: sanitised on save, styled here because preflight
+     strips the browser defaults. */
+  .content > * + * {
+    @apply mt-4;
+  }
+
+  .content h2 {
+    @apply mt-8 text-3xl;
+  }
+
+  .content h3 {
+    @apply mt-6 text-2xl;
+  }
+
+  .content h4 {
+    @apply mt-6 text-xl;
+  }
+
+  .content p,
+  .content li {
+    @apply text-base leading-relaxed text-ink;
+  }
+
+  .content ul {
+    @apply list-disc space-y-1 pl-6;
+  }
+
+  .content ol {
+    @apply list-decimal space-y-1 pl-6;
+  }
+
+  .content a {
+    @apply text-accent underline;
+  }
+
+  .content strong {
+    @apply font-bold;
+  }
+
+  .content em {
+    @apply italic;
+  }
+
+  .content blockquote {
+    @apply border-l-4 border-accentSoft pl-4 text-muted;
+  }
+
+  .content img {
+    @apply rounded-md;
+  }
+
+  .content table {
+    @apply w-full border-collapse text-left text-base;
+  }
+
+  .content th,
+  .content td {
+    @apply border border-line px-3 py-2;
+  }
+
+  .content hr {
+    @apply border-line;
+  }
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

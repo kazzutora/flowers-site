@@ -1,0 +1,10 @@
+{% comment %}Parameters: title, text, action_label, action_url.{% endcomment %}
+<div class="mx-auto max-w-md py-16 text-center">
+  <h2 class="text-2xl">{{ title }}</h2>
+  {% if text %}<p class="mt-2 text-base text-muted">{{ text }}</p>{% endif %}
+  {% if action_url %}
+    <div class="mt-6 flex justify-center">
+      {% include "ui/button.html" with href=action_url label=action_label variant="primary" %}
+    </div>
+  {% endif %}
+</div>

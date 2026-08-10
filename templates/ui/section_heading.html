@@ -1,0 +1,12 @@
+{% comment %}Parameters: title, subtitle, link_url, link_label.{% endcomment %}
+<div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+  <div>
+    <h2 class="text-3xl md:text-4xl">{{ title }}</h2>
+    {% if subtitle %}<p class="mt-1 text-base text-muted">{{ subtitle }}</p>{% endif %}
+  </div>
+  {% if link_url %}
+    <a href="{{ link_url }}" class="inline-flex min-h-11 items-center text-base font-medium text-accent hover:opacity-80">
+      {{ link_label }}
+    </a>
+  {% endif %}
+</div>
