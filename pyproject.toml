@@ -48,12 +48,19 @@ packages = []
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-extend-exclude = ["*/migrations/*"]
+# Markdown is excluded on purpose: ruff reformats fenced python blocks, and
+# tech.md is a frozen contract.
+extend-exclude = ["*/migrations/*", "*.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "C4", "DJ", "T20", "RUF"]
 ignore = [
     "RUF012", # Django class attributes are not immutable by convention
+    # The project is bilingual: Cyrillic inside string literals is content,
+    # not a homoglyph attack.
+    "RUF001",
+    "RUF002",
+    "RUF003",
 ]
 
 [tool.ruff.lint.per-file-ignores]

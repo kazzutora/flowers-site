@@ -1,3 +1,7 @@
-# Shared fixtures live in tests/conftest.py; loading them as a plugin from the
-# root makes them available to the app test packages as well.
-pytest_plugins = ["tests.conftest"]
+"""Root conftest.
+
+The shared fixtures live in tests/conftest.py (section 3 of tech.md); importing
+them here makes them available to the app test packages as well.
+"""
+
+from tests.conftest import broken_cache, isolated_cache  # noqa: F401
