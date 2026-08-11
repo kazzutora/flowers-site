@@ -1,0 +1,8 @@
+{% load i18n %}{% comment %}
+Footer of the mobile filter drawer. The count is refreshed out of band on every
+change, so the visitor sees how many works are waiting before applying.
+{% endcomment %}
+<div id="filter-apply-slot"{% if is_fragment %} hx-swap-oob="true"{% endif %}>
+  {% blocktrans count counter=found_count asvar apply_label %}Show {{ counter }} work{% plural %}Show {{ counter }} works{% endblocktrans %}
+  {% include "ui/button.html" with label=apply_label variant="primary" full_width=True attrs='@click="open = false"' %}
+</div>

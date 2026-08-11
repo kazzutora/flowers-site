@@ -1,0 +1,47 @@
+{% load i18n project %}{% comment %}
+Chips, the counter and the grid, plus two out of band slots that live outside
+the swapped block: the "show more" button and the count on the mobile apply
+button. They sit outside on purpose - htmx pulls out of band elements out of
+the response before the main swap, so anything nested inside the swapped block
+would disappear.
+{% endcomment %}
+<div id="gallery-results">
+  {% if chips %}
+    <div class="mb-4 flex flex-wrap items-center gap-2">
+      {% for chip in chips %}
+        {% include "ui/chip.html" with label=chip.label color_hex=chip.color_hex removable=True remove_url=chip.remove_url %}
+      {% endfor %}
+      <a href="{{ base_path }}" class="inline-flex min-h-11 items-center px-2 text-sm text-accent underline">
+        {% trans "Clear all" %}
+      </a>
+    </div>
+  {% endif %}
+
+  <p class="mb-4 text-sm text-muted" role="status">
+    {% blocktrans count counter=found_count %}Found {{ counter }} work{% plural %}Found {{ counter }} works{% endblocktrans %}
+  </p>
+
+  {% if works %}
+    <div id="work-grid" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      {% for work in works %}
+        {% if forloop.counter0 < 4 and page_obj.number == 1 %}
+          {% include "ui/card_work.html" with work=work lazy=False sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+        {% else %}
+          {% include "ui/card_work.html" with work=work lazy=True sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    {% include "ui/empty_state.html" with title=_("Nothing found") text=_("Try removing a filter, or call us and we will pick something together.") action_label=_("Clear the filters") action_url=base_path %}
+    {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+  {% endif %}
+</div>
+
+<div id="load-more-slot"{% if is_fragment %} hx-swap-oob="true"{% endif %}>
+  {% include "ui/load_more.html" with next_url=next_url target="#work-grid" %}
+  <noscript>
+    <div class="py-8">
+      {% include "ui/pagination.html" with page_obj=page_obj base_url=base_url %}
+    </div>
+  </noscript>
+</div>

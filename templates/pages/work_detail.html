@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static i18n project %}
+
+{% block meta_title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ page_description }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ page_title }}{% endblock %}
+{% block og_description %}{{ page_description }}{% endblock %}
+{% block og_image %}
+  {% if og_rendition %}
+    <meta property="og:image" content="{% absolute_url og_rendition.file.url %}">
+    <meta property="og:image:width" content="{{ og_rendition.width }}">
+    <meta property="og:image:height" content="{{ og_rendition.height }}">
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+
+  <div class="grid gap-8 md:grid-cols-2">
+    <div class="space-y-3">
+      <button type="button" @click="$dispatch('lightbox-open', 0)"
+              class="block w-full overflow-hidden rounded-lg"
+              aria-label="{% trans 'Open the photo' %}">
+        <div class="aspect-card w-full">
+          {% include "ui/picture.html" with image=main_image preset="large" lazy=False alt=main_image.alt_text sizes="(min-width: 768px) 50vw, 100vw" %}
+        </div>
+      </button>
+
+      {% if images|length > 1 %}
+        <div class="flex gap-2 overflow-x-auto pb-1">
+          {% for image in images %}
+            <button type="button" @click="$dispatch('lightbox-open', {{ forloop.counter0 }})"
+                    class="w-20 shrink-0 overflow-hidden rounded-md"
+                    aria-label="{% blocktrans with number=forloop.counter %}Photo {{ number }}{% endblocktrans %}">
+              <div class="aspect-card w-full">
+                {% include "ui/picture.html" with image=image preset="thumb" lazy=True alt=image.alt_text sizes="80px" %}
+              </div>
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="space-y-5">
+      <div class="flex flex-wrap items-baseline gap-3" x-data="copyNumber('{{ work.article }}')">
+        <h1 class="text-3xl md:text-4xl">
+          {% with title=work|tr:"title" %}{% if title %}{{ title }}{% else %}{% trans "Work" %}{% endif %}{% endwith %}
+        </h1>
+        <span class="text-2xl text-muted">&#8470;{{ work.article }}</span>
+        <button type="button" @click="copy()"
+                class="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-accent hover:bg-accentSoft">
+          <svg class="h-4 w-4" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#copy"></use></svg>
+          <span x-show="!copied">{% trans "Copy the number" %}</span>
+          <span x-show="copied" x-cloak>{% trans "Copied" %}</span>
+        </button>
+      </div>
+
+      {% if work|tr:"description" %}
+        <p class="text-base text-ink">{{ work|tr:"description" }}</p>
+      {% endif %}
+
+      <dl class="space-y-2 text-base">
+        {% if work|tr:"composition" %}
+          <div class="flex gap-2">
+            <dt class="text-muted">{% trans "Composition" %}:</dt>
+            <dd>{{ work|tr:"composition" }}</dd>
+          </div>
+        {% endif %}
+        {% if work|tr:"size_text" %}
+          <div class="flex gap-2">
+            <dt class="text-muted">{% trans "Size" %}:</dt>
+            <dd>{{ work|tr:"size_text" }}</dd>
+          </div>
+        {% endif %}
+        {% if show_price %}
+          <div class="flex gap-2">
+            <dt class="text-muted">{% trans "Price" %}:</dt>
+            <dd>{% blocktrans with price=work.price_from %}from {{ price }} UAH{% endblocktrans %}
+              {% if work|tr:"price_note" %}<span class="text-muted">{{ work|tr:"price_note" }}</span>{% endif %}
+            </dd>
+          </div>
+        {% endif %}
+      </dl>
+
+      {% if tags %}
+        <div class="flex flex-wrap gap-2">
+          {% for tag in tags %}
+            {% include "ui/chip.html" with label=tag|tr:"name" href=tag.filter_url color_hex=tag.color_hex %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% include "ui/alert.html" with tone="info" text=_("We will repeat it as closely as we can. Flowers may differ depending on the season and the delivery.") %}
+
+      <div class="flex flex-wrap gap-3">
+        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+        {% if site_settings.viber_url %}
+          {% include "ui/button.html" with href=site_settings.viber_url label=_("Write on Viber") variant="secondary" icon="viber" attrs='data-analytics="viber_click" target="_blank" rel="noopener"' %}
+        {% endif %}
+        {% if site_settings.telegram_url %}
+          {% include "ui/button.html" with href=site_settings.telegram_url label=_("Write on Telegram") variant="secondary" icon="telegram" attrs='data-analytics="telegram_click" target="_blank" rel="noopener"' %}
+        {% endif %}
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2" x-data="shareLink()">
+        {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" %}
+        {% include "ui/icon_button.html" with icon="share" label=_("Share") variant="outline" attrs="@click=\"share()\"" %}
+      </div>
+    </div>
+  </div>
+
+  {% if similar %}
+    <section class="mt-16">
+      {% include "ui/section_heading.html" with title=_("Similar works") %}
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {% for item in similar %}
+          {% include "ui/card_work.html" with work=item lazy=True sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</div>
+
+{% include "ui/lightbox.html" with images=images start_index=0 alt=main_image.alt_text %}
+
+{% comment %}
+No Product markup while prices are off: Google asks it for an offer with a
+price and warns when there is none (section 16).
+{% endcomment %}
+{% if image_jsonld %}
+  <script type="application/ld+json">{% jsonld image_jsonld %}</script>
+{% endif %}
+{% endblock %}

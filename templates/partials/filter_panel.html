@@ -1,0 +1,49 @@
+{% load i18n project %}{% comment %}
+Parameters: panel_id ("desktop" or "mobile"), occasion, occasions, groups,
+active_slugs, query, base_path.
+
+One form per panel. Occasions are the first block and they are links: an
+occasion lives in the path, not in the query (section 1). Everything else is a
+checkbox named after its group.
+
+Without JavaScript the form is a plain GET to the gallery URL. With htmx it
+asks /hx/gallery/, which answers with the results fragment and pushes the
+public address into the history.
+{% endcomment %}
+<form id="filters-{{ panel_id }}"
+      method="get"
+      action="{{ base_path }}"
+      hx-get="{% url 'hx_gallery' %}"
+      hx-target="#gallery-results"
+      hx-swap="outerHTML"
+      hx-trigger="change, submit"
+      class="space-y-1">
+  <input type="hidden" name="occasion" value="{{ occasion.slug|default:'' }}">
+  <input type="hidden" name="sort" value="{{ query.sort }}">
+
+  <fieldset class="border-b border-line py-4">
+    <legend class="mb-3 text-sm font-medium uppercase tracking-wide text-muted">{% trans "Occasion" %}</legend>
+    <div class="space-y-1">
+      <a href="{% url 'gallery' %}"
+         class="flex min-h-11 items-center rounded-md px-2 text-base {% if not occasion %}bg-accentSoft text-accent{% else %}text-ink hover:text-accent{% endif %}">
+        {% trans "All works" %}
+      </a>
+      {% for item in occasions %}
+        <a href="{{ item.get_absolute_url }}"
+           class="flex min-h-11 items-center rounded-md px-2 text-base {% if occasion and item.pk == occasion.pk %}bg-accentSoft text-accent{% else %}text-ink hover:text-accent{% endif %}">
+          {{ item|tr:"name" }}
+        </a>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  {% for group in groups %}
+    {% include "ui/filter_group.html" with group=group active_slugs=active_slugs %}
+  {% endfor %}
+
+  {% if panel_id == "desktop" %}
+    <div class="py-4">
+      {% include "ui/button.html" with type="submit" label=_("Show works") variant="secondary" full_width=True %}
+    </div>
+  {% endif %}
+</form>

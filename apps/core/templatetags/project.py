@@ -134,6 +134,12 @@ def footer_menu() -> list[Any]:
 
 
 @register.simple_tag
+def jsonld(data: dict[str, Any]) -> SafeString:
+    """Structured data built in a view. `<` is escaped so it cannot close the tag."""
+    return mark_safe(json.dumps(data, ensure_ascii=False, default=str).replace("<", "\\u003C"))
+
+
+@register.simple_tag
 def breadcrumb_jsonld(items: list[dict[str, Any]]) -> SafeString:
     data = {
         "@context": "https://schema.org",

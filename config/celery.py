@@ -35,13 +35,17 @@ app.conf.task_routes = {
 app.conf.task_track_started = True
 app.conf.worker_hijack_root_logger = False
 
-# Section 8: the schedule holds only tasks that exist. flush-view-counters
-# arrives with S1-5 and expire-banner with S2-1; core.ping goes away with the
-# skeleton.
+# Section 8: the schedule holds only tasks that exist. expire-banner arrives
+# with S2-1; core.ping goes away with the skeleton.
 app.conf.beat_schedule = {
     "ping": {
         "task": "core.ping",
         "schedule": 60.0,
+        "kwargs": {"payload": {}},
+    },
+    "flush-view-counters": {
+        "task": "catalog.flush_view_counters",
+        "schedule": 300.0,
         "kwargs": {"payload": {}},
     },
 }

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n project %}
+
+{% block meta_title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ page_description }}{% endblock %}
+{% block og_title %}{{ page_title }}{% endblock %}
+{% block og_description %}{{ page_description }}{% endblock %}
+{% block robots %}{{ robots }}{% endblock %}
+{% block canonical %}{% absolute_url canonical_path %}{% endblock %}
+
+{% block extra_head %}
+  {% if page_obj.has_previous %}
+    <link rel="prev" href="{% absolute_url base_url %}page={{ page_obj.previous_page_number }}">
+  {% endif %}
+  {% if page_obj.has_next %}
+    <link rel="next" href="{% absolute_url base_url %}page={{ page_obj.next_page_number }}">
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+
+  <div class="flex flex-wrap items-end justify-between gap-3 pb-6">
+    <h1 class="text-4xl md:text-5xl">{% if occasion %}{{ occasion|tr:"name" }}{% else %}{% trans "Gallery" %}{% endif %}</h1>
+
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-muted">{% trans "Sort" %}</span>
+      {% for key, url in sort_urls.items %}
+        <a href="{{ url }}"
+           hx-get="{{ url }}"
+           hx-target="#gallery-results"
+           hx-select="#gallery-results"
+           hx-swap="outerHTML"
+           hx-push-url="true"
+           class="inline-flex min-h-11 items-center rounded-md px-3 text-sm
+                  {% if key == query.sort %}bg-accentSoft text-accent{% else %}text-ink hover:text-accent{% endif %}">
+          {% if key == "popular" %}{% trans "Popular" %}{% else %}{% trans "New" %}{% endif %}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="lg:flex lg:gap-8">
+    <aside class="hidden lg:block lg:w-64 lg:shrink-0">
+      <div class="sticky top-24 max-h-drawer overflow-y-auto pr-2">
+        {% include "partials/filter_panel.html" with panel_id="desktop" %}
+      </div>
+    </aside>
+
+    <div class="lg:min-w-0 lg:flex-1">
+      <div class="mb-4 lg:hidden">
+        {% include "ui/button.html" with label=filters_label variant="secondary" icon="filter" full_width=True attrs="@click=\"$dispatch('drawer-open', 'filters')\"" %}
+      </div>
+
+      {% include "partials/gallery_results.html" %}
+    </div>
+  </div>
+
+  {% if occasion and occasion|tr:"description" %}
+    <section class="content mt-12 max-w-3xl">
+      {{ occasion|tr:"description"|linebreaks }}
+    </section>
+  {% endif %}
+</div>
+
+{% include "ui/drawer.html" with id="filters" title=_("Filters") position="bottom" body_template="partials/filter_panel.html" panel_id="mobile" footer_template="partials/filter_apply.html" %}
+{% endblock %}

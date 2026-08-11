@@ -34,6 +34,43 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
+  // The article is copied without the number sign: it is dictated on the
+  // phone and pasted into a message.
+  Alpine.data("copyNumber", (value) => ({
+    copied: false,
+    async copy() {
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch (error) {
+        const field = document.createElement("textarea");
+        field.value = value;
+        document.body.appendChild(field);
+        field.select();
+        document.execCommand("copy");
+        field.remove();
+      }
+      this.copied = true;
+      window.setTimeout(() => {
+        this.copied = false;
+      }, 2000);
+    },
+  }));
+
+  Alpine.data("shareLink", () => ({
+    async share() {
+      const data = { title: document.title, url: window.location.href };
+      if (navigator.share) {
+        try {
+          await navigator.share(data);
+          return;
+        } catch (error) {
+          if (error.name === "AbortError") return;
+        }
+      }
+      await navigator.clipboard.writeText(data.url);
+    },
+  }));
+
   Alpine.data("lightbox", (startIndex, total) => ({
     open: false,
     index: startIndex,

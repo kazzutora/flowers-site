@@ -4,6 +4,7 @@ The field set is frozen: nothing here exists that the contract does not list.
 """
 
 from typing import Any
+from urllib.parse import urlencode
 
 from django.core.exceptions import ValidationError
 from django.db import connection, models, transaction
@@ -176,6 +177,11 @@ class Tag(TranslatedMixin, models.Model):
 
     def __str__(self) -> str:
         return self.name_uk
+
+    @property
+    def filter_url(self) -> str:
+        """The gallery filtered by this tag. The parameter name is its group."""
+        return f"{reverse('gallery')}?{urlencode({self.group.slug: self.slug})}"
 
     def clean(self) -> None:
         super().clean()

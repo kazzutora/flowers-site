@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}{% comment %}
+An archived work. 410 rather than 404: the page may be indexed, and 410 takes
+it out of the results faster (section 9).
+{% endcomment %}
+
+{% block meta_title %}{% trans "This work is no longer available" %}{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% url 'gallery' as gallery_url %}
+  {% include "ui/empty_state.html" with title=_("This work is no longer available") text=_("It has moved to the archive. There are similar ones below, or call us and we will pick something together.") action_label=_("To the gallery") action_url=gallery_url %}
+
+  <div class="flex justify-center">
+    {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+  </div>
+
+  {% if similar %}
+    <section class="mt-16">
+      {% include "ui/section_heading.html" with title=_("Similar works") %}
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {% for item in similar %}
+          {% include "ui/card_work.html" with work=item lazy=True sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

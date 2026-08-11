@@ -3,9 +3,12 @@
 import logging
 
 from celery import shared_task
+from django.apps import apps
+from django.db.models import F
 
 from apps.catalog.contracts import RegenerateAllPayload, RenditionsPayload
-from apps.catalog.services import images
+from apps.catalog.services import images, views_counter
+from apps.core.contracts import EmptyPayload
 
 logger = logging.getLogger(__name__)
 
@@ -54,3 +57,31 @@ def regenerate_all_renditions(payload: dict) -> int:
             kwargs={"payload": {"work_image_id": work_image_id, "force": data.force}}
         )
     return len(identifiers)
+
+
+@shared_task(name="catalog.flush_view_counters")
+def flush_view_counters(payload: dict) -> int:
+    """Fold the Redis counters into the database (section 8.3).
+
+    Idempotent by construction: the counters are taken with GETDEL, so a second
+    run finds an empty Redis and adds nothing.
+    """
+    EmptyPayload.model_validate(payload)
+
+    collected = views_counter.collect()
+    applied = 0
+    for kind, label in (("work", "catalog.Work"), ("post", "blog.Post")):
+        counts = collected.get(kind) or {}
+        if not counts:
+            continue
+        try:
+            model = apps.get_model(label)
+        except LookupError:
+            # The blog lands in stage 3; until then its counters are dropped.
+            logger.info("catalog.flush_view_counters: %s does not exist yet", label)
+            continue
+        for identifier, amount in counts.items():
+            applied += model.objects.filter(pk=identifier).update(
+                views_count=F("views_count") + amount
+            )
+    return applied
