@@ -384,6 +384,21 @@ class WorkImage(TranslatedMixin, models.Model):
         return ""
 
 
+@receiver(post_save, sender=Work)
+@receiver(post_save, sender=WorkImage)
+@receiver(post_save, sender=Tag)
+@receiver(post_save, sender=Occasion)
+@receiver(post_delete, sender=Work)
+@receiver(post_delete, sender=WorkImage)
+@receiver(post_delete, sender=Tag)
+@receiver(post_delete, sender=Occasion)
+def invalidate_gallery_cache(sender: type[models.Model], **kwargs: Any) -> None:
+    """Section 14.4: one counter, and every cached fragment is out of reach."""
+    from apps.catalog.cache import bump
+
+    bump()
+
+
 @receiver(post_save, sender=WorkImage)
 def enqueue_renditions(sender: type[WorkImage], instance: WorkImage, **kwargs: Any) -> None:
     """Queue the derived images once the row is really committed (section 14.1).

@@ -17,7 +17,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
-from apps.catalog import filters, seo
+from apps.catalog import cache, filters, seo
 from apps.catalog.models import (
     Occasion,
     Tag,
@@ -138,10 +138,23 @@ def hx_gallery(request: HttpRequest) -> HttpResponse:
     slug = request.GET.get("occasion") or ""
     occasion = Occasion.objects.filter(slug=slug, is_active=True).first() if slug else None
 
-    context = _gallery_context(request, occasion, fragment=True)
-    response = render(request, "partials/gallery_fragment.html", context)
+    spec = filters.FilterSpec.from_db()
+    query = filters.parse(request.GET, spec)
+    key = cache.fragment_key(slug, query.query_string(), query.page)
+    cached = cache.get(key) if cache.is_cacheable(request) else None
+
+    if cached is not None:
+        html, push_url = cached
+        response = HttpResponse(html)
+    else:
+        context = _gallery_context(request, occasion, fragment=True)
+        response = render(request, "partials/gallery_fragment.html", context)
+        push_url = context["public_url"] or context["base_path"]
+        if cache.is_cacheable(request):
+            cache.set(key, (response.content.decode(), push_url))
+
     # The address bar gets the public URL, never this endpoint.
-    response.headers["HX-Push-Url"] = context["public_url"] or context["base_path"]
+    response.headers["HX-Push-Url"] = push_url
     return response
 
 
