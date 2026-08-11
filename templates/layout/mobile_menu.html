@@ -16,6 +16,10 @@ Full screen panel behind the hamburger. Uses the header's Alpine scope:
       </button>
     </div>
 
+    <div class="px-4 py-4">
+      {% include "partials/search_form.html" %}
+    </div>
+
     {% main_menu as menu %}
     <nav class="flex flex-col px-4 py-2">
       {% for item in menu %}

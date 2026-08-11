@@ -18,6 +18,7 @@ localized = [
     path("galereya/", catalog_views.gallery, name="gallery"),
     path("galereya/<slug:occasion_slug>/", catalog_views.gallery, name="gallery_occasion"),
     path("robota/<slug:slug>/", catalog_views.work_detail, name="work_detail"),
+    path("poshuk/", catalog_views.search, name="search"),
     # Fragments. Closed to crawlers by robots.txt, noindex in the markup.
     path("hx/gallery/", catalog_views.hx_gallery, name="hx_gallery"),
     # Registered always, answers only while DEBUG is on: the view checks.
