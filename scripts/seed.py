@@ -440,10 +440,63 @@ def seed_works() -> None:
             )
 
 
+REVIEWS: tuple[dict[str, Any], ...] = (
+    {
+        "author_name": "Олена",
+        "rating": 5,
+        "is_featured": True,
+        "text_uk": "Букет був свіжий, зібрали за годину. Наречена в захваті, дякую!",
+        "text_ru": "Букет был свежий, собрали за час. Невеста в восторге, спасибо!",
+    },
+    {
+        "author_name": "Ігор",
+        "rating": 5,
+        "is_featured": True,
+        "text_uk": "Замовляв по телефону, назвав номер роботи. Привезли рівно те, що на фото.",
+        "text_ru": "Заказывал по телефону, назвал номер работы. Привезли ровно то, что на фото.",
+    },
+    {
+        "author_name": "Марія",
+        "rating": 5,
+        "is_featured": True,
+        "text_uk": "Оформлювали зал на весілля. Приїхали раніше і все встигли.",
+        "text_ru": "Оформляли зал на свадьбу. Приехали раньше и всё успели.",
+    },
+    {
+        "author_name": "Андрій",
+        "rating": 4,
+        "text_uk": "Гарний букет на день народження. Хотілося більше зелені, але це моя вина.",
+        "text_ru": "Красивый букет на день рождения. Хотелось больше зелени, но это моя вина.",
+    },
+    {
+        "author_name": "Наталя",
+        "rating": 5,
+        "text_uk": "Півонії стояли тиждень. Тепер замовляю тільки тут.",
+        "text_ru": "Пионы стояли неделю. Теперь заказываю только здесь.",
+    },
+)
+
+
+def seed_reviews() -> None:
+    from apps.reviews.models import Review
+
+    for review in REVIEWS:
+        Review.objects.update_or_create(
+            author_name=review["author_name"],
+            defaults={
+                **review,
+                "source": Review.Source.ADMIN,
+                "status": Review.Status.PUBLISHED,
+                "consent": True,
+            },
+        )
+
+
 def run() -> dict[str, int]:
     """Fill the database. Running it twice changes nothing."""
     from apps.catalog.models import Occasion, Tag, TagGroup, Work, WorkImage
     from apps.core.models import HowToStep, SiteSettings, StaticPage
+    from apps.reviews.models import Review
 
     seed_site_settings()
     seed_static_pages()
@@ -451,7 +504,9 @@ def run() -> dict[str, int]:
     seed_occasions()
     seed_tags()
     seed_works()
+    seed_reviews()
     return {
+        "reviews": Review.objects.count(),
         "site_settings": SiteSettings.objects.count(),
         "static_pages": StaticPage.objects.count(),
         "how_to_steps": HowToStep.objects.count(),

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_title %}{% trans "Reviews" %}{% endblock %}
+{% block meta_description %}{% trans "What people say about our flowers." %}{% endblock %}
+{% block og_title %}{% trans "Reviews" %}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+
+  <div class="flex flex-wrap items-end justify-between gap-3 pb-6">
+    <h1 class="text-4xl md:text-5xl">{% trans "Reviews" %}</h1>
+    {% include "ui/button.html" with label=_("Leave a review") variant="primary" attrs="@click=\"$dispatch('modal-open', 'review')\"" %}
+  </div>
+
+  {% if reviews %}
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {% for review in reviews %}
+        {% include "ui/card_review.html" with review=review %}
+      {% endfor %}
+    </div>
+    <div class="py-8">
+      {% include "ui/pagination.html" with page_obj=page_obj base_url=base_url %}
+    </div>
+  {% else %}
+    {% include "ui/empty_state.html" with title=_("No reviews yet") text=_("Be the first: tell us how the flowers were.") %}
+  {% endif %}
+</div>
+
+{% include "ui/modal.html" with id="review" title=_("Leave a review") body_template="partials/review_form.html" %}
+{% endblock %}

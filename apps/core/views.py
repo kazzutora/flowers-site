@@ -2,6 +2,7 @@ from typing import Any
 
 from django.apps import apps
 from django.conf import settings as django_settings
+from django.db.models import Avg, Count
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import NoReverseMatch, reverse
@@ -18,6 +19,8 @@ from config.storages import public_storage
 FRESH_WORKS = 12
 FEATURED_REVIEWS = 3
 LATEST_POSTS = 3
+# Section 16: an average below this many opinions is noise, not a rating.
+MIN_RATED_REVIEWS = 5
 # A picture inside a text is a picture, not an archive of one.
 MAX_EDITOR_UPLOAD_BYTES = 25 * 1024 * 1024
 
@@ -55,17 +58,41 @@ def _optional_url(name: str) -> str:
         return ""
 
 
-def _local_business(site: SiteSettings) -> dict[str, Any]:
-    """LocalBusiness for the home page and for the contacts page (section 16).
+def _aggregate_rating() -> dict[str, Any] | None:
+    """Section 16: shown only from five rated reviews on.
 
-    AggregateRating is added in stage 3, once there are reviews to count.
+    Below that the average says more about who happened to write than about the
+    studio, and Google is not fond of it either.
     """
+    review = _model_or_none("reviews.Review")
+    if review is None:
+        return None
+
+    rated = review.objects.filter(status="published", rating__isnull=False)
+    counted = rated.aggregate(total=Count("pk"), average=Avg("rating"))
+    if (counted["total"] or 0) < MIN_RATED_REVIEWS:
+        return None
+
+    return {
+        "@type": "AggregateRating",
+        "ratingValue": round(float(counted["average"]), 1),
+        "reviewCount": counted["total"],
+        "bestRating": 5,
+        "worstRating": 1,
+    }
+
+
+def _local_business(site: SiteSettings) -> dict[str, Any]:
+    """LocalBusiness for the home page and for the contacts page (section 16)."""
     data: dict[str, Any] = {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": str(site.tr("site_name") or _("Flower studio")),
         "url": django_settings.SITE_URL,
     }
+    rating = _aggregate_rating()
+    if rating is not None:
+        data["aggregateRating"] = rating
     if site.phone_primary:
         data["telephone"] = str(site.phone_primary)
     if site.tr("address"):

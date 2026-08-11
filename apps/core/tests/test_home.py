@@ -83,13 +83,15 @@ def test_the_hero_is_eager_while_the_tiles_are_lazy(
 
 
 def test_an_empty_block_is_not_rendered_at_all(client: Client, filled_home: SiteSettings) -> None:
-    """Reviews and the blog land in stage 3; until then their blocks are absent."""
+    """With no reviews and no posts, neither section appears.
+
+    The assertions look for the links that only live inside those blocks: the
+    words themselves are also in the menu, which is a different thing.
+    """
     body = client.get("/").content.decode()
 
-    assert "card_post" not in body
-    assert "From the blog" not in body
-    assert "З блогу" not in body
-    assert "Відгуки" not in body
+    assert "Всі відгуки" not in body
+    assert "Всі статті" not in body
 
 
 def test_there_is_a_button_to_instagram_and_no_feed(

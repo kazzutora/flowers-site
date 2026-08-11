@@ -8,6 +8,7 @@ from PIL import Image
 
 from apps.catalog.models import Occasion, Tag, TagGroup, Work, WorkImage
 from apps.core.models import HowToStep, SiteSettings, StaticPage
+from apps.reviews.models import Review
 
 
 def photo_bytes(
@@ -108,6 +109,18 @@ class WorkFactory(factory.django.DjangoModelFactory[Work]):
     def tags(self, create: bool, extracted: list[Tag] | None, **kwargs: object) -> None:
         if create and extracted:
             self.tags.set(extracted)
+
+
+class ReviewFactory(factory.django.DjangoModelFactory[Review]):
+    class Meta:
+        model = Review
+
+    author_name = factory.Sequence(lambda n: f"Автор {n}")
+    text_uk = "Букет був свіжий, зібрали за годину."
+    rating = 5
+    source = Review.Source.ADMIN
+    status = Review.Status.PUBLISHED
+    consent = True
 
 
 class WorkImageFactory(factory.django.DjangoModelFactory[WorkImage]):

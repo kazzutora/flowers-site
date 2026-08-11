@@ -4,6 +4,7 @@ import pytest
 
 from apps.catalog.models import Occasion, Tag, TagGroup, Work, WorkImage
 from apps.core.models import HowToStep, SiteSettings, StaticPage
+from apps.reviews.models import Review
 from scripts.seed import run
 
 pytestmark = pytest.mark.django_db
@@ -30,6 +31,7 @@ def test_seed_fills_the_catalog() -> None:
     assert counts["tag_groups"] == 4
     assert counts["works"] == 30
     assert counts["work_images"] == 30
+    assert counts["reviews"] == 5
     assert set(TagGroup.objects.values_list("slug", flat=True)) == {
         "type",
         "color",
@@ -52,6 +54,8 @@ def test_seed_is_idempotent() -> None:
     assert Tag.objects.count() == 20
     assert Work.objects.count() == 30
     assert WorkImage.objects.count() == 30
+    assert Review.objects.count() == 5
+    assert Review.published.count() == 5
 
 
 def test_seeded_pages_are_sanitised_and_published() -> None:

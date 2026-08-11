@@ -1,0 +1,57 @@
+{% load i18n %}{% comment %}
+Parameters: review_form (bound, only when it came back with errors),
+review_form_token, review_form_notice, rating_options, turnstile_site_key.
+
+Posts to /hx/review/ and replaces itself with the answer. The review lands in
+`pending` and is invisible until the owner confirms it (section 4.10).
+{% endcomment %}
+<form id="review-form"
+      method="post"
+      action="{% url 'hx_review' %}"
+      enctype="multipart/form-data"
+      hx-post="{% url 'hx_review' %}"
+      hx-target="this"
+      hx-swap="outerHTML"
+      hx-encoding="multipart/form-data"
+      class="space-y-4">
+  {% csrf_token %}
+  <input type="hidden" name="ts" value="{{ review_form_token }}">
+
+  {% comment %}The trap: hidden by styles, never by type=hidden (section 15).{% endcomment %}
+  <div class="sr-only" aria-hidden="true">
+    <label>Website
+      <input type="text" name="website" tabindex="-1" autocomplete="off">
+    </label>
+  </div>
+
+  {% if review_form_notice %}
+    {% include "ui/alert.html" with tone="accent" text=review_form_notice %}
+  {% endif %}
+
+  {% include "ui/input.html" with name="author_name" label=_("Your name") value=review_form.data.author_name error=review_form.errors.author_name.0 required=True autocomplete="name" %}
+  {% include "ui/textarea.html" with name="text_uk" label=_("Your review") rows=5 maxlength=2000 value=review_form.data.text_uk error=review_form.errors.text_uk.0 required=True %}
+  {% include "ui/select.html" with name="rating" label=_("Rating") options=rating_options value=review_form.data.rating error=review_form.errors.rating.0 %}
+
+  <div class="space-y-1">
+    <label for="id_photo" class="block text-sm font-medium text-ink">{% trans "Photo" %}</label>
+    <input id="id_photo" name="photo" type="file" accept="image/*"
+           class="min-h-12 w-full rounded-md border border-line bg-white px-4 py-3 text-base text-ink">
+    {% if review_form.errors.photo.0 %}<p class="text-sm text-danger">{{ review_form.errors.photo.0 }}</p>{% endif %}
+  </div>
+
+  {% include "ui/input.html" with name="contact_phone" label=_("Phone for us") type="tel" value=review_form.data.contact_phone error=review_form.errors.contact_phone.0 hint=_("We will not publish it") autocomplete="tel" %}
+
+  {% url 'static_page' slug='polityka-konfidentsiynosti' as policy_url %}
+  {% blocktrans asvar consent_label %}I agree to my review being published{% endblocktrans %}
+  {% include "ui/checkbox.html" with name="consent" label=consent_label value="on" checked=review_form.data.consent error=review_form.errors.consent.0 %}
+  <p class="text-sm text-muted">
+    <a href="{{ policy_url }}" class="underline hover:text-accent">{% trans "Privacy policy" %}</a>
+  </p>
+
+  {% if turnstile_site_key %}
+    <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+  {% endif %}
+
+  {% include "ui/button.html" with type="submit" label=_("Send the review") variant="primary" full_width=True %}
+  <p class="text-sm text-muted">{% trans "We publish reviews after reading them." %}</p>
+</form>
