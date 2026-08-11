@@ -12,17 +12,18 @@ from typing import Any
 
 import pytest
 
+# Section 13 starts the design at 360px; the desktop profile is the width the
+# gallery switches to four columns at.
+PROFILES: dict[str, dict[str, int]] = {
+    "mobile": {"width": 390, "height": 844},
+    "desktop": {"width": 1440, "height": 900},
+}
+
 
 def pytest_collection_modifyitems(items: list[Any]) -> None:
     for item in items:
         if "e2e" in str(item.fspath):
             item.add_marker(pytest.mark.e2e)
-
-
-@pytest.fixture(scope="session")
-def browser_context_args(browser_context_args: dict[str, Any]) -> dict[str, Any]:
-    """A phone sized viewport: that is where the collection is actually built."""
-    return {**browser_context_args, "viewport": {"width": 390, "height": 844}}
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -57,3 +58,30 @@ def allow_orm_beside_the_browser() -> Iterator[None]:
     with pytest.MonkeyPatch.context() as patch:
         patch.setenv("DJANGO_ALLOW_ASYNC_UNSAFE", "1")
         yield
+
+
+@pytest.fixture(params=sorted(PROFILES), ids=sorted(PROFILES))
+def profile(request: Any, browser: Any) -> Iterator[Any]:
+    """A page on a phone and a page on a desktop, for the same scenario."""
+    context = browser.new_context(viewport=PROFILES[request.param])
+    try:
+        yield context.new_page()
+    finally:
+        context.close()
+
+
+@pytest.fixture
+def eager_celery() -> Iterator[None]:
+    """Run the notification inline, so the fake client can be inspected.
+
+    Nothing here is testing the broker; what the scenario has to prove is that
+    the enquiry reaches the owner.
+    """
+    from config.celery import app
+
+    was_eager = app.conf.task_always_eager
+    app.conf.task_always_eager = True
+    try:
+        yield
+    finally:
+        app.conf.task_always_eager = was_eager

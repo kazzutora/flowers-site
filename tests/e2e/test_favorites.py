@@ -8,7 +8,7 @@ visitor sends the address to a friend, or dictates the numbers on the phone.
 from typing import Any
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 from apps.catalog.models import Work
 from tests.factories import SiteSettingsFactory, WorkFactory
@@ -26,9 +26,10 @@ def works(db: Any) -> list[Work]:
 
 
 def test_two_works_travel_to_another_browser(
-    page: Page, context: Any, browser: Any, live_server: Any, works: list[Work]
+    profile: Any, browser: Any, live_server: Any, works: list[Work]
 ) -> None:
-    context.grant_permissions(["clipboard-read", "clipboard-write"])
+    page = profile
+    page.context.grant_permissions(["clipboard-read", "clipboard-write"])
 
     page.goto(f"{live_server.url}/galereya/")
     hearts = page.locator('button[aria-label="В обране"]')
@@ -62,7 +63,10 @@ def test_two_works_travel_to_another_browser(
         fresh.close()
 
 
-def test_the_collection_survives_a_reload(page: Page, live_server: Any, works: list[Work]) -> None:
+def test_the_collection_survives_a_reload(
+    profile: Any, live_server: Any, works: list[Work]
+) -> None:
+    page = profile
     page.goto(f"{live_server.url}/galereya/")
     page.locator('button[aria-label="В обране"]').first.click()
 
@@ -72,8 +76,9 @@ def test_the_collection_survives_a_reload(page: Page, live_server: Any, works: l
 
 
 def test_an_empty_collection_offers_the_gallery(
-    page: Page, live_server: Any, works: list[Work]
+    profile: Any, live_server: Any, works: list[Work]
 ) -> None:
+    page = profile
     page.goto(f"{live_server.url}/obrane/")
 
     expect(page.get_by_role("link", name="До галереї")).to_be_visible()

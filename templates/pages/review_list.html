@@ -11,7 +11,7 @@
 
   <div class="flex flex-wrap items-end justify-between gap-3 pb-6">
     <h1 class="text-4xl md:text-5xl">{% trans "Reviews" %}</h1>
-    {% include "ui/button.html" with label=_("Leave a review") variant="primary" attrs="@click=\"$dispatch('modal-open', 'review')\"" %}
+    <span x-data>{% include "ui/button.html" with label=_("Leave a review") variant="primary" attrs="@click=\"$dispatch('modal-open', 'review')\"" %}</span>
   </div>
 
   {% if reviews %}

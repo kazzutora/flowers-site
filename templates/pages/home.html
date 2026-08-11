@@ -119,7 +119,7 @@ rendered at all, it is not printed as an empty heading.
         the phone above never does.
         {% endcomment %}
         {% if site_settings.accepting_orders %}
-          {% include "ui/button.html" with label=_("Call me back") variant="secondary" attrs="@click=\"$dispatch('modal-open', 'callback')\"" %}
+          <span x-data>{% include "ui/button.html" with label=_("Call me back") variant="secondary" attrs="@click=\"$dispatch('modal-open', 'callback')\"" %}</span>
         {% else %}
           {% include "ui/button.html" with label=_("Call me back") variant="secondary" disabled=True %}
           {% firstof site_settings|tr:"not_accepting_message" _("We are not taking new orders right now. Call us, we will suggest a date.") as not_accepting %}

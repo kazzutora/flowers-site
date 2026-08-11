@@ -157,7 +157,7 @@ only: the view answers 404 unless DEBUG is on.
 
   <section>
     {% include "ui/section_heading.html" with title="drawer.html, modal.html, lightbox.html" %}
-    <div class="flex flex-wrap gap-3">
+    <div class="flex flex-wrap gap-3" x-data>
       {% include "ui/button.html" with label="Open drawer" variant="secondary" attrs="@click=&quot;$dispatch('drawer-open', 'demo')&quot;" %}
       {% include "ui/button.html" with label="Open modal" variant="secondary" attrs="@click=&quot;$dispatch('modal-open', 'demo')&quot;" %}
       {% include "ui/button.html" with label="Open lightbox" variant="secondary" attrs="@click=&quot;$dispatch('lightbox-open', 0)&quot;" %}

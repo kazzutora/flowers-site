@@ -19,7 +19,7 @@
   {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
 
   <div class="grid gap-8 md:grid-cols-2">
-    <div class="space-y-3">
+    <div class="space-y-3" x-data>
       <button type="button" @click="$dispatch('lightbox-open', 0)"
               class="block w-full overflow-hidden rounded-lg"
               aria-label="{% trans 'Open the photo' %}">
@@ -98,7 +98,9 @@
       The article travels with every event fired from this block, so the
       analytics of section 16 can tell which work led to the call.
       {% endcomment %}
-      <div class="flex flex-wrap gap-3" data-analytics-article="{{ work.article }}">
+      {% comment %}x-data creates the Alpine scope $dispatch needs: without one,
+      a @click attribute is inert markup.{% endcomment %}
+      <div class="flex flex-wrap gap-3" x-data data-analytics-article="{{ work.article }}">
         {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
         {% if site_settings.viber_url %}
           {% include "ui/button.html" with href=site_settings.viber_url label=_("Write on Viber") variant="secondary" icon="viber" attrs='data-analytics="viber_click" target="_blank" rel="noopener"' %}
