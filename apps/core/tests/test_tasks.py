@@ -1,10 +1,14 @@
 """Section 8: task names, payload validation, idempotency."""
 
+from datetime import timedelta
+
 import pytest
+from django.utils import timezone
 from pydantic import ValidationError
 
 from apps.core.contracts import EmptyPayload
-from apps.core.tasks import ping
+from apps.core.models import SiteSettings
+from apps.core.tasks import expire_banner, ping
 from config.celery import RetryTask, app
 
 
@@ -51,3 +55,51 @@ def test_retry_policy_matches_the_contract() -> None:
 def test_media_queue_is_routed_separately() -> None:
     assert app.conf.task_default_queue == "default"
     assert app.conf.task_routes["catalog.generate_renditions"] == {"queue": "media"}
+
+
+@pytest.mark.django_db
+def test_expire_banner_unticks_a_banner_whose_date_has_passed() -> None:
+    site = SiteSettings.load()
+    site.banner_enabled = True
+    site.banner_text_uk = "Стара акція"
+    site.banner_until = timezone.now() - timedelta(minutes=1)
+    site.save()
+
+    assert expire_banner(payload={}) is True
+
+    site.refresh_from_db()
+    assert site.banner_enabled is False
+
+
+@pytest.mark.django_db
+def test_expire_banner_is_idempotent() -> None:
+    site = SiteSettings.load()
+    site.banner_enabled = True
+    site.banner_until = timezone.now() - timedelta(minutes=1)
+    site.save()
+
+    first = expire_banner(payload={})
+    second = expire_banner(payload={})
+
+    assert (first, second) == (True, False)
+    site.refresh_from_db()
+    assert site.banner_enabled is False
+
+
+@pytest.mark.django_db
+def test_expire_banner_leaves_a_live_banner_alone() -> None:
+    site = SiteSettings.load()
+    site.banner_enabled = True
+    site.banner_until = timezone.now() + timedelta(days=1)
+    site.save()
+
+    assert expire_banner(payload={}) is False
+
+    site.refresh_from_db()
+    assert site.banner_enabled is True
+
+
+@pytest.mark.django_db
+def test_expire_banner_refuses_an_unexpected_payload() -> None:
+    with pytest.raises(ValidationError):
+        expire_banner(payload={"now": "today"})
