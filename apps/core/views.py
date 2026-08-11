@@ -180,6 +180,27 @@ def upload_image(request: HttpRequest) -> HttpResponse:
     return JsonResponse({"location": storage.url(name)})
 
 
+def robots_txt(request: HttpRequest) -> HttpResponse:
+    """Section 16: only /hx/ and /admin/ are closed here.
+
+    /obrane/, /poshuk/ and /dyakuyemo/ are kept out of the index with a meta
+    tag instead. Disallowing them here would stop the crawler from ever reading
+    that tag.
+    """
+    lines = [
+        "User-agent: *",
+        "Disallow: /hx/",
+        "Disallow: /admin/",
+        # The same rules under the Russian prefix, as section 16 asks.
+        "Disallow: /ru/hx/",
+        "Disallow: /ru/admin/",
+        "",
+        f"Sitemap: {django_settings.SITE_URL}/sitemap.xml",
+        "",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain; charset=utf-8")
+
+
 def kitchen_sink(request: HttpRequest) -> HttpResponse:
     """Every UI primitive in every state. Development only, rendered on stubs."""
     if not django_settings.DEBUG:
