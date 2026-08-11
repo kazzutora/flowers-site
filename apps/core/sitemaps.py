@@ -6,7 +6,9 @@ Every class sets `i18n = True`, so each address appears once per language, and
 
 from datetime import datetime
 from typing import Any
+from urllib.parse import urlsplit
 
+from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from django.db.models import QuerySet
 from django.urls import reverse
@@ -19,7 +21,8 @@ from apps.core.models import StaticPage
 class BaseSitemap(Sitemap):
     i18n = True
     alternates = True
-    protocol = "https"
+    # The same scheme the canonical and the OG tags use, from one source.
+    protocol = urlsplit(settings.SITE_URL).scheme or "https"
 
 
 class StaticViewSitemap(BaseSitemap):
