@@ -2,18 +2,24 @@ from typing import Any
 
 from django.apps import apps
 from django.conf import settings as django_settings
-from django.http import Http404, HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import NoReverseMatch, reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_POST
 
 from apps.catalog.models import Occasion, Work
 from apps.core.models import HowToStep, SiteSettings, StaticPage
+from apps.core.services.images import compress_simple_image
 from apps.leads.views import lead_form_context
+from config.storages import public_storage
 
 FRESH_WORKS = 12
 FEATURED_REVIEWS = 3
 LATEST_POSTS = 3
+# A picture inside a text is a picture, not an archive of one.
+MAX_EDITOR_UPLOAD_BYTES = 25 * 1024 * 1024
 
 
 def _model_or_none(label: str) -> Any:
@@ -100,6 +106,33 @@ def static_page(request: HttpRequest, slug: str) -> HttpResponse:
         {"label": page.tr("title")},
     ]
     return render(request, "pages/static_page.html", {"page": page, "breadcrumbs": breadcrumbs})
+
+
+@require_POST
+def upload_image(request: HttpRequest) -> HttpResponse:
+    """`/admin/upload-image/`: pictures dropped into the text editor.
+
+    Staff only, and 403 rather than a redirect: the caller is TinyMCE, not a
+    browser that can follow one. The file is squeezed once by
+    `core/services/images.py` and gets no renditions (section 14.2).
+    """
+    user = request.user
+    if not (user.is_authenticated and user.is_staff):
+        return JsonResponse({"error": {"message": "forbidden"}}, status=403)
+
+    upload = request.FILES.get("file")
+    if upload is None:
+        return JsonResponse({"error": {"message": "no file"}}, status=400)
+    if (upload.size or 0) > MAX_EDITOR_UPLOAD_BYTES:
+        return JsonResponse({"error": {"message": "too large"}}, status=400)
+
+    compressed = compress_simple_image(upload, upload.name or "image")
+    if compressed is None:
+        return JsonResponse({"error": {"message": "not an image"}}, status=400)
+
+    storage = public_storage()
+    name = storage.save(f"content/{timezone.now():%Y/%m}/{compressed.name}", compressed)
+    return JsonResponse({"location": storage.url(name)})
 
 
 def kitchen_sink(request: HttpRequest) -> HttpResponse:

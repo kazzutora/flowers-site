@@ -120,6 +120,10 @@ class SiteSettingsAdmin(ModelAdmin):
 
 @admin.register(StaticPage)
 class StaticPageAdmin(ModelAdmin):
+    class Media:
+        # Defines window.uploadEditorImage, which the TinyMCE config names.
+        js = ("js/tinymce-upload.js",)
+
     list_display = ("title_uk", "slug", "is_published", "updated_at")
     list_filter = ("is_published",)
     search_fields = ("slug", "title_uk", "title_ru")
