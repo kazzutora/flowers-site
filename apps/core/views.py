@@ -99,6 +99,24 @@ def home(request: HttpRequest) -> HttpResponse:
     )
 
 
+def contacts(request: HttpRequest) -> HttpResponse:
+    """`/kontakty/` (section 10). Everything on it comes from the admin."""
+    site = SiteSettings.load()
+
+    return render(
+        request,
+        "pages/contacts.html",
+        {
+            "local_business": _local_business(site),
+            "breadcrumbs": [
+                {"label": _("Home"), "url": reverse("home")},
+                {"label": _("Contacts")},
+            ],
+            **lead_form_context(request, "full"),
+        },
+    )
+
+
 def static_page(request: HttpRequest, slug: str) -> HttpResponse:
     page = get_object_or_404(StaticPage, slug=slug, is_published=True)
     breadcrumbs = [

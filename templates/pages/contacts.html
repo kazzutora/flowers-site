@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static i18n project %}{% comment %}
+Section 10, "contacts". Address, landmark, parking, hours, the map and the
+enquiry form - all of it edited in the admin, none of it in this template.
+{% endcomment %}
+
+{% block meta_title %}{% trans "Contacts" %}{% endblock %}
+{% block meta_description %}{% firstof site_settings|tr:"address" _("How to reach us") %}{% endblock %}
+{% block og_title %}{% trans "Contacts" %}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+  <h1 class="pb-6 text-4xl md:text-5xl">{% trans "Contacts" %}</h1>
+
+  <div class="grid gap-10 md:grid-cols-2">
+    <div class="space-y-5">
+      <div class="space-y-2">
+        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+        {% if site_settings.phone_secondary %}
+          {% include "ui/phone_link.html" with phone=site_settings.phone_secondary variant="text" %}
+        {% endif %}
+        {% if site_settings.email %}
+          <p class="flex items-center gap-2 text-base">
+            <svg class="h-5 w-5 shrink-0 text-muted" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#mail"></use></svg>
+            <a href="mailto:{{ site_settings.email }}" class="hover:text-accent">{{ site_settings.email }}</a>
+          </p>
+        {% endif %}
+      </div>
+
+      {% if site_settings|tr:"address" %}
+        <div class="space-y-2">
+          <h2 class="text-2xl">{% trans "Where to find us" %}</h2>
+          <p class="flex items-start gap-2 text-base">
+            <svg class="mt-1 h-5 w-5 shrink-0 text-muted" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#map-pin"></use></svg>
+            <span>{{ site_settings|tr:"address" }}</span>
+          </p>
+          {% if site_settings|tr:"landmark" %}
+            <p class="text-base text-muted">{{ site_settings|tr:"landmark" }}</p>
+          {% endif %}
+          {% if site_settings|tr:"parking" %}
+            <p class="text-base text-muted">{{ site_settings|tr:"parking" }}</p>
+          {% endif %}
+          {% if site_settings.map_directions_url %}
+            {% comment %}Opens the navigation app on a phone.{% endcomment %}
+            {% include "ui/button.html" with href=site_settings.map_directions_url label=_("Get directions") variant="secondary" icon="map-pin" attrs='target="_blank" rel="noopener"' %}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if site_settings|tr:"working_hours" %}
+        <div class="space-y-2">
+          <h2 class="text-2xl">{% trans "Working hours" %}</h2>
+          <p class="flex items-start gap-2 text-base">
+            <svg class="mt-1 h-5 w-5 shrink-0 text-muted" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#clock"></use></svg>
+            <span class="whitespace-pre-line">{{ site_settings|tr:"working_hours" }}</span>
+          </p>
+        </div>
+      {% endif %}
+
+      <div class="space-y-2">
+        <h2 class="text-2xl">{% trans "Messengers" %}</h2>
+        {% include "ui/social_icons.html" %}
+        {% if site_settings.instagram_url %}
+          {% include "ui/button.html" with href=site_settings.instagram_url label=_("Our Instagram") variant="secondary" icon="instagram" attrs='target="_blank" rel="noopener"' %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      {% comment %}The iframe is lazy: the map does not load until it is scrolled to.{% endcomment %}
+      {% include "ui/map_embed.html" with src=site_settings.map_embed_url title=_("Where to find us") %}
+
+      <div>
+        <h2 class="mb-4 text-2xl">{% trans "Leave an enquiry" %}</h2>
+        {% include "partials/lead_form.html" %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/ld+json">{% jsonld local_business %}</script>
+{% endblock %}
