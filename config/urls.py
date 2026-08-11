@@ -23,6 +23,7 @@ localized = [
     path("robota/<slug:slug>/", catalog_views.work_detail, name="work_detail"),
     path("poshuk/", catalog_views.search, name="search"),
     path("obrane/", catalog_views.favorites, name="favorites"),
+    path("kontakty/", core_views.contacts, name="contacts"),
     path("dyakuyemo/", lead_views.thanks, name="thanks"),
     # Fragments. Closed to crawlers by robots.txt, noindex in the markup.
     path("hx/gallery/", catalog_views.hx_gallery, name="hx_gallery"),
