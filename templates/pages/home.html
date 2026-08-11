@@ -114,10 +114,23 @@ rendered at all, it is not printed as an empty heading.
         {% if site_settings.instagram_url %}
           {% include "ui/button.html" with href=site_settings.instagram_url label=_("Our Instagram") variant="secondary" icon="instagram" attrs='target="_blank" rel="noopener"' %}
         {% endif %}
+        {% comment %}
+        The low friction entry of section 10. It goes quiet with the orders;
+        the phone above never does.
+        {% endcomment %}
+        {% if site_settings.accepting_orders %}
+          {% include "ui/button.html" with label=_("Call me back") variant="secondary" attrs="@click=\"$dispatch('modal-open', 'callback')\"" %}
+        {% else %}
+          {% include "ui/button.html" with label=_("Call me back") variant="secondary" disabled=True %}
+          {% firstof site_settings|tr:"not_accepting_message" _("We are not taking new orders right now. Call us, we will suggest a date.") as not_accepting %}
+          {% include "ui/alert.html" with tone="accent" text=not_accepting %}
+        {% endif %}
       </div>
       {% include "ui/map_embed.html" with src=site_settings.map_embed_url title=_("Where to find us") %}
     </div>
   </section>
+
+  {% include "ui/modal.html" with id="callback" title=_("Call me back") body_template="partials/lead_form.html" form_kind="callback" %}
 
   <script type="application/ld+json">{% jsonld local_business %}</script>
 {% endblock %}

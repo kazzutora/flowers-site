@@ -94,7 +94,11 @@
 
       {% include "ui/alert.html" with tone="info" text=_("We will repeat it as closely as we can. Flowers may differ depending on the season and the delivery.") %}
 
-      <div class="flex flex-wrap gap-3">
+      {% comment %}
+      The article travels with every event fired from this block, so the
+      analytics of section 16 can tell which work led to the call.
+      {% endcomment %}
+      <div class="flex flex-wrap gap-3" data-analytics-article="{{ work.article }}">
         {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
         {% if site_settings.viber_url %}
           {% include "ui/button.html" with href=site_settings.viber_url label=_("Write on Viber") variant="secondary" icon="viber" attrs='data-analytics="viber_click" target="_blank" rel="noopener"' %}
@@ -108,8 +112,10 @@
         {% endcomment %}
         {% if site_settings.accepting_orders %}
           {% include "ui/button.html" with label=_("Order something like this") variant="secondary" attrs="@click=\"$dispatch('modal-open', 'order')\"" %}
+          {% include "ui/button.html" with label=_("Call me back") variant="ghost" attrs="@click=\"$dispatch('modal-open', 'callback')\"" %}
         {% else %}
           {% include "ui/button.html" with label=_("Order something like this") variant="secondary" disabled=True %}
+          {% include "ui/button.html" with label=_("Call me back") variant="ghost" disabled=True %}
         {% endif %}
       </div>
 
@@ -138,7 +144,12 @@
 </div>
 
 {% include "ui/lightbox.html" with images=images start_index=0 alt=main_image.alt_text %}
-{% include "ui/modal.html" with id="order" title=_("Order something like this") body_template="partials/lead_form.html" %}
+{% comment %}
+The two entries of section 10: the full enquiry, and "call me back" with
+nothing but a name and a number.
+{% endcomment %}
+{% include "ui/modal.html" with id="order" title=_("Order something like this") body_template="partials/lead_form.html" form_kind="full" %}
+{% include "ui/modal.html" with id="callback" title=_("Call me back") body_template="partials/lead_form.html" form_kind="callback" %}
 
 {% comment %}
 No Product markup while prices are off: Google asks it for an offer with a

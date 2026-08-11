@@ -12,6 +12,7 @@ JavaScript the same post is an ordinary form submit ending in a 302 to
       hx-post="{% url 'hx_lead' %}"
       hx-target="this"
       hx-swap="outerHTML"
+      {% if work %}data-analytics-article="{{ work.article }}"{% endif %}
       class="space-y-4">
   {% csrf_token %}
   <input type="hidden" name="form" value="{{ form_kind }}">

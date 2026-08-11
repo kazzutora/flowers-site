@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: flowers 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-11 14:01+0300\n"
+"POT-Creation-Date: 2026-08-11 21:29+0300\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-msgid "A published work needs at least one photo. Add a photo or save it as a draft."
-msgstr "Опубликованная работа должна иметь хотя бы одно фото. Добавьте фото или сохраните как черновик."
+msgid ""
+"A published work needs at least one photo. Add a photo or save it as a draft."
+msgstr ""
+"Опубликованная работа должна иметь хотя бы одно фото. Добавьте фото или "
+"сохраните как черновик."
 
 #, fuzzy
 #| msgid "Reviews"
@@ -58,7 +61,8 @@ msgid "occasions"
 msgstr "поводы"
 
 msgid "A work without photos cannot be published, so it was saved as a draft."
-msgstr "Работу без фото нельзя опубликовать, поэтому она сохранена как черновик."
+msgstr ""
+"Работу без фото нельзя опубликовать, поэтому она сохранена как черновик."
 
 msgid "Publish the selected works"
 msgstr "Опубликовать выбранные работы"
@@ -346,11 +350,13 @@ msgstr "Это не изображение, которое мы можем пр�
 
 #, python-format
 msgid "Format %(format)s is not supported. Use JPEG, PNG, WebP or HEIC."
-msgstr "Формат %(format)s не поддерживается. Используйте JPEG, PNG, WebP или HEIC."
+msgstr ""
+"Формат %(format)s не поддерживается. Используйте JPEG, PNG, WebP или HEIC."
 
 #, python-format
 msgid "The photo is too small: the shortest side must be at least %(side)d px."
-msgstr "Фото слишком маленькое: короткая сторона должна быть не меньше %(side)d px."
+msgstr ""
+"Фото слишком маленькое: короткая сторона должна быть не меньше %(side)d px."
 
 msgid "Home"
 msgstr "Главная"
@@ -699,8 +705,11 @@ msgstr "Страница не найдена"
 msgid "There is no such page"
 msgstr "Такой страницы нет"
 
-msgid "Maybe the address has changed. Look through the gallery, or find a work by its number."
-msgstr "Возможно, адрес изменился. Посмотрите галерею или найдите работу по номеру."
+msgid ""
+"Maybe the address has changed. Look through the gallery, or find a work by "
+"its number."
+msgstr ""
+"Возможно, адрес изменился. Посмотрите галерею или найдите работу по номеру."
 
 msgid "To the gallery"
 msgstr "В галерею"
@@ -708,7 +717,9 @@ msgstr "В галерею"
 msgid "This work is no longer available"
 msgstr "Эта работа больше не доступна"
 
-msgid "It has moved to the archive. There are similar ones below, or call us and we will pick something together."
+msgid ""
+"It has moved to the archive. There are similar ones below, or call us and we "
+"will pick something together."
 msgstr "Она в архиве. Ниже похожие работы, или позвоните — подберём вместе."
 
 msgid "Similar works"
@@ -796,6 +807,9 @@ msgstr "Все статьи"
 msgid "Our Instagram"
 msgstr "Ссылка на Instagram"
 
+msgid "Call me back"
+msgstr "Перезвоните мне"
+
 msgid "Where to find us"
 msgstr "Где нас найти"
 
@@ -809,8 +823,11 @@ msgstr[2] "Найдено %(counter)s работ"
 msgid "Nothing found"
 msgstr "Ничего не найдено"
 
-msgid "Check the number, or look through the gallery. We can also pick something over the phone."
-msgstr "Проверьте номер или посмотрите галерею. Ещё можем подобрать по телефону."
+msgid ""
+"Check the number, or look through the gallery. We can also pick something "
+"over the phone."
+msgstr ""
+"Проверьте номер или посмотрите галерею. Ещё можем подобрать по телефону."
 
 msgid "Thank you"
 msgstr "Спасибо"
@@ -818,7 +835,9 @@ msgstr "Спасибо"
 msgid "Thank you, we have your enquiry"
 msgstr "Спасибо, заявку приняли"
 
-msgid "We will call you back during working hours. If it is urgent, call us and we will answer right away."
+msgid ""
+"We will call you back during working hours. If it is urgent, call us and we "
+"will answer right away."
 msgstr "Мы перезвоним в рабочие часы. Если срочно — позвоните, ответим сразу."
 
 msgid "Back to the gallery"
@@ -856,8 +875,12 @@ msgstr "Цены"
 msgid "from %(price)s UAH"
 msgstr "от %(price)s грн"
 
-msgid "We will repeat it as closely as we can. Flowers may differ depending on the season and the delivery."
-msgstr "Повторим максимально близко. Цветы могут отличаться в зависимости от сезона и поставки."
+msgid ""
+"We will repeat it as closely as we can. Flowers may differ depending on the "
+"season and the delivery."
+msgstr ""
+"Повторим максимально близко. Цветы могут отличаться в зависимости от сезона "
+"и поставки."
 
 msgid "Write on Viber"
 msgstr "Написать в Viber"
@@ -877,8 +900,12 @@ msgstr "Поделиться"
 msgid "Nothing here yet"
 msgstr "Здесь пока пусто"
 
-msgid "Tap the heart on a work and it lands here. Then send us the whole collection at once."
-msgstr "Нажмите сердечко на работе — она появится здесь. Потом отправите всю подборку сразу."
+msgid ""
+"Tap the heart on a work and it lands here. Then send us the whole collection "
+"at once."
+msgstr ""
+"Нажмите сердечко на работе — она появится здесь. Потом отправите всю "
+"подборку сразу."
 
 #, python-format
 msgid "Show %(counter)s work"

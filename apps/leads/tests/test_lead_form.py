@@ -239,8 +239,42 @@ def test_an_unreachable_redis_never_blocks_an_enquiry(
 # --- the mode switch ----------------------------------------------------------
 
 
-def test_with_orders_closed_the_button_is_disabled_and_the_phone_is_not(
-    client: Client, site: Any
+def _buttons(body: str, label: str) -> list[str]:
+    """Every rendered button carrying this label, markup and all."""
+    return [
+        f"<button{chunk.split('</button>')[0]}"
+        for chunk in body.split("<button")[1:]
+        if label in chunk.split("</button>")[0]
+    ]
+
+
+def test_both_entries_of_section_10_are_on_the_work_page(client: Client, site: Any) -> None:
+    work = WorkFactory.create(status=Work.Status.PUBLISHED)
+
+    body = client.get(work.get_absolute_url()).content.decode()
+
+    assert "Замовити схожу" in body
+    assert "Передзвоніть мені" in body
+    assert 'id="lead-form-full"' in body
+    assert 'id="lead-form-callback"' in body
+
+
+def test_the_call_me_back_form_asks_only_for_a_name_and_a_number(client: Client, site: Any) -> None:
+    work = WorkFactory.create(status=Work.Status.PUBLISHED)
+
+    body = client.get(work.get_absolute_url()).content.decode()
+    callback = body.split('id="lead-form-callback"')[1].split("</form>")[0]
+
+    assert 'name="name"' in callback
+    assert 'name="phone"' in callback
+    assert 'name="consent"' in callback
+    assert 'name="budget_text"' not in callback
+    assert 'name="event_date"' not in callback
+
+
+@pytest.mark.parametrize("label", ["Замовити схожу", "Передзвоніть мені", "Надіслати"])
+def test_with_orders_closed_every_order_button_is_disabled(
+    client: Client, site: Any, label: str
 ) -> None:
     work = WorkFactory.create(status=Work.Status.PUBLISHED)
     site.accepting_orders = False
@@ -248,10 +282,53 @@ def test_with_orders_closed_the_button_is_disabled_and_the_phone_is_not(
     site.save()
 
     body = client.get(work.get_absolute_url()).content.decode()
+    rendered = _buttons(body, label)
+
+    assert rendered, f"{label} is not on the page at all"
+    # The primitive always carries the disabled:* utility classes, so the
+    # attribute is what tells an inactive button from a live one.
+    assert all('aria-disabled="true"' in button for button in rendered), label
+    assert "Зараз не приймаємо замовлення" in body
+
+
+def test_with_orders_closed_the_messengers_stay_clickable(client: Client, site: Any) -> None:
+    work = WorkFactory.create(status=Work.Status.PUBLISHED)
+    site.accepting_orders = False
+    site.viber_url = "viber://chat?number=%2B380501112233"
+    site.telegram_url = "https://t.me/example"
+    site.save()
+
+    body = client.get(work.get_absolute_url()).content.decode()
 
     assert 'href="tel:+380501112233"' in body
-    assert "disabled" in body
-    assert "Зараз не приймаємо замовлення" in body
+    assert 'href="viber://chat?number=%2B380501112233"' in body
+    assert 'href="https://t.me/example"' in body
+
+
+def test_with_orders_open_the_buttons_work(client: Client, site: Any) -> None:
+    work = WorkFactory.create(status=Work.Status.PUBLISHED)
+
+    body = client.get(work.get_absolute_url()).content.decode()
+
+    for label in ("Замовити схожу", "Передзвоніть мені"):
+        rendered = _buttons(body, label)
+        assert rendered, label
+        assert not any('aria-disabled="true"' in button for button in rendered), label
+
+
+def test_the_home_page_offers_call_me_back(client: Client, site: Any) -> None:
+    body = client.get("/").content.decode()
+
+    assert "Передзвоніть мені" in body
+    assert 'id="lead-form-callback"' in body
+
+
+def test_an_enquiry_carries_the_article_for_the_analytics(client: Client, site: Any) -> None:
+    work = WorkFactory.create(status=Work.Status.PUBLISHED)
+
+    body = client.get(work.get_absolute_url()).content.decode()
+
+    assert f'data-analytics-article="{work.article}"' in body
 
 
 def test_the_thanks_page_always_exists(client: Client) -> None:

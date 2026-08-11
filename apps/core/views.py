@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.catalog.models import Occasion, Work
 from apps.core.models import HowToStep, SiteSettings, StaticPage
+from apps.leads.views import lead_form_context
 
 FRESH_WORKS = 12
 FEATURED_REVIEWS = 3
@@ -86,6 +87,8 @@ def home(request: HttpRequest) -> HttpResponse:
             "local_business": _local_business(site),
             "reviews_url": _optional_url("review_list"),
             "blog_url": _optional_url("post_list"),
+            # The "call me back" modal of section 10.
+            **lead_form_context(request, "callback"),
         },
     )
 

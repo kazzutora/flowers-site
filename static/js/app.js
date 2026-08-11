@@ -113,9 +113,16 @@ document.addEventListener("alpine:init", () => {
 document.addEventListener("click", (event) => {
   const target = event.target.closest("[data-analytics]");
   if (!target) return;
+  // Section 16: an event carries the work it happened on and the page it came
+  // from. The article is declared once per block, not once per button.
+  const holder = target.closest("[data-analytics-article]");
   window.dispatchEvent(
     new CustomEvent("analytics", {
-      detail: { name: target.dataset.analytics, page: window.location.pathname },
+      detail: {
+        name: target.dataset.analytics,
+        page: window.location.pathname,
+        article: holder ? Number(holder.dataset.analyticsArticle) : undefined,
+      },
     }),
   );
 });
