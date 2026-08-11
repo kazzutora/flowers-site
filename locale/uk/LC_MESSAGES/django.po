@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: flowers 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-11 21:29+0300\n"
+"POT-Creation-Date: 2026-08-11 22:36+0300\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -16,24 +16,92 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
+msgid "Content"
+msgstr "Вміст"
+
+msgid "Related works"
+msgstr "Повʼязані роботи"
+
+msgid "SEO"
+msgstr "SEO"
+
+msgid "Draft"
+msgstr "Чернетка"
+
+msgid "Published"
+msgstr "Опубліковано"
+
+msgid "slug"
+msgstr "слаг"
+
+msgid "title, uk"
+msgstr "заголовок, uk"
+
+msgid "title, ru"
+msgstr "заголовок, ru"
+
+msgid "excerpt, uk"
+msgstr "анонс, укр"
+
+msgid "excerpt, ru"
+msgstr "анонс, рос"
+
+msgid "body, uk"
+msgstr "текст, uk"
+
+msgid "body, ru"
+msgstr "текст, ru"
+
+msgid "cover"
+msgstr "обкладинка"
+
+msgid "related works"
+msgstr "повʼязані роботи"
+
+msgid "status"
+msgstr "статус"
+
+msgid "published at"
+msgstr "опубліковано"
+
+msgid "views"
+msgstr "перегляди"
+
+msgid "SEO title, uk"
+msgstr "SEO заголовок, uk"
+
+msgid "SEO title, ru"
+msgstr "SEO заголовок, ru"
+
+msgid "SEO description, uk"
+msgstr "SEO опис, uk"
+
+msgid "SEO description, ru"
+msgstr "SEO опис, ru"
+
+msgid "post"
+msgstr "стаття"
+
+msgid "posts"
+msgstr "статті"
+
+msgid "Home"
+msgstr "Головна"
+
+msgid "Blog"
+msgstr "Блог"
+
 msgid ""
 "A published work needs at least one photo. Add a photo or save it as a draft."
 msgstr ""
 "Опублікована робота повинна мати щонайменше одне фото. Додайте фото або "
 "збережіть як чернетку."
 
-#, fuzzy
-#| msgid "Reviews"
 msgid "preview"
-msgstr "Відгуки"
+msgstr "прев'ю"
 
-msgid "Content"
-msgstr "Вміст"
-
-#, fuzzy
-#| msgid "Questions and answers"
 msgid "Occasions and tags"
-msgstr "Питання і відповіді"
+msgstr "Приводи і теги"
 
 msgid "Prices"
 msgstr "Ціни"
@@ -44,18 +112,11 @@ msgstr "Собівартість"
 msgid "Internal. It is never shown on the site."
 msgstr "Внутрішнє, на сайті не показується."
 
-#, fuzzy
-#| msgid "Pagination"
 msgid "Publication"
-msgstr "Сторінки"
+msgstr "Публікація"
 
-msgid "SEO"
-msgstr "SEO"
-
-#, fuzzy
-#| msgid "Next photo"
 msgid "photo"
-msgstr "Наступне фото"
+msgstr "фото"
 
 msgid "occasions"
 msgstr "приводи"
@@ -113,31 +174,17 @@ msgstr "Перегенерувати всі фото"
 msgid "Every photo is being rebuilt in the background."
 msgstr "Усі фото перегенеруються у фоні."
 
-msgid "slug"
-msgstr "слаг"
-
-#, fuzzy
-#| msgid "site name, uk"
 msgid "name, uk"
-msgstr "назва сайту, uk"
+msgstr "назва, укр"
 
-#, fuzzy
-#| msgid "site name, ru"
 msgid "name, ru"
-msgstr "назва сайту, ru"
+msgstr "назва, рос"
 
-#, fuzzy
-#| msgid "SEO description, uk"
 msgid "description, uk"
-msgstr "SEO опис, uk"
+msgstr "опис, укр"
 
-#, fuzzy
-#| msgid "SEO description, ru"
 msgid "description, ru"
-msgstr "SEO опис, ru"
-
-msgid "cover"
-msgstr "обкладинка"
+msgstr "опис, рос"
 
 msgid "order"
 msgstr "порядок"
@@ -147,18 +194,6 @@ msgstr "активний"
 
 msgid "show on the home page"
 msgstr "показувати на головній"
-
-msgid "SEO title, uk"
-msgstr "SEO заголовок, uk"
-
-msgid "SEO title, ru"
-msgstr "SEO заголовок, ru"
-
-msgid "SEO description, uk"
-msgstr "SEO опис, uk"
-
-msgid "SEO description, ru"
-msgstr "SEO опис, ru"
 
 msgid "occasion"
 msgstr "привід"
@@ -202,25 +237,11 @@ msgstr "Цей слаг зарезервований для параметра �
 msgid "A tag group already answers to this slug."
 msgstr "Такий слаг уже має група тегів."
 
-msgid "Draft"
-msgstr "Чернетка"
-
-#, fuzzy
-#| msgid "published"
-msgid "Published"
-msgstr "опубліковано"
-
 msgid "Archived"
 msgstr "Архів"
 
 msgid "article"
 msgstr "артикул"
-
-msgid "title, uk"
-msgstr "заголовок, uk"
-
-msgid "title, ru"
-msgstr "заголовок, ru"
 
 msgid "composition, uk"
 msgstr "склад, укр"
@@ -228,15 +249,11 @@ msgstr "склад, укр"
 msgid "composition, ru"
 msgstr "склад, рос"
 
-#, fuzzy
-#| msgid "title, uk"
 msgid "size, uk"
-msgstr "заголовок, uk"
+msgstr "розмір, укр"
 
-#, fuzzy
-#| msgid "title, ru"
 msgid "size, ru"
-msgstr "заголовок, ru"
+msgstr "розмір, рос"
 
 msgid "price from"
 msgstr "ціна від"
@@ -250,34 +267,17 @@ msgstr "валюта"
 msgid "show the price"
 msgstr "показувати ціну"
 
-#, fuzzy
-#| msgid "site name, uk"
 msgid "price note, uk"
-msgstr "назва сайту, uk"
+msgstr "примітка до ціни, укр"
 
-#, fuzzy
-#| msgid "site name, ru"
 msgid "price note, ru"
-msgstr "назва сайту, ru"
+msgstr "примітка до ціни, рос"
 
 msgid "cost"
 msgstr "собівартість"
 
-msgid "status"
-msgstr "статус"
-
 msgid "pinned"
 msgstr "закріплено"
-
-#, fuzzy
-#| msgid "Reviews"
-msgid "views"
-msgstr "Відгуки"
-
-#, fuzzy
-#| msgid "published"
-msgid "published at"
-msgstr "опубліковано"
 
 msgid "work"
 msgstr "робота"
@@ -285,28 +285,20 @@ msgstr "робота"
 msgid "works"
 msgstr "роботи"
 
-#, fuzzy
-#| msgid "text, uk"
 msgid "alt text, uk"
-msgstr "текст, uk"
+msgstr "опис зображення, укр"
 
-#, fuzzy
-#| msgid "text, ru"
 msgid "alt text, ru"
-msgstr "текст, ru"
+msgstr "опис зображення, рос"
 
-#, fuzzy
-#| msgid "main phone"
 msgid "main photo"
-msgstr "основний телефон"
+msgstr "головне фото"
 
 msgid "renditions ready"
 msgstr "рендишени готові"
 
-#, fuzzy
-#| msgid "Next photo"
 msgid "work photo"
-msgstr "Наступне фото"
+msgstr "фото роботи"
 
 msgid "work photos"
 msgstr "фото робіт"
@@ -356,9 +348,6 @@ msgstr ""
 #, python-format
 msgid "The photo is too small: the shortest side must be at least %(side)d px."
 msgstr "Фото замале: коротша сторона має бути щонайменше %(side)d px."
-
-msgid "Home"
-msgstr "Головна"
 
 msgid "Gallery"
 msgstr "Галерея"
@@ -532,12 +521,6 @@ msgstr "налаштування сайту"
 msgid "Site settings"
 msgstr "Налаштування сайту"
 
-msgid "body, uk"
-msgstr "текст, uk"
-
-msgid "body, ru"
-msgstr "текст, ru"
-
 msgid "published"
 msgstr "опубліковано"
 
@@ -571,9 +554,6 @@ msgstr "Доставка і оплата"
 msgid "Reviews"
 msgstr "Відгуки"
 
-msgid "Blog"
-msgstr "Блог"
-
 msgid "Questions and answers"
 msgstr "Питання і відповіді"
 
@@ -586,10 +566,8 @@ msgstr "Квіткова майстерня"
 msgid "Enquiry"
 msgstr "Заявка"
 
-#, fuzzy
-#| msgid "Work"
 msgid "Works"
-msgstr "Робота"
+msgstr "Роботи"
 
 msgid "Technical"
 msgstr "Технічне"
@@ -606,15 +584,11 @@ msgstr "Без згоди ми не зможемо вам зателефонув
 msgid "Phone call"
 msgstr "Дзвінок"
 
-#, fuzzy
-#| msgid "Viber link"
 msgid "Viber"
-msgstr "Посилання на Viber"
+msgstr "Viber"
 
-#, fuzzy
-#| msgid "Telegram link"
 msgid "Telegram"
-msgstr "Посилання на Telegram"
+msgstr "Telegram"
 
 msgid "New"
 msgstr "Нова"
@@ -631,10 +605,8 @@ msgstr "Спам"
 msgid "name"
 msgstr "ім'я"
 
-#, fuzzy
-#| msgid "main phone"
 msgid "phone"
-msgstr "основний телефон"
+msgstr "телефон"
 
 msgid "preferred contact"
 msgstr "зручний зв'язок"
@@ -669,10 +641,8 @@ msgstr "заявки"
 msgid "New enquiry"
 msgstr "Нова заявка"
 
-#, fuzzy
-#| msgid "Banner"
 msgid "Channel"
-msgstr "Банер"
+msgstr "Канал"
 
 msgid "Date"
 msgstr "Дата"
@@ -691,6 +661,96 @@ msgstr "Перевірка не пройдена. Спробуйте ще раз
 
 msgid "You have already sent an enquiry. Please give us a call."
 msgstr "Ви вже надіслали заявку. Зателефонуйте, будь ласка."
+
+msgid "Review"
+msgstr "Відгук"
+
+msgid "Publish the selected reviews"
+msgstr "Опублікувати вибрані відгуки"
+
+#, python-format
+msgid "%(count)d review published."
+msgid_plural "%(count)d reviews published."
+msgstr[0] "Опубліковано %(count)d відгук."
+msgstr[1] "Опубліковано %(count)d відгуки."
+msgstr[2] "Опубліковано %(count)d відгуків."
+
+msgid "Reject the selected reviews"
+msgstr "Відхилити вибрані відгуки"
+
+#, python-format
+msgid "%(count)d review rejected."
+msgid_plural "%(count)d reviews rejected."
+msgstr[0] "Відхилено %(count)d відгук."
+msgstr[1] "Відхилено %(count)d відгуки."
+msgstr[2] "Відхилено %(count)d відгуків."
+
+msgid "Show the selected reviews on the home page"
+msgstr "Показати вибрані відгуки на головній"
+
+#, python-format
+msgid "%(count)d review moved to the home page."
+msgid_plural "%(count)d reviews moved to the home page."
+msgstr[0] "%(count)d відгук перенесено на головну."
+msgstr[1] "%(count)d відгуки перенесено на головну."
+msgstr[2] "%(count)d відгуків перенесено на головну."
+
+msgid "No rating"
+msgstr "Без оцінки"
+
+msgid "Tell us how to sign the review."
+msgstr "Підкажіть, як підписати відгук."
+
+msgid "Write a few words about the flowers."
+msgstr "Напишіть кілька слів про квіти."
+
+msgid "The rating goes from 1 to 5."
+msgstr "Оцінка від 1 до 5."
+
+msgid "We need your consent to publish the review."
+msgstr "Без згоди ми не зможемо опублікувати відгук."
+
+msgid "Added by the owner"
+msgstr "Додано власником"
+
+msgid "Left on the site"
+msgstr "Залишено на сайті"
+
+msgid "Waiting for moderation"
+msgstr "Чекає на модерацію"
+
+msgid "Rejected"
+msgstr "Відхилено"
+
+msgid "rating"
+msgstr "оцінка"
+
+msgid "phone for us"
+msgstr "телефон для нас"
+
+msgid "review"
+msgstr "відгук"
+
+msgid "reviews"
+msgstr "відгуки"
+
+msgid "Write the review in at least one language."
+msgstr "Напишіть відгук хоча б однією мовою."
+
+msgid "A review left on the site needs consent."
+msgstr "Відгук із сайту потребує згоди."
+
+msgid "New review"
+msgstr "Новий відгук"
+
+msgid "Rating"
+msgstr "Оцінка"
+
+msgid "Moderate in the admin"
+msgstr "Модерувати в адмінці"
+
+msgid "You have already left a review. Thank you!"
+msgstr "Ви вже залишили відгук. Дякуємо!"
 
 msgid "Ukrainian"
 msgstr "Українська"
@@ -752,6 +812,24 @@ msgstr "Відкрити меню"
 msgid "Close menu"
 msgstr "Закрити меню"
 
+msgid "How to reach us"
+msgstr "Як нас знайти"
+
+msgid "Where to find us"
+msgstr "Де нас знайти"
+
+msgid "Get directions"
+msgstr "Прокласти маршрут"
+
+msgid "Messengers"
+msgstr "Месенджери"
+
+msgid "Our Instagram"
+msgstr "Наш Instagram"
+
+msgid "Leave an enquiry"
+msgstr "Залишити заявку"
+
 msgid "Send an enquiry about these works"
 msgstr "Надіслати заявку по цих роботах"
 
@@ -788,15 +866,11 @@ msgstr "Всі роботи"
 msgid "Fresh works"
 msgstr "Свіжі роботи"
 
-#, fuzzy
-#| msgid "how to order step"
 msgid "How to order"
-msgstr "крок «Як замовити»"
+msgstr "Як замовити"
 
-#, fuzzy
-#| msgid "Reviews"
 msgid "All reviews"
-msgstr "Відгуки"
+msgstr "Всі відгуки"
 
 msgid "From the blog"
 msgstr "З блогу"
@@ -804,16 +878,32 @@ msgstr "З блогу"
 msgid "All posts"
 msgstr "Всі статті"
 
-#, fuzzy
-#| msgid "Instagram link"
-msgid "Our Instagram"
-msgstr "Посилання на Instagram"
-
 msgid "Call me back"
 msgstr "Передзвоніть мені"
 
-msgid "Where to find us"
-msgstr "Де нас знайти"
+msgid "Works from this post"
+msgstr "Роботи з цієї статті"
+
+msgid "How to choose flowers, how long they last and what is in season."
+msgstr "Як обирати квіти, скільки вони стоять і що зараз у сезоні."
+
+msgid "Nothing here yet"
+msgstr "Тут поки порожньо"
+
+msgid "The first posts are on their way. In the meantime, have a look at the gallery."
+msgstr "Перші статті вже в дорозі. А поки що загляньте в галерею."
+
+msgid "What people say about our flowers."
+msgstr "Що кажуть про наші квіти."
+
+msgid "Leave a review"
+msgstr "Залишити відгук"
+
+msgid "No reviews yet"
+msgstr "Відгуків поки немає"
+
+msgid "Be the first: tell us how the flowers were."
+msgstr "Будьте першим: розкажіть, якими були квіти."
 
 #, python-format
 msgid "Found %(counter)s work"
@@ -847,10 +937,8 @@ msgstr ""
 msgid "Back to the gallery"
 msgstr "Повернутись до галереї"
 
-#, fuzzy
-#| msgid "Next photo"
 msgid "Open the photo"
-msgstr "Наступне фото"
+msgstr "Відкрити фото"
 
 #, python-format
 msgid "Photo %(number)s"
@@ -862,18 +950,14 @@ msgstr "Скопіювати номер"
 msgid "Copied"
 msgstr "Скопійовано"
 
-#, fuzzy
-#| msgid "watermark position"
 msgid "Composition"
-msgstr "розташування знака"
+msgstr "Склад"
 
 msgid "Size"
 msgstr "Розмір"
 
-#, fuzzy
-#| msgid "Prices"
 msgid "Price"
-msgstr "Ціни"
+msgstr "Ціна"
 
 #, python-format
 msgid "from %(price)s UAH"
@@ -901,9 +985,6 @@ msgstr "В обране"
 msgid "Share"
 msgstr "Поділитися"
 
-msgid "Nothing here yet"
-msgstr "Тут поки порожньо"
-
 msgid ""
 "Tap the heart on a work and it lands here. Then send us the whole collection "
 "at once."
@@ -921,10 +1002,8 @@ msgstr[2] "Показати %(counter)s робіт"
 msgid "Occasion"
 msgstr "Привід"
 
-#, fuzzy
-#| msgid "Show more"
 msgid "Show works"
-msgstr "Показати ще"
+msgstr "Показати роботи"
 
 msgid "Clear all"
 msgstr "Очистити все"
@@ -962,6 +1041,27 @@ msgstr "Погоджуюсь на обробку даних"
 
 msgid "Send"
 msgstr "Надіслати"
+
+msgid "Your review"
+msgstr "Ваш відгук"
+
+msgid "Photo"
+msgstr "Фото"
+
+msgid "Phone for us"
+msgstr "Телефон для нас"
+
+msgid "We will not publish it"
+msgstr "Ми його не публікуємо"
+
+msgid "I agree to my review being published"
+msgstr "Погоджуюсь на публікацію відгуку"
+
+msgid "Send the review"
+msgstr "Надіслати відгук"
+
+msgid "We publish reviews after reading them."
+msgstr "Ми публікуємо відгуки після прочитання."
 
 msgid "Work number or a word"
 msgstr "Номер роботи або слово"
