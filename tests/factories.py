@@ -1,9 +1,26 @@
 """factory_boy factories. Every slice adds the models it introduces."""
 
+import io
+
 import factory
+from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
 
 from apps.catalog.models import Occasion, Tag, TagGroup, Work, WorkImage
 from apps.core.models import HowToStep, SiteSettings, StaticPage
+
+
+def photo_bytes(
+    width: int = 1200, height: int = 1500, color: str = "#F2C9C9", image_format: str = "JPEG"
+) -> bytes:
+    """Real pixels for the upload and rendition paths."""
+    buffer = io.BytesIO()
+    Image.new("RGB", (width, height), color).save(buffer, format=image_format)
+    return buffer.getvalue()
+
+
+def uploaded_photo(name: str = "photo.jpg", **kwargs: object) -> SimpleUploadedFile:
+    return SimpleUploadedFile(name, photo_bytes(**kwargs), content_type="image/jpeg")  # type: ignore[arg-type]
 
 
 class SiteSettingsFactory(factory.django.DjangoModelFactory[SiteSettings]):
