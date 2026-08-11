@@ -1,0 +1,45 @@
+{% load static i18n project %}{% comment %}
+Full screen panel behind the hamburger. Uses the header's Alpine scope:
+`menuOpen`. Escape, a click on the backdrop and picking an item all close it.
+{% endcomment %}
+<div x-show="menuOpen" x-cloak @keydown.escape.window="menuOpen = false" class="lg:hidden">
+  <div x-show="menuOpen" x-transition.opacity class="fixed inset-0 z-40 bg-ink/40" @click="menuOpen = false"></div>
+
+  <div id="mobile-menu" x-show="menuOpen" x-transition role="dialog" aria-modal="true"
+       aria-label="{% trans 'Main menu' %}"
+       class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-cream">
+    <div class="flex items-center justify-between border-b border-line px-4 py-4">
+      <span class="font-display text-2xl">{% firstof site_settings|tr:"site_name" _("Flower studio") %}</span>
+      <button type="button" @click="menuOpen = false" aria-label="{% trans 'Close menu' %}"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
+        <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#close"></use></svg>
+      </button>
+    </div>
+
+    {% main_menu as menu %}
+    <nav class="flex flex-col px-4 py-2">
+      {% for item in menu %}
+        <a href="{{ item.url }}" @click="menuOpen = false"
+           class="flex min-h-14 items-center border-b border-line text-lg text-ink">{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="flex items-center gap-2 px-4 py-4" role="group" aria-label="{% trans 'Language' %}">
+      {% for code, name in LANGUAGES %}
+        <a href="{% alternate_path request.get_full_path code %}" hreflang="{{ code }}" @click="menuOpen = false"
+           class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-4 text-base font-medium
+                  {% if code == LANGUAGE_CODE %}bg-accentSoft text-accent{% else %}border border-line text-ink{% endif %}">
+          {% if code == "uk" %}UA{% else %}{{ code|upper }}{% endif %}
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="mt-auto space-y-4 border-t border-line px-4 py-6">
+      {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+      {% include "ui/social_icons.html" %}
+      {% if site_settings.working_hours_uk %}
+        <p class="whitespace-pre-line text-sm text-muted">{{ site_settings|tr:"working_hours" }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

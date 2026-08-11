@@ -1,0 +1,30 @@
+{% load static i18n project %}{% comment %}
+Festive strip above the header, plus the "not accepting orders" notice.
+Dismissal is remembered per banner text and date, so a new banner comes back.
+{% endcomment %}
+{% if site_settings.banner_is_active %}
+  <div x-data="banner('{{ site_settings.banner_dismiss_hash }}')" x-show="visible" x-cloak
+       class="bg-accent text-white">
+    <div class="mx-auto flex max-w-site items-center gap-3 px-4 py-2 md:px-8">
+      <p class="flex-1 text-center text-sm">
+        {% if site_settings.banner_url %}
+          <a href="{{ site_settings.banner_url }}" class="underline">{{ site_settings|tr:"banner_text" }}</a>
+        {% else %}
+          {{ site_settings|tr:"banner_text" }}
+        {% endif %}
+      </p>
+      <button type="button" @click="dismiss()" aria-label="{% trans 'Close banner' %}"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full hover:bg-white/10">
+        <svg class="h-5 w-5" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#close"></use></svg>
+      </button>
+    </div>
+  </div>
+{% endif %}
+
+{% if not site_settings.accepting_orders %}
+  <div class="border-b border-line bg-accentSoft">
+    <div class="mx-auto max-w-site px-4 py-2 text-center text-sm text-accent md:px-8">
+      {% firstof site_settings|tr:"not_accepting_message" _("We are not taking new orders right now. Call us, we will suggest a date.") %}
+    </div>
+  </div>
+{% endif %}

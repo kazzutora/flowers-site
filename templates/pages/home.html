@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n project %}{% comment %}
+Skeleton hero only. Occasion tiles, fresh works, how-to, reviews, blog and the
+contacts block are added by S1-6, when their models exist.
+{% endcomment %}
+
+{% block meta_description %}{{ site_settings|tr:"hero_subtitle" }}{% endblock %}
+{% block og_description %}{{ site_settings|tr:"hero_subtitle" }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto grid max-w-site items-center gap-8 px-4 py-10 md:grid-cols-2 md:px-8 md:py-16">
+    <div class="space-y-5">
+      <h1 class="text-4xl leading-tight md:text-6xl">
+        {% firstof site_settings|tr:"hero_title" _("Flowers for your day") %}
+      </h1>
+      <p class="text-lg text-muted">
+        {% firstof site_settings|tr:"hero_subtitle" _("Bouquets, compositions and hall decoration, made by hand.") %}
+      </p>
+      <div class="flex flex-wrap gap-3">
+        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+      </div>
+    </div>
+    <div class="aspect-card w-full overflow-hidden rounded-lg bg-accentSoft">
+      {% include "ui/image_simple.html" with field=site_settings.hero_image alt=site_settings|tr:"hero_title" %}
+    </div>
+  </section>
+{% endblock %}

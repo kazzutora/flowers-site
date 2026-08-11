@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n project %}
+
+{% block meta_title %}{% firstof page|tr:"seo_title" page|tr:"title" %}{% endblock %}
+{% block meta_description %}{{ page|tr:"seo_description" }}{% endblock %}
+{% block og_title %}{% firstof page|tr:"seo_title" page|tr:"title" %}{% endblock %}
+{% block og_description %}{{ page|tr:"seo_description" }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+  <div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+    {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+    {% include "ui/section_heading.html" with title=page|tr:"title" %}
+    <div class="content max-w-3xl">{{ page|tr_html:"body" }}</div>
+  </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% load static i18n project %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block meta_title %}{% firstof site_settings|tr:"site_name" _("Flower studio") %}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{% endblock %}">
+  <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+  <link rel="canonical" href="{% block canonical %}{% absolute_url request.path %}{% endblock %}">
+  {% language_alternates request.get_full_path as alternates %}
+  {% for code, url in alternates %}
+    <link rel="alternate" hreflang="{{ code }}" href="{{ url }}">
+  {% endfor %}
+
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:site_name" content="{% firstof site_settings|tr:'site_name' _('Flower studio') %}">
+  <meta property="og:title" content="{% block og_title %}{% firstof site_settings|tr:'site_name' _('Flower studio') %}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% endblock %}">
+  <meta property="og:url" content="{% absolute_url request.get_full_path %}">
+  {% block og_image %}{% if site_settings.og_default_image %}
+    <meta property="og:image" content="{% absolute_url site_settings.og_default_image.url %}">
+  {% endif %}{% endblock %}
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preload" href="{% static 'fonts/manrope-cyrillic.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/cormorant-garamond-cyrillic.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+  <script defer src="{% static 'js/htmx.min.js' %}"></script>
+  <script defer src="{% static 'js/app.js' %}"></script>
+  <script defer src="{% static 'js/alpine.min.js' %}"></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="flex min-h-screen flex-col bg-cream text-ink">
+  <a href="#main"
+     class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-3">
+    {% trans "Skip to content" %}
+  </a>
+
+  {% include "layout/banner.html" %}
+  {% include "layout/header.html" %}
+
+  <main id="main" class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "layout/footer.html" %}
+  {% include "ui/cookie_banner.html" %}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

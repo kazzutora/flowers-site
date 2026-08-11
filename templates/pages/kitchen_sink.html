@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load i18n project %}{% comment %}
+Every primitive of section 12, in every state, rendered on stubs. Development
+only: the view answers 404 unless DEBUG is on.
+{% endcomment %}
+
+{% block meta_title %}Kitchen sink{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site space-y-12 px-4 py-10 md:px-8">
+
+  <section>
+    {% include "ui/section_heading.html" with title="button.html" subtitle="variant, size, href or type, icon, full_width, disabled" %}
+    <div class="flex flex-wrap items-center gap-3">
+      {% include "ui/button.html" with label="Primary" variant="primary" %}
+      {% include "ui/button.html" with label="Secondary" variant="secondary" %}
+      {% include "ui/button.html" with label="Ghost" variant="ghost" %}
+      {% include "ui/button.html" with label="Danger" variant="danger" %}
+      {% include "ui/button.html" with label="Small" size="sm" %}
+      {% include "ui/button.html" with label="Large" size="lg" %}
+      {% include "ui/button.html" with label="With icon" icon="phone" %}
+      {% include "ui/button.html" with label="Link" href="#" variant="secondary" %}
+      {% include "ui/button.html" with label="Disabled" disabled=True %}
+      {% include "ui/button.html" with label="Disabled link" href="#" disabled=True %}
+    </div>
+    <div class="mt-3 max-w-sm">
+      {% include "ui/button.html" with label="Full width" full_width=True %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="icon_button.html" subtitle="icon, label (aria-label), href, variant" %}
+    <div class="flex flex-wrap items-center gap-3">
+      {% include "ui/icon_button.html" with icon="heart" label="Add to favourites" %}
+      {% include "ui/icon_button.html" with icon="share" label="Share" variant="outline" %}
+      {% include "ui/icon_button.html" with icon="phone" label="Call" variant="solid" href="tel:+380501112233" %}
+      {% include "ui/icon_button.html" with icon="close" label="Close" disabled=True %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="chip.html and badge.html" %}
+    <div class="flex flex-wrap items-center gap-3">
+      {% include "ui/chip.html" with label="Букет" href="#" %}
+      {% include "ui/chip.html" with label="Білий" color_hex="#FFFFFF" removable=True remove_url="#" %}
+      {% include "ui/chip.html" with label="Рожевий" color_hex="#F2C9C9" %}
+      {% include "ui/badge.html" with label="Новинка" tone="accent" %}
+      {% include "ui/badge.html" with label="Опубліковано" tone="success" %}
+      {% include "ui/badge.html" with label="Архів" tone="danger" %}
+      {% include "ui/badge.html" with label="Чернетка" %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="picture.html" subtitle="ready, pending (skeleton), missing image" %}
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div class="aspect-card overflow-hidden rounded-md">
+        {% include "ui/picture.html" with image=image preset="card" alt="Букет" sizes="(min-width: 768px) 25vw, 50vw" %}
+      </div>
+      <div>{% include "ui/picture.html" with image=image_pending preset="card" alt="" %}</div>
+      <div>{% include "ui/picture.html" with image=None preset="card" alt="" %}</div>
+      <div class="aspect-card overflow-hidden rounded-md">
+        {% include "ui/image_simple.html" with field=post.cover alt="Обкладинка" lazy=True %}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="card_work.html, card_post.html, card_review.html" %}
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+      {% include "ui/card_work.html" with work=work lazy=True %}
+      {% include "ui/card_work.html" with work=work show_price=True lazy=True %}
+      {% include "ui/card_work.html" with work=work_without_renditions lazy=True %}
+      {% include "ui/card_work.html" with work=work_without_image lazy=True %}
+    </div>
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+      {% include "ui/card_post.html" with post=post %}
+      {% include "ui/card_post.html" with post=post_without_cover %}
+      {% include "ui/card_review.html" with review=review %}
+      {% include "ui/card_review.html" with review=review_plain compact=True %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="form primitives" subtitle="input, textarea, select, checkbox" %}
+    <div class="grid max-w-2xl gap-4 md:grid-cols-2">
+      {% include "ui/input.html" with name="name" label="Ім'я" required=True autocomplete="name" %}
+      {% include "ui/input.html" with name="phone" label="Телефон" type="tel" value="+380501112233" hint="Наберемо у робочі години" %}
+      {% include "ui/input.html" with name="email" label="Пошта" type="email" error="Вкажіть коректну адресу" %}
+      {% include "ui/select.html" with name="preferred_contact" label="Зручний спосіб зв'язку" options=select_options value="viber" %}
+      <div class="md:col-span-2">
+        {% include "ui/textarea.html" with name="comment" label="Коментар" rows=4 maxlength=1000 %}
+      </div>
+      <div class="md:col-span-2">
+        {% include "ui/checkbox.html" with name="consent" label="Погоджуюсь на обробку даних" %}
+        {% include "ui/checkbox.html" with name="consent_error" label="Погоджуюсь на обробку даних" error="Без згоди не можемо прийняти заявку" %}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="filter_group.html and color_swatch.html" %}
+    <div class="max-w-sm">
+      {% include "ui/filter_group.html" with group=tag_group_checkbox active_slugs=active_slugs %}
+      {% include "ui/filter_group.html" with group=tag_group_colors active_slugs=active_slugs %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="alert.html" %}
+    <div class="grid max-w-2xl gap-3">
+      {% include "ui/alert.html" with tone="info" text="Квіти можуть відрізнятися залежно від сезону." %}
+      {% include "ui/alert.html" with tone="success" text="Заявку прийнято, ми зателефонуємо." %}
+      {% include "ui/alert.html" with tone="danger" text="Не вдалося надіслати заявку." %}
+      {% include "ui/alert.html" with tone="accent" text="Сьогодні приймаємо замовлення до 18:00." %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="empty_state.html" %}
+    {% include "ui/empty_state.html" with title="Нічого не знайдено" text="Спробуйте прибрати частину фільтрів." action_label="До галереї" action_url="#" %}
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="skeleton.html" subtitle="image, text, card" %}
+    <div class="grid gap-4 md:grid-cols-3">
+      <div>{% include "ui/skeleton.html" with kind="image" ratio="card" %}</div>
+      <div>{% include "ui/skeleton.html" with kind="text" count=4 %}</div>
+      <div class="md:col-span-1">{% include "ui/skeleton.html" with kind="card" count=2 %}</div>
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="breadcrumbs.html" %}
+    {% include "ui/breadcrumbs.html" with items=breadcrumb_items %}
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="pagination.html and load_more.html" %}
+    {% include "ui/pagination.html" with page_obj=page_obj base_url="?" %}
+    {% include "ui/load_more.html" with next_url="#" %}
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="phone_link.html, social_icons.html, map_embed.html" %}
+    <div class="flex flex-wrap items-center gap-4">
+      {% include "ui/phone_link.html" with phone="+380501112233" variant="text" %}
+      {% include "ui/phone_link.html" with phone="+380501112233" variant="button" %}
+      {% include "ui/phone_link.html" with phone="+380501112233" variant="icon" %}
+      {% include "ui/social_icons.html" %}
+    </div>
+    <div class="mt-4 max-w-xl">
+      {% include "ui/map_embed.html" with src="about:blank" title="Карта" %}
+    </div>
+  </section>
+
+  <section>
+    {% include "ui/section_heading.html" with title="drawer.html, modal.html, lightbox.html" %}
+    <div class="flex flex-wrap gap-3">
+      {% include "ui/button.html" with label="Open drawer" variant="secondary" attrs="@click=&quot;$dispatch('drawer-open', 'demo')&quot;" %}
+      {% include "ui/button.html" with label="Open modal" variant="secondary" attrs="@click=&quot;$dispatch('modal-open', 'demo')&quot;" %}
+      {% include "ui/button.html" with label="Open lightbox" variant="secondary" attrs="@click=&quot;$dispatch('lightbox-open', 0)&quot;" %}
+    </div>
+    {% include "ui/drawer.html" with id="demo" title="Фільтри" position="bottom" body_template="ui/filter_group.html" group=tag_group_checkbox active_slugs=active_slugs %}
+    {% include "ui/modal.html" with id="demo" title="Передзвоніть мені" body="Тіло модального вікна." %}
+    {% include "ui/lightbox.html" with images=images start_index=0 alt="Букет" %}
+  </section>
+
+</div>
+{% endblock %}

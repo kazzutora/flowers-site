@@ -1,0 +1,471 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: flowers 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Language-Team: Russian\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+#: apps/core/admin.py:19 apps/core/navigation.py:34 apps/core/navigation.py:44
+msgid "Contacts"
+msgstr "Контакты"
+
+#: apps/core/admin.py:33
+msgid "Address"
+msgstr "Адрес"
+
+#: apps/core/admin.py:47
+msgid "Working hours"
+msgstr "Часы работы"
+
+#: apps/core/admin.py:49
+msgid "Taking orders"
+msgstr "Приём заказов"
+
+#: apps/core/admin.py:59
+msgid "Banner"
+msgstr "Баннер"
+
+#: apps/core/admin.py:70
+msgid "Prices"
+msgstr "Цены"
+
+#: apps/core/admin.py:72
+msgid "Watermark"
+msgstr "Водяной знак"
+
+#: apps/core/admin.py:83
+msgid "SEO and analytics"
+msgstr "SEO и аналитика"
+
+#: apps/core/admin.py:94
+msgid "Home page"
+msgstr "Главная страница"
+
+#: apps/core/admin.py:130 apps/core/admin.py:153
+msgid "Content"
+msgstr "Содержимое"
+
+#: apps/core/admin.py:132
+msgid "SEO"
+msgstr "SEO"
+
+#: apps/core/models.py:40
+msgid "Bottom right"
+msgstr "Снизу справа"
+
+#: apps/core/models.py:41
+msgid "Bottom left"
+msgstr "Снизу слева"
+
+#: apps/core/models.py:42
+msgid "Center"
+msgstr "По центру"
+
+#: apps/core/models.py:45
+msgid "main phone"
+msgstr "основной телефон"
+
+#: apps/core/models.py:46
+msgid "second phone"
+msgstr "второй телефон"
+
+#: apps/core/models.py:47
+msgid "email"
+msgstr "почта"
+
+#: apps/core/models.py:48
+msgid "Viber link"
+msgstr "Ссылка на Viber"
+
+#: apps/core/models.py:49
+msgid "Telegram link"
+msgstr "Ссылка на Telegram"
+
+#: apps/core/models.py:50
+msgid "Instagram link"
+msgstr "Ссылка на Instagram"
+
+#: apps/core/models.py:51
+msgid "Facebook link"
+msgstr "Ссылка на Facebook"
+
+#: apps/core/models.py:54
+msgid "address, uk"
+msgstr "адрес, uk"
+
+#: apps/core/models.py:55
+msgid "address, ru"
+msgstr "адрес, ru"
+
+#: apps/core/models.py:56
+msgid "landmark, uk"
+msgstr "ориентир, uk"
+
+#: apps/core/models.py:57
+msgid "landmark, ru"
+msgstr "ориентир, ru"
+
+#: apps/core/models.py:58
+msgid "parking, uk"
+msgstr "парковка, uk"
+
+#: apps/core/models.py:59
+msgid "parking, ru"
+msgstr "парковка, ru"
+
+#: apps/core/models.py:60
+msgid "map embed URL"
+msgstr "ссылка на карту"
+
+#: apps/core/models.py:61
+msgid "directions URL"
+msgstr "ссылка на маршрут"
+
+#: apps/core/models.py:64
+msgid "working hours, uk"
+msgstr "часы работы, uk"
+
+#: apps/core/models.py:65
+msgid "working hours, ru"
+msgstr "часы работы, ru"
+
+#: apps/core/models.py:68
+msgid "accepting orders"
+msgstr "принимаем заказы"
+
+#: apps/core/models.py:70
+msgid "not accepting message, uk"
+msgstr "сообщение о паузе, uk"
+
+#: apps/core/models.py:73
+msgid "not accepting message, ru"
+msgstr "сообщение о паузе, ru"
+
+#: apps/core/models.py:77
+msgid "banner enabled"
+msgstr "баннер включён"
+
+#: apps/core/models.py:78
+msgid "banner text, uk"
+msgstr "текст баннера, uk"
+
+#: apps/core/models.py:79
+msgid "banner text, ru"
+msgstr "текст баннера, ru"
+
+#: apps/core/models.py:80
+msgid "banner link"
+msgstr "ссылка баннера"
+
+#: apps/core/models.py:81
+msgid "banner until"
+msgstr "баннер действует до"
+
+#: apps/core/models.py:84
+msgid "prices enabled"
+msgstr "цены включены"
+
+#: apps/core/models.py:87
+msgid "watermark"
+msgstr "водяной знак"
+
+#: apps/core/models.py:89
+msgid "watermark opacity"
+msgstr "прозрачность знака"
+
+#: apps/core/models.py:94
+msgid "watermark position"
+msgstr "расположение знака"
+
+#: apps/core/models.py:100
+msgid "watermark scale"
+msgstr "размер знака"
+
+#: apps/core/models.py:106
+msgid "default OG image"
+msgstr "изображение OG по умолчанию"
+
+#: apps/core/models.py:107
+msgid "GA4 measurement id"
+msgstr "Идентификатор GA4"
+
+#: apps/core/models.py:108
+msgid "site name, uk"
+msgstr "название сайта, uk"
+
+#: apps/core/models.py:109
+msgid "site name, ru"
+msgstr "название сайта, ru"
+
+#: apps/core/models.py:112
+msgid "hero title, uk"
+msgstr "заголовок на главной, uk"
+
+#: apps/core/models.py:113
+msgid "hero title, ru"
+msgstr "заголовок на главной, ru"
+
+#: apps/core/models.py:114
+msgid "hero subtitle, uk"
+msgstr "подзаголовок на главной, uk"
+
+#: apps/core/models.py:115
+msgid "hero subtitle, ru"
+msgstr "подзаголовок на главной, ru"
+
+#: apps/core/models.py:116
+msgid "hero image"
+msgstr "изображение на главной"
+
+#: apps/core/models.py:119 apps/core/models.py:120
+msgid "site settings"
+msgstr "настройки сайта"
+
+#: apps/core/models.py:123
+msgid "Site settings"
+msgstr "Настройки сайта"
+
+#: apps/core/models.py:178
+msgid "slug"
+msgstr "слаг"
+
+#: apps/core/models.py:179 apps/core/models.py:213
+msgid "title, uk"
+msgstr "заголовок, uk"
+
+#: apps/core/models.py:180 apps/core/models.py:214
+msgid "title, ru"
+msgstr "заголовок, ru"
+
+#: apps/core/models.py:181
+msgid "body, uk"
+msgstr "текст, uk"
+
+#: apps/core/models.py:182
+msgid "body, ru"
+msgstr "текст, ru"
+
+#: apps/core/models.py:183
+msgid "SEO title, uk"
+msgstr "SEO заголовок, uk"
+
+#: apps/core/models.py:184
+msgid "SEO title, ru"
+msgstr "SEO заголовок, ru"
+
+#: apps/core/models.py:185
+msgid "SEO description, uk"
+msgstr "SEO описание, uk"
+
+#: apps/core/models.py:186
+msgid "SEO description, ru"
+msgstr "SEO описание, ru"
+
+#: apps/core/models.py:187
+msgid "published"
+msgstr "опубликовано"
+
+#: apps/core/models.py:192
+msgid "static page"
+msgstr "статическая страница"
+
+#: apps/core/models.py:193
+msgid "static pages"
+msgstr "статические страницы"
+
+#: apps/core/models.py:212
+msgid "order"
+msgstr "порядок"
+
+#: apps/core/models.py:215
+msgid "text, uk"
+msgstr "текст, uk"
+
+#: apps/core/models.py:216
+msgid "text, ru"
+msgstr "текст, ru"
+
+#: apps/core/models.py:217
+msgid "icon"
+msgstr "иконка"
+
+#: apps/core/models.py:218
+msgid "active"
+msgstr "активный"
+
+#: apps/core/models.py:222
+msgid "how to order step"
+msgstr "шаг «Как заказать»"
+
+#: apps/core/models.py:223
+msgid "how to order steps"
+msgstr "шаги «Как заказать»"
+
+#: apps/core/navigation.py:29 apps/core/navigation.py:38
+msgid "Gallery"
+msgstr "Галерея"
+
+#: apps/core/navigation.py:30 apps/core/navigation.py:39
+msgid "About"
+msgstr "О нас"
+
+#: apps/core/navigation.py:31 apps/core/navigation.py:40
+msgid "Delivery and payment"
+msgstr "Доставка и оплата"
+
+#: apps/core/navigation.py:32 apps/core/navigation.py:42
+msgid "Reviews"
+msgstr "Отзывы"
+
+#: apps/core/navigation.py:33 apps/core/navigation.py:43
+msgid "Blog"
+msgstr "Блог"
+
+#: apps/core/navigation.py:41
+msgid "Questions and answers"
+msgstr "Вопросы и ответы"
+
+#: apps/core/navigation.py:45 templates/ui/cookie_banner.html:9
+msgid "Privacy policy"
+msgstr "Политика конфиденциальности"
+
+#: apps/core/views.py:20
+msgid "Home"
+msgstr "Главная"
+
+#: config/settings.py:134
+msgid "Ukrainian"
+msgstr "Украинский"
+
+#: config/settings.py:134
+msgid "Russian"
+msgstr "Русский"
+
+#: config/settings.py:212 config/settings.py:213 templates/base.html:7
+#: templates/base.html:17 templates/base.html:18 templates/layout/footer.html:7
+#: templates/layout/footer.html:41 templates/layout/header.html:14
+#: templates/layout/mobile_menu.html:12
+msgid "Flower studio"
+msgstr "Цветочная мастерская"
+
+#: templates/base.html:39
+msgid "Skip to content"
+msgstr "Перейти к содержимому"
+
+#: templates/layout/banner.html:16
+msgid "Close banner"
+msgstr "Закрыть баннер"
+
+#: templates/layout/banner.html:27
+msgid ""
+"We are not taking new orders right now. Call us, we will suggest a date."
+msgstr "Сейчас мы не принимаем новые заказы. Позвоните, подскажем дату."
+
+#: templates/layout/footer.html:13
+msgid "Footer menu"
+msgstr "Меню в подвале"
+
+#: templates/layout/header.html:19 templates/layout/mobile_menu.html:9
+msgid "Main menu"
+msgstr "Главное меню"
+
+#: templates/layout/header.html:26 templates/layout/mobile_menu.html:27
+msgid "Language"
+msgstr "Язык"
+
+#: templates/layout/header.html:47
+msgid "Open menu"
+msgstr "Открыть меню"
+
+#: templates/layout/mobile_menu.html:13
+msgid "Close menu"
+msgstr "Закрыть меню"
+
+#: templates/pages/home.html:14
+msgid "Flowers for your day"
+msgstr "Цветы для вашего дня"
+
+#: templates/pages/home.html:17
+msgid "Bouquets, compositions and hall decoration, made by hand."
+msgstr "Букеты, композиции и оформление залов ручной работы."
+
+#: templates/ui/breadcrumbs.html:5
+msgid "Breadcrumbs"
+msgstr "Навигация по сайту"
+
+#: templates/ui/card_post.html:12
+msgid "Read"
+msgstr "Читать"
+
+#: templates/ui/card_review.html:13
+#, python-format
+msgid "Rating %(rating)s of 5"
+msgstr "Оценка %(rating)s из 5"
+
+#: templates/ui/card_review.html:24
+#, python-format
+msgid "Work &#8470;%(article)s"
+msgstr "Работа &#8470;%(article)s"
+
+#: templates/ui/card_work.html:15
+msgid "Work"
+msgstr "Работа"
+
+#: templates/ui/card_work.html:20
+#, python-format
+msgid "from %(price)s UAH"
+msgstr "от %(price)s грн"
+
+#: templates/ui/chip.html:7
+#, python-format
+msgid "Remove filter %(label)s"
+msgstr "Убрать фильтр %(label)s"
+
+#: templates/ui/cookie_banner.html:8
+msgid "We use cookies to see which pages help people find their bouquet."
+msgstr "Мы используем cookie, чтобы видеть, какие страницы помогают найти букет."
+
+#: templates/ui/cookie_banner.html:12
+msgid "Accept"
+msgstr "Принять"
+
+#: templates/ui/cookie_banner.html:13
+msgid "Necessary only"
+msgstr "Только необходимые"
+
+#: templates/ui/drawer.html:17 templates/ui/lightbox.html:12
+#: templates/ui/modal.html:14
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/ui/lightbox.html:18
+msgid "Previous photo"
+msgstr "Предыдущее фото"
+
+#: templates/ui/lightbox.html:27
+msgid "Next photo"
+msgstr "Следующее фото"
+
+#: templates/ui/load_more.html:14
+msgid "Show more"
+msgstr "Показать ещё"
+
+#: templates/ui/pagination.html:4
+msgid "Pagination"
+msgstr "Страницы"
+
+#: templates/ui/pagination.html:6
+msgid "Previous page"
+msgstr "Предыдущая страница"
+
+#: templates/ui/pagination.html:21
+msgid "Next page"
+msgstr "Следующая страница"

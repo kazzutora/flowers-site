@@ -68,9 +68,7 @@ class Settings(BaseSettings):
                 try:
                     return json.loads(text)
                 except json.JSONDecodeError as exc:
-                    raise ValueError(
-                        "expected a JSON list or a comma separated string"
-                    ) from exc
+                    raise ValueError("expected a JSON list or a comma separated string") from exc
             return [host.strip() for host in text.split(",") if host.strip()]
         return v
 

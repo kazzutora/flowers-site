@@ -1,0 +1,471 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: flowers 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: uk\n"
+"Language-Team: Ukrainian\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+#: apps/core/admin.py:19 apps/core/navigation.py:34 apps/core/navigation.py:44
+msgid "Contacts"
+msgstr "Контакти"
+
+#: apps/core/admin.py:33
+msgid "Address"
+msgstr "Адреса"
+
+#: apps/core/admin.py:47
+msgid "Working hours"
+msgstr "Години роботи"
+
+#: apps/core/admin.py:49
+msgid "Taking orders"
+msgstr "Прийом замовлень"
+
+#: apps/core/admin.py:59
+msgid "Banner"
+msgstr "Банер"
+
+#: apps/core/admin.py:70
+msgid "Prices"
+msgstr "Ціни"
+
+#: apps/core/admin.py:72
+msgid "Watermark"
+msgstr "Водяний знак"
+
+#: apps/core/admin.py:83
+msgid "SEO and analytics"
+msgstr "SEO і аналітика"
+
+#: apps/core/admin.py:94
+msgid "Home page"
+msgstr "Головна сторінка"
+
+#: apps/core/admin.py:130 apps/core/admin.py:153
+msgid "Content"
+msgstr "Вміст"
+
+#: apps/core/admin.py:132
+msgid "SEO"
+msgstr "SEO"
+
+#: apps/core/models.py:40
+msgid "Bottom right"
+msgstr "Знизу праворуч"
+
+#: apps/core/models.py:41
+msgid "Bottom left"
+msgstr "Знизу ліворуч"
+
+#: apps/core/models.py:42
+msgid "Center"
+msgstr "По центру"
+
+#: apps/core/models.py:45
+msgid "main phone"
+msgstr "основний телефон"
+
+#: apps/core/models.py:46
+msgid "second phone"
+msgstr "другий телефон"
+
+#: apps/core/models.py:47
+msgid "email"
+msgstr "пошта"
+
+#: apps/core/models.py:48
+msgid "Viber link"
+msgstr "Посилання на Viber"
+
+#: apps/core/models.py:49
+msgid "Telegram link"
+msgstr "Посилання на Telegram"
+
+#: apps/core/models.py:50
+msgid "Instagram link"
+msgstr "Посилання на Instagram"
+
+#: apps/core/models.py:51
+msgid "Facebook link"
+msgstr "Посилання на Facebook"
+
+#: apps/core/models.py:54
+msgid "address, uk"
+msgstr "адреса, uk"
+
+#: apps/core/models.py:55
+msgid "address, ru"
+msgstr "адреса, ru"
+
+#: apps/core/models.py:56
+msgid "landmark, uk"
+msgstr "орієнтир, uk"
+
+#: apps/core/models.py:57
+msgid "landmark, ru"
+msgstr "орієнтир, ru"
+
+#: apps/core/models.py:58
+msgid "parking, uk"
+msgstr "парковка, uk"
+
+#: apps/core/models.py:59
+msgid "parking, ru"
+msgstr "парковка, ru"
+
+#: apps/core/models.py:60
+msgid "map embed URL"
+msgstr "посилання на карту"
+
+#: apps/core/models.py:61
+msgid "directions URL"
+msgstr "посилання на маршрут"
+
+#: apps/core/models.py:64
+msgid "working hours, uk"
+msgstr "години роботи, uk"
+
+#: apps/core/models.py:65
+msgid "working hours, ru"
+msgstr "години роботи, ru"
+
+#: apps/core/models.py:68
+msgid "accepting orders"
+msgstr "приймаємо замовлення"
+
+#: apps/core/models.py:70
+msgid "not accepting message, uk"
+msgstr "повідомлення про паузу, uk"
+
+#: apps/core/models.py:73
+msgid "not accepting message, ru"
+msgstr "повідомлення про паузу, ru"
+
+#: apps/core/models.py:77
+msgid "banner enabled"
+msgstr "банер увімкнено"
+
+#: apps/core/models.py:78
+msgid "banner text, uk"
+msgstr "текст банера, uk"
+
+#: apps/core/models.py:79
+msgid "banner text, ru"
+msgstr "текст банера, ru"
+
+#: apps/core/models.py:80
+msgid "banner link"
+msgstr "посилання банера"
+
+#: apps/core/models.py:81
+msgid "banner until"
+msgstr "банер діє до"
+
+#: apps/core/models.py:84
+msgid "prices enabled"
+msgstr "ціни увімкнено"
+
+#: apps/core/models.py:87
+msgid "watermark"
+msgstr "водяний знак"
+
+#: apps/core/models.py:89
+msgid "watermark opacity"
+msgstr "прозорість знака"
+
+#: apps/core/models.py:94
+msgid "watermark position"
+msgstr "розташування знака"
+
+#: apps/core/models.py:100
+msgid "watermark scale"
+msgstr "розмір знака"
+
+#: apps/core/models.py:106
+msgid "default OG image"
+msgstr "зображення OG за замовчуванням"
+
+#: apps/core/models.py:107
+msgid "GA4 measurement id"
+msgstr "Ідентифікатор GA4"
+
+#: apps/core/models.py:108
+msgid "site name, uk"
+msgstr "назва сайту, uk"
+
+#: apps/core/models.py:109
+msgid "site name, ru"
+msgstr "назва сайту, ru"
+
+#: apps/core/models.py:112
+msgid "hero title, uk"
+msgstr "заголовок на головній, uk"
+
+#: apps/core/models.py:113
+msgid "hero title, ru"
+msgstr "заголовок на головній, ru"
+
+#: apps/core/models.py:114
+msgid "hero subtitle, uk"
+msgstr "підзаголовок на головній, uk"
+
+#: apps/core/models.py:115
+msgid "hero subtitle, ru"
+msgstr "підзаголовок на головній, ru"
+
+#: apps/core/models.py:116
+msgid "hero image"
+msgstr "зображення на головній"
+
+#: apps/core/models.py:119 apps/core/models.py:120
+msgid "site settings"
+msgstr "налаштування сайту"
+
+#: apps/core/models.py:123
+msgid "Site settings"
+msgstr "Налаштування сайту"
+
+#: apps/core/models.py:178
+msgid "slug"
+msgstr "слаг"
+
+#: apps/core/models.py:179 apps/core/models.py:213
+msgid "title, uk"
+msgstr "заголовок, uk"
+
+#: apps/core/models.py:180 apps/core/models.py:214
+msgid "title, ru"
+msgstr "заголовок, ru"
+
+#: apps/core/models.py:181
+msgid "body, uk"
+msgstr "текст, uk"
+
+#: apps/core/models.py:182
+msgid "body, ru"
+msgstr "текст, ru"
+
+#: apps/core/models.py:183
+msgid "SEO title, uk"
+msgstr "SEO заголовок, uk"
+
+#: apps/core/models.py:184
+msgid "SEO title, ru"
+msgstr "SEO заголовок, ru"
+
+#: apps/core/models.py:185
+msgid "SEO description, uk"
+msgstr "SEO опис, uk"
+
+#: apps/core/models.py:186
+msgid "SEO description, ru"
+msgstr "SEO опис, ru"
+
+#: apps/core/models.py:187
+msgid "published"
+msgstr "опубліковано"
+
+#: apps/core/models.py:192
+msgid "static page"
+msgstr "статична сторінка"
+
+#: apps/core/models.py:193
+msgid "static pages"
+msgstr "статичні сторінки"
+
+#: apps/core/models.py:212
+msgid "order"
+msgstr "порядок"
+
+#: apps/core/models.py:215
+msgid "text, uk"
+msgstr "текст, uk"
+
+#: apps/core/models.py:216
+msgid "text, ru"
+msgstr "текст, ru"
+
+#: apps/core/models.py:217
+msgid "icon"
+msgstr "іконка"
+
+#: apps/core/models.py:218
+msgid "active"
+msgstr "активний"
+
+#: apps/core/models.py:222
+msgid "how to order step"
+msgstr "крок «Як замовити»"
+
+#: apps/core/models.py:223
+msgid "how to order steps"
+msgstr "кроки «Як замовити»"
+
+#: apps/core/navigation.py:29 apps/core/navigation.py:38
+msgid "Gallery"
+msgstr "Галерея"
+
+#: apps/core/navigation.py:30 apps/core/navigation.py:39
+msgid "About"
+msgstr "Про нас"
+
+#: apps/core/navigation.py:31 apps/core/navigation.py:40
+msgid "Delivery and payment"
+msgstr "Доставка і оплата"
+
+#: apps/core/navigation.py:32 apps/core/navigation.py:42
+msgid "Reviews"
+msgstr "Відгуки"
+
+#: apps/core/navigation.py:33 apps/core/navigation.py:43
+msgid "Blog"
+msgstr "Блог"
+
+#: apps/core/navigation.py:41
+msgid "Questions and answers"
+msgstr "Питання і відповіді"
+
+#: apps/core/navigation.py:45 templates/ui/cookie_banner.html:9
+msgid "Privacy policy"
+msgstr "Політика конфіденційності"
+
+#: apps/core/views.py:20
+msgid "Home"
+msgstr "Головна"
+
+#: config/settings.py:134
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: config/settings.py:134
+msgid "Russian"
+msgstr "Російська"
+
+#: config/settings.py:212 config/settings.py:213 templates/base.html:7
+#: templates/base.html:17 templates/base.html:18 templates/layout/footer.html:7
+#: templates/layout/footer.html:41 templates/layout/header.html:14
+#: templates/layout/mobile_menu.html:12
+msgid "Flower studio"
+msgstr "Квіткова майстерня"
+
+#: templates/base.html:39
+msgid "Skip to content"
+msgstr "Перейти до вмісту"
+
+#: templates/layout/banner.html:16
+msgid "Close banner"
+msgstr "Закрити банер"
+
+#: templates/layout/banner.html:27
+msgid ""
+"We are not taking new orders right now. Call us, we will suggest a date."
+msgstr "Зараз ми не приймаємо нові замовлення. Зателефонуйте, підкажемо дату."
+
+#: templates/layout/footer.html:13
+msgid "Footer menu"
+msgstr "Меню в підвалі"
+
+#: templates/layout/header.html:19 templates/layout/mobile_menu.html:9
+msgid "Main menu"
+msgstr "Головне меню"
+
+#: templates/layout/header.html:26 templates/layout/mobile_menu.html:27
+msgid "Language"
+msgstr "Мова"
+
+#: templates/layout/header.html:47
+msgid "Open menu"
+msgstr "Відкрити меню"
+
+#: templates/layout/mobile_menu.html:13
+msgid "Close menu"
+msgstr "Закрити меню"
+
+#: templates/pages/home.html:14
+msgid "Flowers for your day"
+msgstr "Квіти для вашого дня"
+
+#: templates/pages/home.html:17
+msgid "Bouquets, compositions and hall decoration, made by hand."
+msgstr "Букети, композиції та оформлення залів ручної роботи."
+
+#: templates/ui/breadcrumbs.html:5
+msgid "Breadcrumbs"
+msgstr "Навігація сторінкою"
+
+#: templates/ui/card_post.html:12
+msgid "Read"
+msgstr "Читати"
+
+#: templates/ui/card_review.html:13
+#, python-format
+msgid "Rating %(rating)s of 5"
+msgstr "Оцінка %(rating)s з 5"
+
+#: templates/ui/card_review.html:24
+#, python-format
+msgid "Work &#8470;%(article)s"
+msgstr "Робота &#8470;%(article)s"
+
+#: templates/ui/card_work.html:15
+msgid "Work"
+msgstr "Робота"
+
+#: templates/ui/card_work.html:20
+#, python-format
+msgid "from %(price)s UAH"
+msgstr "від %(price)s грн"
+
+#: templates/ui/chip.html:7
+#, python-format
+msgid "Remove filter %(label)s"
+msgstr "Прибрати фільтр %(label)s"
+
+#: templates/ui/cookie_banner.html:8
+msgid "We use cookies to see which pages help people find their bouquet."
+msgstr "Ми використовуємо cookie, щоб бачити, які сторінки допомагають знайти букет."
+
+#: templates/ui/cookie_banner.html:12
+msgid "Accept"
+msgstr "Прийняти"
+
+#: templates/ui/cookie_banner.html:13
+msgid "Necessary only"
+msgstr "Тільки необхідні"
+
+#: templates/ui/drawer.html:17 templates/ui/lightbox.html:12
+#: templates/ui/modal.html:14
+msgid "Close"
+msgstr "Закрити"
+
+#: templates/ui/lightbox.html:18
+msgid "Previous photo"
+msgstr "Попереднє фото"
+
+#: templates/ui/lightbox.html:27
+msgid "Next photo"
+msgstr "Наступне фото"
+
+#: templates/ui/load_more.html:14
+msgid "Show more"
+msgstr "Показати ще"
+
+#: templates/ui/pagination.html:4
+msgid "Pagination"
+msgstr "Сторінки"
+
+#: templates/ui/pagination.html:6
+msgid "Previous page"
+msgstr "Попередня сторінка"
+
+#: templates/ui/pagination.html:21
+msgid "Next page"
+msgstr "Наступна сторінка"

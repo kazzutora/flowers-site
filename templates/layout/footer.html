@@ -1,0 +1,44 @@
+{% load static i18n project %}
+<footer class="mt-16 border-t border-line bg-white">
+  <div class="mx-auto grid max-w-site gap-8 px-4 py-10 md:grid-cols-3 md:px-8">
+    <div class="space-y-3">
+      <a href="{% url 'home' %}" class="flex items-center gap-2">
+        <svg class="h-7 w-7 text-accent" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#flower"></use></svg>
+        <span class="font-display text-2xl">{% firstof site_settings|tr:"site_name" _("Flower studio") %}</span>
+      </a>
+      {% include "ui/social_icons.html" %}
+    </div>
+
+    {% footer_menu as menu %}
+    <nav class="grid grid-cols-2 gap-x-4" aria-label="{% trans 'Footer menu' %}">
+      {% for item in menu %}
+        <a href="{{ item.url }}" class="flex min-h-11 items-center text-sm text-muted hover:text-accent">{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="space-y-2 text-sm text-muted">
+      {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="text" %}
+      {% if site_settings.phone_secondary %}
+        {% include "ui/phone_link.html" with phone=site_settings.phone_secondary variant="text" %}
+      {% endif %}
+      {% if site_settings|tr:"address" %}
+        <p class="flex items-start gap-2">
+          <svg class="mt-1 h-4 w-4 shrink-0" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#map-pin"></use></svg>
+          <span>{{ site_settings|tr:"address" }}</span>
+        </p>
+      {% endif %}
+      {% if site_settings|tr:"working_hours" %}
+        <p class="flex items-start gap-2">
+          <svg class="mt-1 h-4 w-4 shrink-0" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#clock"></use></svg>
+          <span class="whitespace-pre-line">{{ site_settings|tr:"working_hours" }}</span>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="border-t border-line">
+    <div class="mx-auto max-w-site px-4 py-4 text-xs text-muted md:px-8">
+      &copy; {% now "Y" %} {% firstof site_settings|tr:"site_name" _("Flower studio") %}
+    </div>
+  </div>
+</footer>

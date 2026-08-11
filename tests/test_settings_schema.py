@@ -35,7 +35,7 @@ def clean_env(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def build(**overrides: Any) -> Settings:
-    return Settings(_env_file=None, **{**MINIMAL, **overrides})  # type: ignore[arg-type]
+    return Settings(_env_file=None, **{**MINIMAL, **overrides})  # type: ignore[call-arg]
 
 
 def test_incomplete_environment_is_rejected(clean_env: None) -> None:

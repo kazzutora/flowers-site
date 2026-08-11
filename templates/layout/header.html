@@ -1,0 +1,55 @@
+{% load static i18n project %}
+<header x-data="{ menuOpen: false, scrolled: false }"
+        @scroll.window="scrolled = window.scrollY > 24"
+        x-effect="document.body.classList.toggle('is-locked', menuOpen)"
+        class="sticky top-0 z-30 border-b border-line bg-cream">
+  <div class="mx-auto flex max-w-site items-center gap-4 px-4 transition-all md:px-8"
+       :class="scrolled ? 'py-2' : 'py-4'">
+
+    <a href="{% url 'home' %}" class="flex shrink-0 items-center gap-2">
+      <svg class="h-8 w-8 text-accent transition-all" :class="scrolled ? 'h-7 w-7' : 'h-8 w-8'" aria-hidden="true">
+        <use href="{% static 'img/icons.svg' %}#flower"></use>
+      </svg>
+      <span class="font-display text-2xl leading-none">
+        {% firstof site_settings|tr:"site_name" _("Flower studio") %}
+      </span>
+    </a>
+
+    {% main_menu as menu %}
+    <nav class="mx-auto hidden items-center gap-6 lg:flex" aria-label="{% trans 'Main menu' %}">
+      {% for item in menu %}
+        <a href="{{ item.url }}" class="inline-flex min-h-11 items-center text-base text-ink hover:text-accent">{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1">
+      <div class="hidden items-center gap-1 lg:flex" role="group" aria-label="{% trans 'Language' %}">
+        {% for code, name in LANGUAGES %}
+          <a href="{% alternate_path request.get_full_path code %}" hreflang="{{ code }}"
+             class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-sm font-medium
+                    {% if code == LANGUAGE_CODE %}bg-accentSoft text-accent{% else %}text-muted hover:text-accent{% endif %}">
+            {% if code == "uk" %}UA{% else %}{{ code|upper }}{% endif %}
+          </a>
+        {% endfor %}
+      </div>
+
+      <div class="hidden lg:block">
+        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="text" %}
+      </div>
+      <div class="lg:hidden">
+        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="icon" %}
+      </div>
+
+      <div class="hidden lg:block">
+        {% include "ui/social_icons.html" with size="sm" %}
+      </div>
+
+      <button type="button" @click="menuOpen = true" aria-label="{% trans 'Open menu' %}" aria-controls="mobile-menu"
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft lg:hidden">
+        <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#menu"></use></svg>
+      </button>
+    </div>
+  </div>
+
+  {% include "layout/mobile_menu.html" %}
+</header>
