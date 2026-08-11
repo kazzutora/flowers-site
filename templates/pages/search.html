@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_title %}{% trans "Search" %}{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+  <h1 class="pb-6 text-4xl md:text-5xl">{% trans "Search" %}</h1>
+
+  {% include "partials/search_form.html" with value=query_text %}
+
+  {% if query_text %}
+    {% if works %}
+      <p class="mb-4 mt-8 text-sm text-muted" role="status">
+        {% blocktrans count counter=found_count %}Found {{ counter }} work{% plural %}Found {{ counter }} works{% endblocktrans %}
+      </p>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {% for work in works %}
+          {% include "ui/card_work.html" with work=work lazy=True sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+        {% endfor %}
+      </div>
+    {% else %}
+      {% url 'gallery' as gallery_url %}
+      {% include "ui/empty_state.html" with title=_("Nothing found") text=_("Check the number, or look through the gallery. We can also pick something over the phone.") action_label=_("To the gallery") action_url=gallery_url %}
+      <div class="flex justify-center">
+        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% load i18n %}{% comment %}
+Parameters: value (the current query).
+Search by the work number, the way a visitor copies it from Instagram.
+{% endcomment %}
+<form method="get" action="{% url 'search' %}" role="search" class="flex max-w-md items-end gap-2">
+  <div class="flex-1">
+    {% include "ui/input.html" with name="q" label=_("Work number or a word") type="search" value=value autocomplete="off" %}
+  </div>
+  {% include "ui/button.html" with type="submit" label=_("Find") variant="primary" icon="search" %}
+</form>

@@ -5,6 +5,7 @@ parameters and a `FilterSpec` describing the groups. That keeps the contract
 (silently dropped unknowns, stable canonical order) under property based tests.
 """
 
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any
@@ -19,6 +20,12 @@ DEFAULT_SORT = SORT_NEW
 
 # Two, three and four columns divide it evenly on phone, tablet and desktop.
 PAGE_SIZE = 24
+
+# Section 10: a shared collection carries at most this many articles.
+FAVOURITES_LIMIT = 50
+
+# The number sign, in both shapes people type it.
+_NUMBER_SIGNS = re.compile(r"[#№]")
 
 # Exact keys from section 9. The trailing `-id` is not decoration: without it
 # equal view counts give Postgres a free hand and "show more" starts repeating
@@ -155,6 +162,38 @@ def parse(params: Mapping[str, Any], spec: FilterSpec) -> GalleryQuery:
     pages = [parse_page(value) for value in _values(params, "page") if _is_page(value)]
 
     return GalleryQuery(selected=tuple(selected), sort=sort, page=pages[0] if pages else 1)
+
+
+def extract_article(raw: str) -> int | None:
+    """The work number out of whatever the visitor typed.
+
+    `147`, `№147`, `# 147` and `0147` all mean the same work (section 10).
+    Anything with letters, or with a second number, is a text search instead.
+    """
+    compact = _NUMBER_SIGNS.sub("", raw).strip()
+    if not compact.isdecimal():
+        return None
+    number = int(compact)
+    return number or None
+
+
+def parse_articles(raw: str, limit: int = FAVOURITES_LIMIT) -> list[int]:
+    """The `a=147,152` parameter of the favourites page (section 10).
+
+    Junk, duplicates and anything past the limit are dropped silently.
+    """
+    picked: list[int] = []
+    for chunk in raw.split(","):
+        candidate = chunk.strip()
+        if not candidate.isdecimal():
+            continue
+        number = int(candidate)
+        if number <= 0 or number in picked:
+            continue
+        picked.append(number)
+        if len(picked) == limit:
+            break
+    return picked
 
 
 def apply(query: GalleryQuery, occasion: Any = None) -> "QuerySet[Any]":

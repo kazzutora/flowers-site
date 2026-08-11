@@ -6,6 +6,9 @@ from django.test import Client
 
 from config.storages import private_storage, public_storage
 
+# The 404 page is a real page now: it reads the site settings like every other.
+pytestmark = pytest.mark.django_db
+
 
 def test_private_storage_file_is_not_reachable_over_http(client: Client) -> None:
     name = private_storage().save("original.txt", ContentFile(b"gps metadata inside"))

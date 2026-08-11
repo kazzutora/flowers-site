@@ -9,9 +9,9 @@ from urllib.parse import urljoin
 
 from django.conf import settings as django_settings
 from django.core.paginator import Paginator
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.http import Http404, HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -192,6 +192,51 @@ def work_detail(request: HttpRequest, slug: str) -> HttpResponse:
             ),
             "page_title": work.tr("seo_title") or f"№{work.article} {work.tr('title')}".strip(),
             "page_description": work.tr("seo_description") or work.tr("description"),
+        },
+    )
+
+
+def search(request: HttpRequest) -> HttpResponse:
+    """`/poshuk/` (section 10).
+
+    A number is the fast path: someone read the article under a photo on
+    Instagram. Everything else is a text search over the title and the
+    composition, in both languages.
+    """
+    raw = (request.GET.get("q") or "").strip()
+    works: Any = Work.published.none()
+
+    if raw:
+        article = filters.extract_article(raw)
+        if article is not None:
+            match = Work.published.filter(article=article).first()
+            if match is not None:
+                return redirect(match.get_absolute_url())
+
+        works = (
+            Work.published.filter(
+                Q(title_uk__icontains=raw)
+                | Q(title_ru__icontains=raw)
+                | Q(composition_uk__icontains=raw)
+                | Q(composition_ru__icontains=raw)
+            )
+            .prefetch_related("images__renditions")
+            # A work matching on both the title and the composition is still
+            # one work.
+            .distinct()
+        )
+
+    return render(
+        request,
+        "pages/search.html",
+        {
+            "query_text": raw,
+            "works": works,
+            "found_count": len(works) if raw else 0,
+            "breadcrumbs": [
+                {"label": _("Home"), "url": reverse("home")},
+                {"label": _("Search")},
+            ],
         },
     )
 
