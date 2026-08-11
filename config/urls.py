@@ -2,11 +2,13 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps import views as sitemap_views
 from django.urls import URLPattern, URLResolver, include, path
 
 from apps.blog import views as blog_views
 from apps.catalog import views as catalog_views
 from apps.core import views as core_views
+from apps.core.sitemaps import SITEMAPS
 from apps.leads import views as lead_views
 from apps.reviews import views as review_views
 
@@ -16,6 +18,21 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("admin/", admin.site.urls),
     path("tinymce/", include("tinymce.urls")),
     path("i18n/", include("django.conf.urls.i18n")),
+    # Outside i18n_patterns: a crawler looks for these at the root, and the
+    # sitemap itself carries an entry per language.
+    path(
+        "sitemap.xml",
+        sitemap_views.index,
+        {"sitemaps": SITEMAPS, "sitemap_url_name": "sitemap_section"},
+        name="sitemap",
+    ),
+    path(
+        "sitemap-<section>.xml",
+        sitemap_views.sitemap,
+        {"sitemaps": SITEMAPS},
+        name="sitemap_section",
+    ),
+    path("robots.txt", core_views.robots_txt, name="robots_txt"),
 ]
 
 localized = [
