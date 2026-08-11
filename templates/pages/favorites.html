@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}{% comment %}
+Two modes (section 10). `?a=147,152` renders on the server, so the link opens
+the same collection in any browser. Without it the page asks /hx/favorites/
+for the cards the visitor's own browser is holding.
+{% endcomment %}
+
+{% block meta_title %}{% trans "Favourites" %}{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+  <h1 class="pb-6 text-4xl md:text-5xl">{% trans "Favourites" %}</h1>
+
+  {% if shared %}
+    <div id="favorites-grid">{% include "partials/favorites_grid.html" %}</div>
+  {% else %}
+    <div id="favorites-grid"
+         hx-post="{% url 'hx_favorites' %}"
+         hx-trigger="load"
+         hx-target="this"
+         hx-swap="innerHTML"
+         hx-vals="js:{articles: window.favoriteArticles()}"
+         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+      {% include "ui/skeleton.html" with kind="card" count=4 %}
+    </div>
+  {% endif %}
+
+  <div class="mt-10 flex flex-wrap gap-3" x-data="collectionLink()">
+    {% if site_settings.accepting_orders %}
+      {% include "ui/button.html" with label=_("Send an enquiry about these works") variant="primary" attrs="@click=\"$dispatch('modal-open', 'order')\"" %}
+    {% else %}
+      {% include "ui/button.html" with label=_("Send an enquiry about these works") variant="primary" disabled=True %}
+    {% endif %}
+    {% include "ui/button.html" with label=_("Copy the link to the collection") variant="secondary" icon="copy" attrs="@click=\"copy()\"" %}
+    {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+  </div>
+</div>
+
+{% include "ui/modal.html" with id="order" title=_("Enquiry about the collection") body_template="partials/lead_form.html" %}
+{% endblock %}

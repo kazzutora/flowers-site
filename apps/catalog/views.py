@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 
 from apps.catalog import filters, seo
 from apps.catalog.models import (
@@ -242,6 +243,52 @@ def search(request: HttpRequest) -> HttpResponse:
             ],
         },
     )
+
+
+def _works_by_article(raw: str) -> list[Work]:
+    """Published works for a list of numbers, in the order they were given.
+
+    Junk, duplicates, archived and unknown numbers fall out silently
+    (section 10).
+    """
+    articles = filters.parse_articles(raw)
+    if not articles:
+        return []
+    found = {
+        work.article: work
+        for work in Work.published.filter(article__in=articles).prefetch_related(
+            "images__renditions"
+        )
+    }
+    return [found[article] for article in articles if article in found]
+
+
+def favorites(request: HttpRequest) -> HttpResponse:
+    """`/obrane/`. With `?a=` it renders on the server, so the link travels."""
+    raw = request.GET.get("a") or ""
+    works = _works_by_article(raw)
+
+    return render(
+        request,
+        "pages/favorites.html",
+        {
+            "works": works,
+            "shared": bool(raw),
+            "articles": ",".join(str(work.article) for work in works),
+            "breadcrumbs": [
+                {"label": _("Home"), "url": reverse("home")},
+                {"label": _("Favourites")},
+            ],
+            **lead_form_context(request, "full"),
+        },
+    )
+
+
+@require_POST
+def hx_favorites(request: HttpRequest) -> HttpResponse:
+    """The cards for the numbers the browser is holding (section 9)."""
+    works = _works_by_article(request.POST.get("articles") or "")
+    return render(request, "partials/favorites_grid.html", {"works": works, "shared": False})
 
 
 def _image_jsonld(work: Work, rendition: WorkImageRendition | None) -> dict[str, Any] | None:

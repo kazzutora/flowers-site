@@ -1,0 +1,15 @@
+{% load i18n %}{% comment %}
+Parameters: works, shared.
+The same grid for both modes of /obrane/: rendered on the server for a shared
+link, and asked for over /hx/favorites/ when the list lives in the browser.
+{% endcomment %}
+{% if works %}
+  <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    {% for work in works %}
+      {% include "ui/card_work.html" with work=work lazy=True sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+    {% endfor %}
+  </div>
+{% else %}
+  {% url 'gallery' as gallery_url %}
+  {% include "ui/empty_state.html" with title=_("Nothing here yet") text=_("Tap the heart on a work and it lands here. Then send us the whole collection at once.") action_label=_("To the gallery") action_url=gallery_url %}
+{% endif %}

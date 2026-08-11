@@ -23,8 +23,13 @@ document.addEventListener("alpine:init", () => {
     },
     choose(value) {
       window.localStorage.setItem(this.key, value);
+      // Mirrored into a cookie so the server can decide whether to put the
+      // analytics tag on the page at all. Without it "no consent, no script"
+      // would be a promise only the browser could keep.
+      document.cookie = `cookie_consent=${value}; path=/; max-age=31536000; SameSite=Lax`;
       this.visible = false;
       window.dispatchEvent(new CustomEvent("cookie-consent", { detail: value }));
+      if (value === "accepted") window.location.reload();
     },
     accept() {
       this.choose("accepted");

@@ -17,6 +17,7 @@ public address into the history.
       hx-target="#gallery-results"
       hx-swap="outerHTML"
       hx-trigger="change, submit"
+      data-analytics="filter_apply"
       class="space-y-1">
   <input type="hidden" name="occasion" value="{{ occasion.slug|default:'' }}">
   <input type="hidden" name="sort" value="{{ query.sort }}">
