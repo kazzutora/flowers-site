@@ -7,465 +7,981 @@ msgid ""
 msgstr ""
 "Project-Id-Version: flowers 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-11 14:01+0300\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: uk\n"
-"Language-Team: Ukrainian\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-#: apps/core/admin.py:19 apps/core/navigation.py:34 apps/core/navigation.py:44
-msgid "Contacts"
-msgstr "Контакти"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: apps/core/admin.py:33
-msgid "Address"
-msgstr "Адреса"
+msgid "A published work needs at least one photo. Add a photo or save it as a draft."
+msgstr "Опублікована робота повинна мати щонайменше одне фото. Додайте фото або збережіть як чернетку."
 
-#: apps/core/admin.py:47
-msgid "Working hours"
-msgstr "Години роботи"
+#, fuzzy
+#| msgid "Reviews"
+msgid "preview"
+msgstr "Відгуки"
 
-#: apps/core/admin.py:49
-msgid "Taking orders"
-msgstr "Прийом замовлень"
-
-#: apps/core/admin.py:59
-msgid "Banner"
-msgstr "Банер"
-
-#: apps/core/admin.py:70
-msgid "Prices"
-msgstr "Ціни"
-
-#: apps/core/admin.py:72
-msgid "Watermark"
-msgstr "Водяний знак"
-
-#: apps/core/admin.py:83
-msgid "SEO and analytics"
-msgstr "SEO і аналітика"
-
-#: apps/core/admin.py:94
-msgid "Home page"
-msgstr "Головна сторінка"
-
-#: apps/core/admin.py:130 apps/core/admin.py:153
 msgid "Content"
 msgstr "Вміст"
 
-#: apps/core/admin.py:132
+#, fuzzy
+#| msgid "Questions and answers"
+msgid "Occasions and tags"
+msgstr "Питання і відповіді"
+
+msgid "Prices"
+msgstr "Ціни"
+
+msgid "Cost"
+msgstr "Собівартість"
+
+msgid "Internal. It is never shown on the site."
+msgstr "Внутрішнє, на сайті не показується."
+
+#, fuzzy
+#| msgid "Pagination"
+msgid "Publication"
+msgstr "Сторінки"
+
 msgid "SEO"
 msgstr "SEO"
 
-#: apps/core/models.py:40
-msgid "Bottom right"
-msgstr "Знизу праворуч"
+#, fuzzy
+#| msgid "Next photo"
+msgid "photo"
+msgstr "Наступне фото"
 
-#: apps/core/models.py:41
-msgid "Bottom left"
-msgstr "Знизу ліворуч"
+msgid "occasions"
+msgstr "приводи"
 
-#: apps/core/models.py:42
-msgid "Center"
-msgstr "По центру"
+msgid "A work without photos cannot be published, so it was saved as a draft."
+msgstr "Роботу без фото не можна опублікувати, тому вона збережена як чернетка."
 
-#: apps/core/models.py:45
-msgid "main phone"
-msgstr "основний телефон"
+msgid "Publish the selected works"
+msgstr "Опублікувати вибрані роботи"
 
-#: apps/core/models.py:46
-msgid "second phone"
-msgstr "другий телефон"
+#, python-format
+msgid "%(count)d work published."
+msgid_plural "%(count)d works published."
+msgstr[0] "Опубліковано %(count)d роботу."
+msgstr[1] "Опубліковано %(count)d роботи."
+msgstr[2] "Опубліковано %(count)d робіт."
 
-#: apps/core/models.py:47
-msgid "email"
-msgstr "пошта"
+#, python-format
+msgid "%(count)d work has no photo and stayed a draft."
+msgid_plural "%(count)d works have no photo and stayed drafts."
+msgstr[0] "%(count)d робота без фото залишилась чернеткою."
+msgstr[1] "%(count)d роботи без фото залишились чернетками."
+msgstr[2] "%(count)d робіт без фото залишились чернетками."
 
-#: apps/core/models.py:48
-msgid "Viber link"
-msgstr "Посилання на Viber"
+msgid "Move the selected works to the archive"
+msgstr "Перенести вибрані роботи в архів"
 
-#: apps/core/models.py:49
-msgid "Telegram link"
-msgstr "Посилання на Telegram"
+#, python-format
+msgid "%(count)d work archived."
+msgid_plural "%(count)d works archived."
+msgstr[0] "%(count)d роботу перенесено в архів."
+msgstr[1] "%(count)d роботи перенесено в архів."
+msgstr[2] "%(count)d робіт перенесено в архів."
 
-#: apps/core/models.py:50
-msgid "Instagram link"
-msgstr "Посилання на Instagram"
+msgid "Pin the selected works"
+msgstr "Закріпити вибрані роботи"
 
-#: apps/core/models.py:51
-msgid "Facebook link"
-msgstr "Посилання на Facebook"
+#, python-format
+msgid "%(count)d work pinned."
+msgid_plural "%(count)d works pinned."
+msgstr[0] "Закріплено %(count)d роботу."
+msgstr[1] "Закріплено %(count)d роботи."
+msgstr[2] "Закріплено %(count)d робіт."
 
-#: apps/core/models.py:54
-msgid "address, uk"
-msgstr "адреса, uk"
+msgid "Rebuild the photos of the selected works"
+msgstr "Перегенерувати фото вибраних робіт"
 
-#: apps/core/models.py:55
-msgid "address, ru"
-msgstr "адреса, ru"
+msgid "The photos are being rebuilt in the background."
+msgstr "Фото перегенеруються у фоні."
 
-#: apps/core/models.py:56
-msgid "landmark, uk"
-msgstr "орієнтир, uk"
+msgid "Rebuild every photo"
+msgstr "Перегенерувати всі фото"
 
-#: apps/core/models.py:57
-msgid "landmark, ru"
-msgstr "орієнтир, ru"
+msgid "Every photo is being rebuilt in the background."
+msgstr "Усі фото перегенеруються у фоні."
 
-#: apps/core/models.py:58
-msgid "parking, uk"
-msgstr "парковка, uk"
-
-#: apps/core/models.py:59
-msgid "parking, ru"
-msgstr "парковка, ru"
-
-#: apps/core/models.py:60
-msgid "map embed URL"
-msgstr "посилання на карту"
-
-#: apps/core/models.py:61
-msgid "directions URL"
-msgstr "посилання на маршрут"
-
-#: apps/core/models.py:64
-msgid "working hours, uk"
-msgstr "години роботи, uk"
-
-#: apps/core/models.py:65
-msgid "working hours, ru"
-msgstr "години роботи, ru"
-
-#: apps/core/models.py:68
-msgid "accepting orders"
-msgstr "приймаємо замовлення"
-
-#: apps/core/models.py:70
-msgid "not accepting message, uk"
-msgstr "повідомлення про паузу, uk"
-
-#: apps/core/models.py:73
-msgid "not accepting message, ru"
-msgstr "повідомлення про паузу, ru"
-
-#: apps/core/models.py:77
-msgid "banner enabled"
-msgstr "банер увімкнено"
-
-#: apps/core/models.py:78
-msgid "banner text, uk"
-msgstr "текст банера, uk"
-
-#: apps/core/models.py:79
-msgid "banner text, ru"
-msgstr "текст банера, ru"
-
-#: apps/core/models.py:80
-msgid "banner link"
-msgstr "посилання банера"
-
-#: apps/core/models.py:81
-msgid "banner until"
-msgstr "банер діє до"
-
-#: apps/core/models.py:84
-msgid "prices enabled"
-msgstr "ціни увімкнено"
-
-#: apps/core/models.py:87
-msgid "watermark"
-msgstr "водяний знак"
-
-#: apps/core/models.py:89
-msgid "watermark opacity"
-msgstr "прозорість знака"
-
-#: apps/core/models.py:94
-msgid "watermark position"
-msgstr "розташування знака"
-
-#: apps/core/models.py:100
-msgid "watermark scale"
-msgstr "розмір знака"
-
-#: apps/core/models.py:106
-msgid "default OG image"
-msgstr "зображення OG за замовчуванням"
-
-#: apps/core/models.py:107
-msgid "GA4 measurement id"
-msgstr "Ідентифікатор GA4"
-
-#: apps/core/models.py:108
-msgid "site name, uk"
-msgstr "назва сайту, uk"
-
-#: apps/core/models.py:109
-msgid "site name, ru"
-msgstr "назва сайту, ru"
-
-#: apps/core/models.py:112
-msgid "hero title, uk"
-msgstr "заголовок на головній, uk"
-
-#: apps/core/models.py:113
-msgid "hero title, ru"
-msgstr "заголовок на головній, ru"
-
-#: apps/core/models.py:114
-msgid "hero subtitle, uk"
-msgstr "підзаголовок на головній, uk"
-
-#: apps/core/models.py:115
-msgid "hero subtitle, ru"
-msgstr "підзаголовок на головній, ru"
-
-#: apps/core/models.py:116
-msgid "hero image"
-msgstr "зображення на головній"
-
-#: apps/core/models.py:119 apps/core/models.py:120
-msgid "site settings"
-msgstr "налаштування сайту"
-
-#: apps/core/models.py:123
-msgid "Site settings"
-msgstr "Налаштування сайту"
-
-#: apps/core/models.py:178
 msgid "slug"
 msgstr "слаг"
 
-#: apps/core/models.py:179 apps/core/models.py:213
-msgid "title, uk"
-msgstr "заголовок, uk"
+#, fuzzy
+#| msgid "site name, uk"
+msgid "name, uk"
+msgstr "назва сайту, uk"
 
-#: apps/core/models.py:180 apps/core/models.py:214
-msgid "title, ru"
-msgstr "заголовок, ru"
+#, fuzzy
+#| msgid "site name, ru"
+msgid "name, ru"
+msgstr "назва сайту, ru"
 
-#: apps/core/models.py:181
-msgid "body, uk"
-msgstr "текст, uk"
-
-#: apps/core/models.py:182
-msgid "body, ru"
-msgstr "текст, ru"
-
-#: apps/core/models.py:183
-msgid "SEO title, uk"
-msgstr "SEO заголовок, uk"
-
-#: apps/core/models.py:184
-msgid "SEO title, ru"
-msgstr "SEO заголовок, ru"
-
-#: apps/core/models.py:185
-msgid "SEO description, uk"
+#, fuzzy
+#| msgid "SEO description, uk"
+msgid "description, uk"
 msgstr "SEO опис, uk"
 
-#: apps/core/models.py:186
-msgid "SEO description, ru"
+#, fuzzy
+#| msgid "SEO description, ru"
+msgid "description, ru"
 msgstr "SEO опис, ru"
 
-#: apps/core/models.py:187
-msgid "published"
-msgstr "опубліковано"
+msgid "cover"
+msgstr "обкладинка"
 
-#: apps/core/models.py:192
-msgid "static page"
-msgstr "статична сторінка"
-
-#: apps/core/models.py:193
-msgid "static pages"
-msgstr "статичні сторінки"
-
-#: apps/core/models.py:212
 msgid "order"
 msgstr "порядок"
 
-#: apps/core/models.py:215
-msgid "text, uk"
-msgstr "текст, uk"
-
-#: apps/core/models.py:216
-msgid "text, ru"
-msgstr "текст, ru"
-
-#: apps/core/models.py:217
-msgid "icon"
-msgstr "іконка"
-
-#: apps/core/models.py:218
 msgid "active"
 msgstr "активний"
 
-#: apps/core/models.py:222
-msgid "how to order step"
-msgstr "крок «Як замовити»"
+msgid "show on the home page"
+msgstr "показувати на головній"
 
-#: apps/core/models.py:223
-msgid "how to order steps"
-msgstr "кроки «Як замовити»"
+msgid "SEO title, uk"
+msgstr "SEO заголовок, uk"
 
-#: apps/core/navigation.py:29 apps/core/navigation.py:38
-msgid "Gallery"
-msgstr "Галерея"
+msgid "SEO title, ru"
+msgstr "SEO заголовок, ru"
 
-#: apps/core/navigation.py:30 apps/core/navigation.py:39
-msgid "About"
-msgstr "Про нас"
+msgid "SEO description, uk"
+msgstr "SEO опис, uk"
 
-#: apps/core/navigation.py:31 apps/core/navigation.py:40
-msgid "Delivery and payment"
-msgstr "Доставка і оплата"
+msgid "SEO description, ru"
+msgstr "SEO опис, ru"
 
-#: apps/core/navigation.py:32 apps/core/navigation.py:42
-msgid "Reviews"
+msgid "occasion"
+msgstr "привід"
+
+msgid "Checkboxes"
+msgstr "Чекбокси"
+
+msgid "Colour swatches"
+msgstr "Зразки кольору"
+
+msgid "filter kind"
+msgstr "тип фільтра"
+
+msgid "tag group"
+msgstr "група тегів"
+
+msgid "tag groups"
+msgstr "групи тегів"
+
+msgid "group"
+msgstr "група"
+
+msgid "colour"
+msgstr "колір"
+
+msgid "tag"
+msgstr "тег"
+
+msgid "tags"
+msgstr "теги"
+
+msgid "A colour swatch tag needs a colour."
+msgstr "Тег кольору повинен мати колір."
+
+msgid "Only colour swatch tags carry a colour."
+msgstr "Колір задається лише тегам групи кольору."
+
+msgid "This slug is a reserved query parameter name."
+msgstr "Цей слаг зарезервований для параметра запиту."
+
+msgid "A tag group already answers to this slug."
+msgstr "Такий слаг уже має група тегів."
+
+msgid "Draft"
+msgstr "Чернетка"
+
+#, fuzzy
+#| msgid "published"
+msgid "Published"
+msgstr "опубліковано"
+
+msgid "Archived"
+msgstr "Архів"
+
+msgid "article"
+msgstr "артикул"
+
+msgid "title, uk"
+msgstr "заголовок, uk"
+
+msgid "title, ru"
+msgstr "заголовок, ru"
+
+msgid "composition, uk"
+msgstr "склад, укр"
+
+msgid "composition, ru"
+msgstr "склад, рос"
+
+#, fuzzy
+#| msgid "title, uk"
+msgid "size, uk"
+msgstr "заголовок, uk"
+
+#, fuzzy
+#| msgid "title, ru"
+msgid "size, ru"
+msgstr "заголовок, ru"
+
+msgid "price from"
+msgstr "ціна від"
+
+msgid "price to"
+msgstr "ціна до"
+
+msgid "currency"
+msgstr "валюта"
+
+msgid "show the price"
+msgstr "показувати ціну"
+
+#, fuzzy
+#| msgid "site name, uk"
+msgid "price note, uk"
+msgstr "назва сайту, uk"
+
+#, fuzzy
+#| msgid "site name, ru"
+msgid "price note, ru"
+msgstr "назва сайту, ru"
+
+msgid "cost"
+msgstr "собівартість"
+
+msgid "status"
+msgstr "статус"
+
+msgid "pinned"
+msgstr "закріплено"
+
+#, fuzzy
+#| msgid "Reviews"
+msgid "views"
 msgstr "Відгуки"
 
-#: apps/core/navigation.py:33 apps/core/navigation.py:43
-msgid "Blog"
-msgstr "Блог"
+#, fuzzy
+#| msgid "published"
+msgid "published at"
+msgstr "опубліковано"
 
-#: apps/core/navigation.py:41
-msgid "Questions and answers"
-msgstr "Питання і відповіді"
+msgid "work"
+msgstr "робота"
 
-#: apps/core/navigation.py:45 templates/ui/cookie_banner.html:9
-msgid "Privacy policy"
-msgstr "Політика конфіденційності"
+msgid "works"
+msgstr "роботи"
 
-#: apps/core/views.py:20
+#, fuzzy
+#| msgid "text, uk"
+msgid "alt text, uk"
+msgstr "текст, uk"
+
+#, fuzzy
+#| msgid "text, ru"
+msgid "alt text, ru"
+msgstr "текст, ru"
+
+#, fuzzy
+#| msgid "main phone"
+msgid "main photo"
+msgstr "основний телефон"
+
+msgid "renditions ready"
+msgstr "рендишени готові"
+
+#, fuzzy
+#| msgid "Next photo"
+msgid "work photo"
+msgstr "Наступне фото"
+
+msgid "work photos"
+msgstr "фото робіт"
+
+msgid "Thumbnail"
+msgstr "Мініатюра"
+
+msgid "Card"
+msgstr "Картка"
+
+msgid "Large"
+msgstr "Велике"
+
+msgid "Link preview"
+msgstr "Прев'ю посилання"
+
+msgid "source"
+msgstr "джерело"
+
+msgid "preset"
+msgstr "пресет"
+
+msgid "format"
+msgstr "формат"
+
+msgid "file"
+msgstr "файл"
+
+msgid "rendition"
+msgstr "рендишен"
+
+msgid "renditions"
+msgstr "рендишени"
+
+#, python-format
+msgid "The photo is heavier than %(limit)d MB."
+msgstr "Фото важче за %(limit)d МБ."
+
+msgid "This file is not an image we can read."
+msgstr "Це не зображення, яке ми можемо прочитати."
+
+#, python-format
+msgid "Format %(format)s is not supported. Use JPEG, PNG, WebP or HEIC."
+msgstr "Формат %(format)s не підтримується. Використайте JPEG, PNG, WebP або HEIC."
+
+#, python-format
+msgid "The photo is too small: the shortest side must be at least %(side)d px."
+msgstr "Фото замале: коротша сторона має бути щонайменше %(side)d px."
+
 msgid "Home"
 msgstr "Головна"
 
-#: config/settings.py:134
-msgid "Ukrainian"
-msgstr "Українська"
+msgid "Gallery"
+msgstr "Галерея"
 
-#: config/settings.py:134
-msgid "Russian"
-msgstr "Російська"
+#, python-format
+msgid "Filters · %(count)d"
+msgstr "Фільтри · %(count)d"
 
-#: config/settings.py:212 config/settings.py:213 templates/base.html:7
-#: templates/base.html:17 templates/base.html:18 templates/layout/footer.html:7
-#: templates/layout/footer.html:41 templates/layout/header.html:14
-#: templates/layout/mobile_menu.html:12
+msgid "Filters"
+msgstr "Фільтри"
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "Favourites"
+msgstr "Обране"
+
+msgid "Contacts"
+msgstr "Контакти"
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Working hours"
+msgstr "Години роботи"
+
+msgid "Taking orders"
+msgstr "Прийом замовлень"
+
+msgid "Banner"
+msgstr "Банер"
+
+msgid "Watermark"
+msgstr "Водяний знак"
+
+msgid "SEO and analytics"
+msgstr "SEO і аналітика"
+
+msgid "Home page"
+msgstr "Головна сторінка"
+
+msgid "Bottom right"
+msgstr "Знизу праворуч"
+
+msgid "Bottom left"
+msgstr "Знизу ліворуч"
+
+msgid "Center"
+msgstr "По центру"
+
+msgid "main phone"
+msgstr "основний телефон"
+
+msgid "second phone"
+msgstr "другий телефон"
+
+msgid "email"
+msgstr "пошта"
+
+msgid "Viber link"
+msgstr "Посилання на Viber"
+
+msgid "Telegram link"
+msgstr "Посилання на Telegram"
+
+msgid "Instagram link"
+msgstr "Посилання на Instagram"
+
+msgid "Facebook link"
+msgstr "Посилання на Facebook"
+
+msgid "address, uk"
+msgstr "адреса, uk"
+
+msgid "address, ru"
+msgstr "адреса, ru"
+
+msgid "landmark, uk"
+msgstr "орієнтир, uk"
+
+msgid "landmark, ru"
+msgstr "орієнтир, ru"
+
+msgid "parking, uk"
+msgstr "парковка, uk"
+
+msgid "parking, ru"
+msgstr "парковка, ru"
+
+msgid "map embed URL"
+msgstr "посилання на карту"
+
+msgid "directions URL"
+msgstr "посилання на маршрут"
+
+msgid "working hours, uk"
+msgstr "години роботи, uk"
+
+msgid "working hours, ru"
+msgstr "години роботи, ru"
+
+msgid "accepting orders"
+msgstr "приймаємо замовлення"
+
+msgid "not accepting message, uk"
+msgstr "повідомлення про паузу, uk"
+
+msgid "not accepting message, ru"
+msgstr "повідомлення про паузу, ru"
+
+msgid "banner enabled"
+msgstr "банер увімкнено"
+
+msgid "banner text, uk"
+msgstr "текст банера, uk"
+
+msgid "banner text, ru"
+msgstr "текст банера, ru"
+
+msgid "banner link"
+msgstr "посилання банера"
+
+msgid "banner until"
+msgstr "банер діє до"
+
+msgid "prices enabled"
+msgstr "ціни увімкнено"
+
+msgid "watermark"
+msgstr "водяний знак"
+
+msgid "watermark opacity"
+msgstr "прозорість знака"
+
+msgid "watermark position"
+msgstr "розташування знака"
+
+msgid "watermark scale"
+msgstr "розмір знака"
+
+msgid "default OG image"
+msgstr "зображення OG за замовчуванням"
+
+msgid "GA4 measurement id"
+msgstr "Ідентифікатор GA4"
+
+msgid "site name, uk"
+msgstr "назва сайту, uk"
+
+msgid "site name, ru"
+msgstr "назва сайту, ru"
+
+msgid "hero title, uk"
+msgstr "заголовок на головній, uk"
+
+msgid "hero title, ru"
+msgstr "заголовок на головній, ru"
+
+msgid "hero subtitle, uk"
+msgstr "підзаголовок на головній, uk"
+
+msgid "hero subtitle, ru"
+msgstr "підзаголовок на головній, ru"
+
+msgid "hero image"
+msgstr "зображення на головній"
+
+msgid "site settings"
+msgstr "налаштування сайту"
+
+msgid "Site settings"
+msgstr "Налаштування сайту"
+
+msgid "body, uk"
+msgstr "текст, uk"
+
+msgid "body, ru"
+msgstr "текст, ru"
+
+msgid "published"
+msgstr "опубліковано"
+
+msgid "static page"
+msgstr "статична сторінка"
+
+msgid "static pages"
+msgstr "статичні сторінки"
+
+msgid "text, uk"
+msgstr "текст, uk"
+
+msgid "text, ru"
+msgstr "текст, ru"
+
+msgid "icon"
+msgstr "іконка"
+
+msgid "how to order step"
+msgstr "крок «Як замовити»"
+
+msgid "how to order steps"
+msgstr "кроки «Як замовити»"
+
+msgid "About"
+msgstr "Про нас"
+
+msgid "Delivery and payment"
+msgstr "Доставка і оплата"
+
+msgid "Reviews"
+msgstr "Відгуки"
+
+msgid "Blog"
+msgstr "Блог"
+
+msgid "Questions and answers"
+msgstr "Питання і відповіді"
+
+msgid "Privacy policy"
+msgstr "Політика конфіденційності"
+
 msgid "Flower studio"
 msgstr "Квіткова майстерня"
 
-#: templates/base.html:39
+msgid "Enquiry"
+msgstr "Заявка"
+
+#, fuzzy
+#| msgid "Work"
+msgid "Works"
+msgstr "Робота"
+
+msgid "Technical"
+msgstr "Технічне"
+
+msgid "Tell us how to address you."
+msgstr "Підкажіть, як до вас звертатися."
+
+msgid "Check the number: 0501234567 or +380501234567."
+msgstr "Перевірте номер: 0501234567 або +380501234567."
+
+msgid "We need your consent to call you back."
+msgstr "Без згоди ми не зможемо вам зателефонувати."
+
+msgid "Phone call"
+msgstr "Дзвінок"
+
+#, fuzzy
+#| msgid "Viber link"
+msgid "Viber"
+msgstr "Посилання на Viber"
+
+#, fuzzy
+#| msgid "Telegram link"
+msgid "Telegram"
+msgstr "Посилання на Telegram"
+
+msgid "New"
+msgstr "Нова"
+
+msgid "In progress"
+msgstr "В роботі"
+
+msgid "Done"
+msgstr "Виконано"
+
+msgid "Spam"
+msgstr "Спам"
+
+msgid "name"
+msgstr "ім'я"
+
+#, fuzzy
+#| msgid "main phone"
+msgid "phone"
+msgstr "основний телефон"
+
+msgid "preferred contact"
+msgstr "зручний зв'язок"
+
+msgid "event date"
+msgstr "дата події"
+
+msgid "budget"
+msgstr "бюджет"
+
+msgid "comment"
+msgstr "коментар"
+
+msgid "work number"
+msgstr "номер роботи"
+
+msgid "favourites"
+msgstr "обране"
+
+msgid "came from"
+msgstr "звідки прийшов"
+
+msgid "consent"
+msgstr "згода"
+
+msgid "enquiry"
+msgstr "заявка"
+
+msgid "enquiries"
+msgstr "заявки"
+
+msgid "New enquiry"
+msgstr "Нова заявка"
+
+#, fuzzy
+#| msgid "Banner"
+msgid "Channel"
+msgstr "Банер"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Budget"
+msgstr "Бюджет"
+
+msgid "Work"
+msgstr "Робота"
+
+msgid "Open in the admin"
+msgstr "Відкрити в адмінці"
+
+msgid "The check did not pass. Please try again or give us a call."
+msgstr "Перевірка не пройдена. Спробуйте ще раз або зателефонуйте."
+
+msgid "You have already sent an enquiry. Please give us a call."
+msgstr "Ви вже надіслали заявку. Зателефонуйте, будь ласка."
+
+msgid "Ukrainian"
+msgstr "Українська"
+
+msgid "Russian"
+msgstr "Російська"
+
+msgid "Page not found"
+msgstr "Сторінку не знайдено"
+
+msgid "There is no such page"
+msgstr "Такої сторінки немає"
+
+msgid "Maybe the address has changed. Look through the gallery, or find a work by its number."
+msgstr "Можливо, адреса змінилась. Перегляньте галерею або знайдіть роботу за номером."
+
+msgid "To the gallery"
+msgstr "До галереї"
+
+msgid "This work is no longer available"
+msgstr "Ця робота більше не доступна"
+
+msgid "It has moved to the archive. There are similar ones below, or call us and we will pick something together."
+msgstr "Вона перейшла в архів. Нижче схожі роботи, або зателефонуйте — підберемо разом."
+
+msgid "Similar works"
+msgstr "Схожі роботи"
+
 msgid "Skip to content"
 msgstr "Перейти до вмісту"
 
-#: templates/layout/banner.html:16
 msgid "Close banner"
 msgstr "Закрити банер"
 
-#: templates/layout/banner.html:27
 msgid ""
 "We are not taking new orders right now. Call us, we will suggest a date."
 msgstr "Зараз ми не приймаємо нові замовлення. Зателефонуйте, підкажемо дату."
 
-#: templates/layout/footer.html:13
 msgid "Footer menu"
 msgstr "Меню в підвалі"
 
-#: templates/layout/header.html:19 templates/layout/mobile_menu.html:9
 msgid "Main menu"
 msgstr "Головне меню"
 
-#: templates/layout/header.html:26 templates/layout/mobile_menu.html:27
 msgid "Language"
 msgstr "Мова"
 
-#: templates/layout/header.html:47
 msgid "Open menu"
 msgstr "Відкрити меню"
 
-#: templates/layout/mobile_menu.html:13
 msgid "Close menu"
 msgstr "Закрити меню"
 
-#: templates/pages/home.html:14
+msgid "Send an enquiry about these works"
+msgstr "Надіслати заявку по цих роботах"
+
+msgid "Copy the link to the collection"
+msgstr "Скопіювати посилання на добірку"
+
+msgid "Enquiry about the collection"
+msgstr "Заявка по добірці"
+
+msgid "Sort"
+msgstr "Сортування"
+
+msgid "Popular"
+msgstr "Популярні"
+
+msgid "Newest"
+msgstr "Новинки"
+
 msgid "Flowers for your day"
 msgstr "Квіти для вашого дня"
 
-#: templates/pages/home.html:17
 msgid "Bouquets, compositions and hall decoration, made by hand."
 msgstr "Букети, композиції та оформлення залів ручної роботи."
 
-#: templates/ui/breadcrumbs.html:5
-msgid "Breadcrumbs"
-msgstr "Навігація сторінкою"
+msgid "See the gallery"
+msgstr "Дивитись галерею"
 
-#: templates/ui/card_post.html:12
-msgid "Read"
-msgstr "Читати"
+msgid "Choose the occasion"
+msgstr "Оберіть привід"
 
-#: templates/ui/card_review.html:13
+msgid "All works"
+msgstr "Всі роботи"
+
+msgid "Fresh works"
+msgstr "Свіжі роботи"
+
+#, fuzzy
+#| msgid "how to order step"
+msgid "How to order"
+msgstr "крок «Як замовити»"
+
+#, fuzzy
+#| msgid "Reviews"
+msgid "All reviews"
+msgstr "Відгуки"
+
+msgid "From the blog"
+msgstr "З блогу"
+
+msgid "All posts"
+msgstr "Всі статті"
+
+#, fuzzy
+#| msgid "Instagram link"
+msgid "Our Instagram"
+msgstr "Посилання на Instagram"
+
+msgid "Where to find us"
+msgstr "Де нас знайти"
+
 #, python-format
-msgid "Rating %(rating)s of 5"
-msgstr "Оцінка %(rating)s з 5"
+msgid "Found %(counter)s work"
+msgid_plural "Found %(counter)s works"
+msgstr[0] "Знайдено %(counter)s роботу"
+msgstr[1] "Знайдено %(counter)s роботи"
+msgstr[2] "Знайдено %(counter)s робіт"
 
-#: templates/ui/card_review.html:24
+msgid "Nothing found"
+msgstr "Нічого не знайдено"
+
+msgid "Check the number, or look through the gallery. We can also pick something over the phone."
+msgstr "Перевірте номер або перегляньте галерею. Ще можемо підібрати по телефону."
+
+msgid "Thank you"
+msgstr "Дякуємо"
+
+msgid "Thank you, we have your enquiry"
+msgstr "Дякуємо, заявку прийнято"
+
+msgid "We will call you back during working hours. If it is urgent, call us and we will answer right away."
+msgstr "Ми передзвонимо у робочі години. Якщо терміново — зателефонуйте, відповімо одразу."
+
+msgid "Back to the gallery"
+msgstr "Повернутись до галереї"
+
+#, fuzzy
+#| msgid "Next photo"
+msgid "Open the photo"
+msgstr "Наступне фото"
+
 #, python-format
-msgid "Work &#8470;%(article)s"
-msgstr "Робота &#8470;%(article)s"
+msgid "Photo %(number)s"
+msgstr "Фото %(number)s"
 
-#: templates/ui/card_work.html:15
-msgid "Work"
-msgstr "Робота"
+msgid "Copy the number"
+msgstr "Скопіювати номер"
 
-#: templates/ui/card_work.html:20
+msgid "Copied"
+msgstr "Скопійовано"
+
+#, fuzzy
+#| msgid "watermark position"
+msgid "Composition"
+msgstr "розташування знака"
+
+msgid "Size"
+msgstr "Розмір"
+
+#, fuzzy
+#| msgid "Prices"
+msgid "Price"
+msgstr "Ціни"
+
 #, python-format
 msgid "from %(price)s UAH"
 msgstr "від %(price)s грн"
 
-#: templates/ui/chip.html:7
+msgid "We will repeat it as closely as we can. Flowers may differ depending on the season and the delivery."
+msgstr "Повторимо максимально близько. Квіти можуть відрізнятися залежно від сезону та поставки."
+
+msgid "Write on Viber"
+msgstr "Написати у Viber"
+
+msgid "Write on Telegram"
+msgstr "Написати в Telegram"
+
+msgid "Order something like this"
+msgstr "Замовити схожу"
+
+msgid "Add to favourites"
+msgstr "В обране"
+
+msgid "Share"
+msgstr "Поділитися"
+
+msgid "Nothing here yet"
+msgstr "Тут поки порожньо"
+
+msgid "Tap the heart on a work and it lands here. Then send us the whole collection at once."
+msgstr "Натисніть сердечко на роботі — вона зʼявиться тут. Потім надішлете всю добірку одразу."
+
+#, python-format
+msgid "Show %(counter)s work"
+msgid_plural "Show %(counter)s works"
+msgstr[0] "Показати %(counter)s роботу"
+msgstr[1] "Показати %(counter)s роботи"
+msgstr[2] "Показати %(counter)s робіт"
+
+msgid "Occasion"
+msgstr "Привід"
+
+#, fuzzy
+#| msgid "Show more"
+msgid "Show works"
+msgstr "Показати ще"
+
+msgid "Clear all"
+msgstr "Очистити все"
+
+msgid "Try removing a filter, or call us and we will pick something together."
+msgstr "Спробуйте прибрати частину фільтрів або зателефонуйте — підберемо разом."
+
+msgid "Clear the filters"
+msgstr "Скинути фільтри"
+
+msgid "Your name"
+msgstr "Ваше ім'я"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "0501234567 or +380501234567"
+msgstr "0501234567 або +380501234567"
+
+msgid "How should we reach you"
+msgstr "Зручний спосіб звʼязку"
+
+msgid "Date of the event"
+msgstr "Дата події"
+
+msgid "Roughly, in your own words"
+msgstr "Орієнтовно, своїми словами"
+
+msgid "Comment"
+msgstr "Коментар"
+
+msgid "I agree to my data being processed"
+msgstr "Погоджуюсь на обробку даних"
+
+msgid "Send"
+msgstr "Надіслати"
+
+msgid "Work number or a word"
+msgstr "Номер роботи або слово"
+
+msgid "Find"
+msgstr "Знайти"
+
+msgid "Breadcrumbs"
+msgstr "Навігація сторінкою"
+
+msgid "Read"
+msgstr "Читати"
+
+#, python-format
+msgid "Rating %(rating)s of 5"
+msgstr "Оцінка %(rating)s з 5"
+
+#, python-format
+msgid "Work &#8470;%(article)s"
+msgstr "Робота &#8470;%(article)s"
+
 #, python-format
 msgid "Remove filter %(label)s"
 msgstr "Прибрати фільтр %(label)s"
 
-#: templates/ui/cookie_banner.html:8
 msgid "We use cookies to see which pages help people find their bouquet."
-msgstr "Ми використовуємо cookie, щоб бачити, які сторінки допомагають знайти букет."
+msgstr ""
+"Ми використовуємо cookie, щоб бачити, які сторінки допомагають знайти букет."
 
-#: templates/ui/cookie_banner.html:12
 msgid "Accept"
 msgstr "Прийняти"
 
-#: templates/ui/cookie_banner.html:13
 msgid "Necessary only"
 msgstr "Тільки необхідні"
 
-#: templates/ui/drawer.html:17 templates/ui/lightbox.html:12
-#: templates/ui/modal.html:14
 msgid "Close"
 msgstr "Закрити"
 
-#: templates/ui/lightbox.html:18
 msgid "Previous photo"
 msgstr "Попереднє фото"
 
-#: templates/ui/lightbox.html:27
 msgid "Next photo"
 msgstr "Наступне фото"
 
-#: templates/ui/load_more.html:14
 msgid "Show more"
 msgstr "Показати ще"
 
-#: templates/ui/pagination.html:4
 msgid "Pagination"
 msgstr "Сторінки"
 
-#: templates/ui/pagination.html:6
 msgid "Previous page"
 msgstr "Попередня сторінка"
 
-#: templates/ui/pagination.html:21
 msgid "Next page"
 msgstr "Наступна сторінка"

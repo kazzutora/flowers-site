@@ -35,7 +35,8 @@
            hx-push-url="true"
            class="inline-flex min-h-11 items-center rounded-md px-3 text-sm
                   {% if key == query.sort %}bg-accentSoft text-accent{% else %}text-ink hover:text-accent{% endif %}">
-          {% if key == "popular" %}{% trans "Popular" %}{% else %}{% trans "New" %}{% endif %}
+          {% comment %}"Newest", not "New": the enquiry status is a different word.{% endcomment %}
+          {% if key == "popular" %}{% trans "Popular" %}{% else %}{% trans "Newest" %}{% endif %}
         </a>
       {% endfor %}
     </div>
