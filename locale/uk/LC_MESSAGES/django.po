@@ -890,7 +890,9 @@ msgstr "Як обирати квіти, скільки вони стоять і 
 msgid "Nothing here yet"
 msgstr "Тут поки порожньо"
 
-msgid "The first posts are on their way. In the meantime, have a look at the gallery."
+msgid ""
+"The first posts are on their way. In the meantime, have a look at the "
+"gallery."
 msgstr "Перші статті вже в дорозі. А поки що загляньте в галерею."
 
 msgid "What people say about our flowers."

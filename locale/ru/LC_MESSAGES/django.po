@@ -888,7 +888,9 @@ msgstr "Как выбирать цветы, сколько они стоят и 
 msgid "Nothing here yet"
 msgstr "Здесь пока пусто"
 
-msgid "The first posts are on their way. In the meantime, have a look at the gallery."
+msgid ""
+"The first posts are on their way. In the meantime, have a look at the "
+"gallery."
 msgstr "Первые статьи уже в пути. А пока загляните в галерею."
 
 msgid "What people say about our flowers."
