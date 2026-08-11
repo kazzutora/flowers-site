@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import URLPattern, URLResolver, include, path
 
+from apps.blog import views as blog_views
 from apps.catalog import views as catalog_views
 from apps.core import views as core_views
 from apps.leads import views as lead_views
@@ -26,6 +27,8 @@ localized = [
     path("obrane/", catalog_views.favorites, name="favorites"),
     path("kontakty/", core_views.contacts, name="contacts"),
     path("vidhuky/", review_views.review_list, name="review_list"),
+    path("blog/", blog_views.post_list, name="post_list"),
+    path("blog/<slug:slug>/", blog_views.post_detail, name="post_detail"),
     path("dyakuyemo/", lead_views.thanks, name="thanks"),
     # Fragments. Closed to crawlers by robots.txt, noindex in the markup.
     path("hx/gallery/", catalog_views.hx_gallery, name="hx_gallery"),
