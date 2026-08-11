@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_title %}{% trans "Blog" %}{% endblock %}
+{% block meta_description %}{% trans "How to choose flowers, how long they last and what is in season." %}{% endblock %}
+{% block og_title %}{% trans "Blog" %}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+  {% include "ui/section_heading.html" with title=_("Blog") %}
+
+  {% if posts %}
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {% for post in posts %}
+        {% include "ui/card_post.html" with post=post %}
+      {% endfor %}
+    </div>
+    <div class="py-8">
+      {% include "ui/pagination.html" with page_obj=page_obj base_url=base_url %}
+    </div>
+  {% else %}
+    {% url 'gallery' as gallery_url %}
+    {% include "ui/empty_state.html" with title=_("Nothing here yet") text=_("The first posts are on their way. In the meantime, have a look at the gallery.") action_label=_("To the gallery") action_url=gallery_url %}
+  {% endif %}
+</div>
+{% endblock %}

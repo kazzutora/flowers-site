@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n project %}
+
+{% block meta_title %}{% firstof post|tr:"seo_title" post|tr:"title" %}{% endblock %}
+{% block meta_description %}{% firstof post|tr:"seo_description" post|tr:"excerpt" %}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{% firstof post|tr:"seo_title" post|tr:"title" %}{% endblock %}
+{% block og_description %}{% firstof post|tr:"seo_description" post|tr:"excerpt" %}{% endblock %}
+{% block og_image %}
+  {% if post.cover %}<meta property="og:image" content="{% absolute_url post.cover.url %}">{% endif %}
+{% endblock %}
+
+{% block content %}
+<article class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
+
+  <header class="mx-auto max-w-3xl space-y-3">
+    <h1 class="text-4xl md:text-5xl">{{ post|tr:"title" }}</h1>
+    {% if post.published_at %}
+      <p class="text-sm text-muted">
+        <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"d.m.Y" }}</time>
+      </p>
+    {% endif %}
+    {% if post|tr:"excerpt" %}<p class="text-lg text-muted">{{ post|tr:"excerpt" }}</p>{% endif %}
+  </header>
+
+  {% if post.cover %}
+    <div class="mx-auto mt-6 aspect-video max-w-3xl overflow-hidden rounded-lg">
+      {% include "ui/image_simple.html" with field=post.cover alt=post|tr:"title" sizes="(min-width: 768px) 768px, 100vw" %}
+    </div>
+  {% endif %}
+
+  <div class="content mx-auto mt-8 max-w-3xl">{{ post|tr_html:"body" }}</div>
+
+  {% if related_works %}
+    <section class="mt-16">
+      {% url 'gallery' as gallery_url %}
+      {% include "ui/section_heading.html" with title=_("Works from this post") link_url=gallery_url link_label=_("All works") %}
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {% for work in related_works %}
+          {% include "ui/card_work.html" with work=work lazy=True sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</article>
+
+<script type="application/ld+json">{% jsonld article_jsonld %}</script>
+{% endblock %}
