@@ -28,6 +28,7 @@ from apps.catalog.models import (
 from apps.catalog.services import views_counter
 from apps.catalog.services.similar import similar_works
 from apps.core.models import SiteSettings
+from apps.leads.views import lead_form_context
 
 
 def _filter_groups() -> list[TagGroup]:
@@ -192,6 +193,8 @@ def work_detail(request: HttpRequest, slug: str) -> HttpResponse:
             ),
             "page_title": work.tr("seo_title") or f"№{work.article} {work.tr('title')}".strip(),
             "page_description": work.tr("seo_description") or work.tr("description"),
+            # Everything `partials/lead_form.html` needs for the order modal.
+            **lead_form_context(request, "full", work=work),
         },
     )
 

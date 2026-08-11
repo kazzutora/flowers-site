@@ -102,7 +102,21 @@
         {% if site_settings.telegram_url %}
           {% include "ui/button.html" with href=site_settings.telegram_url label=_("Write on Telegram") variant="secondary" icon="telegram" attrs='data-analytics="telegram_click" target="_blank" rel="noopener"' %}
         {% endif %}
+        {% comment %}
+        Section 10: this one goes quiet while orders are closed. The links
+        above never do - they are the only sales channel there is.
+        {% endcomment %}
+        {% if site_settings.accepting_orders %}
+          {% include "ui/button.html" with label=_("Order something like this") variant="secondary" attrs="@click=\"$dispatch('modal-open', 'order')\"" %}
+        {% else %}
+          {% include "ui/button.html" with label=_("Order something like this") variant="secondary" disabled=True %}
+        {% endif %}
       </div>
+
+      {% if not site_settings.accepting_orders %}
+        {% firstof site_settings|tr:"not_accepting_message" _("We are not taking new orders right now. Call us, we will suggest a date.") as not_accepting %}
+        {% include "ui/alert.html" with tone="accent" text=not_accepting %}
+      {% endif %}
 
       <div class="flex flex-wrap items-center gap-2" x-data="shareLink()">
         {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" %}
@@ -124,6 +138,7 @@
 </div>
 
 {% include "ui/lightbox.html" with images=images start_index=0 alt=main_image.alt_text %}
+{% include "ui/modal.html" with id="order" title=_("Order something like this") body_template="partials/lead_form.html" %}
 
 {% comment %}
 No Product markup while prices are off: Google asks it for an offer with a

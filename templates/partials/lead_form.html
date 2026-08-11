@@ -1,0 +1,65 @@
+{% load i18n project %}{% comment %}
+Parameters: form_kind ("callback" or "full"), form (bound, only when it came
+back with errors), form_token, form_notice, work, turnstile_site_key.
+
+Posts to /hx/lead/ with htmx and replaces itself with the answer. Without
+JavaScript the same post is an ordinary form submit ending in a 302 to
+/dyakuyemo/.
+{% endcomment %}
+<form id="lead-form-{{ form_kind }}"
+      method="post"
+      action="{% url 'hx_lead' %}"
+      hx-post="{% url 'hx_lead' %}"
+      hx-target="this"
+      hx-swap="outerHTML"
+      class="space-y-4">
+  {% csrf_token %}
+  <input type="hidden" name="form" value="{{ form_kind }}">
+  <input type="hidden" name="ts" value="{{ form_token }}">
+  <input type="hidden" name="source_url" value="{{ source_url }}">
+  <input type="hidden" name="work_article" value="{{ work.article|default:'' }}">
+  <input type="hidden" name="favorites" value="" data-favorites>
+
+  {% comment %}The trap: hidden by styles, never by type=hidden (section 15).{% endcomment %}
+  <div class="sr-only" aria-hidden="true">
+    <label>Website
+      <input type="text" name="website" tabindex="-1" autocomplete="off">
+    </label>
+  </div>
+
+  {% if form_notice %}
+    {% include "ui/alert.html" with tone="accent" text=form_notice %}
+    {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+  {% endif %}
+
+  {% include "ui/input.html" with name="name" label=_("Your name") value=form.data.name error=form.errors.name.0 required=True autocomplete="name" %}
+  {% include "ui/input.html" with name="phone" label=_("Phone") type="tel" value=form.data.phone error=form.errors.phone.0 required=True autocomplete="tel" hint=_("0501234567 or +380501234567") %}
+
+  {% if form_kind != "callback" %}
+    {% include "ui/select.html" with name="preferred_contact" label=_("How should we reach you") options=contact_options value=form.data.preferred_contact error=form.errors.preferred_contact.0 %}
+    {% include "ui/input.html" with name="event_date" label=_("Date of the event") type="date" value=form.data.event_date error=form.errors.event_date.0 %}
+    {% include "ui/input.html" with name="budget_text" label=_("Budget") value=form.data.budget_text error=form.errors.budget_text.0 hint=_("Roughly, in your own words") %}
+    {% include "ui/textarea.html" with name="comment" label=_("Comment") rows=4 maxlength=1000 value=form.data.comment error=form.errors.comment.0 %}
+  {% endif %}
+
+  {% url 'static_page' slug='polityka-konfidentsiynosti' as policy_url %}
+  {% blocktrans asvar consent_label %}I agree to my data being processed{% endblocktrans %}
+  {% include "ui/checkbox.html" with name="consent" label=consent_label value="on" checked=form.data.consent error=form.errors.consent.0 %}
+  <p class="text-sm text-muted">
+    <a href="{{ policy_url }}" class="underline hover:text-accent">{% trans "Privacy policy" %}</a>
+  </p>
+
+  {% if turnstile_site_key %}
+    <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+  {% endif %}
+
+  {% if site_settings.accepting_orders %}
+    {% include "ui/button.html" with type="submit" label=_("Send") variant="primary" full_width=True attrs='data-analytics="lead_submit"' %}
+  {% else %}
+    {% comment %}Section 10: the order button goes quiet, the tel: link never does.{% endcomment %}
+    {% firstof site_settings|tr:"not_accepting_message" _("We are not taking new orders right now. Call us, we will suggest a date.") as not_accepting %}
+    {% include "ui/button.html" with type="submit" label=_("Send") variant="primary" full_width=True disabled=True %}
+    {% include "ui/alert.html" with tone="accent" text=not_accepting %}
+    {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+  {% endif %}
+</form>

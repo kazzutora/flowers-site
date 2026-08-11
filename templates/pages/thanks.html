@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}{% comment %}
+The conversion mark of section 10. It exists whatever else is switched off.
+{% endcomment %}
+
+{% block meta_title %}{% trans "Thank you" %}{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-site px-4 pb-16 md:px-8">
+  {% url 'gallery' as gallery_url %}
+  {% include "ui/empty_state.html" with title=_("Thank you, we have your enquiry") text=_("We will call you back during working hours. If it is urgent, call us and we will answer right away.") action_label=_("Back to the gallery") action_url=gallery_url %}
+
+  <div class="flex flex-wrap justify-center gap-3">
+    {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
+    {% include "ui/social_icons.html" %}
+  </div>
+</div>
+{% endblock %}
