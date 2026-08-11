@@ -7,6 +7,7 @@ from django.urls import URLPattern, URLResolver, include, path
 from apps.catalog import views as catalog_views
 from apps.core import views as core_views
 from apps.leads import views as lead_views
+from apps.reviews import views as review_views
 
 urlpatterns: list[URLPattern | URLResolver] = [
     # Ahead of the admin site: it owns the prefix, not this address.
@@ -24,11 +25,13 @@ localized = [
     path("poshuk/", catalog_views.search, name="search"),
     path("obrane/", catalog_views.favorites, name="favorites"),
     path("kontakty/", core_views.contacts, name="contacts"),
+    path("vidhuky/", review_views.review_list, name="review_list"),
     path("dyakuyemo/", lead_views.thanks, name="thanks"),
     # Fragments. Closed to crawlers by robots.txt, noindex in the markup.
     path("hx/gallery/", catalog_views.hx_gallery, name="hx_gallery"),
     path("hx/lead/", lead_views.hx_lead, name="hx_lead"),
     path("hx/favorites/", catalog_views.hx_favorites, name="hx_favorites"),
+    path("hx/review/", review_views.hx_review, name="hx_review"),
     # Registered always, answers only while DEBUG is on: the view checks.
     path("kitchen-sink/", core_views.kitchen_sink, name="kitchen_sink"),
     # Stays last: it matches any single segment, so every new URL must be
