@@ -3,12 +3,19 @@ Parameters: work, show_price, lazy, sizes.
 `work.main_image` is the photo flagged is_main, resolved by the model without a
 query from the template. `cost` is never passed into a template, and the price
 is rendered only when the caller has already checked SiteSettings.prices_enabled.
-{% endcomment %}<article class="group">
+{% endcomment %}<article class="group relative">
   <a href="{{ work.get_absolute_url }}" class="block overflow-hidden rounded-md bg-white shadow-card">
     <div class="aspect-card w-full overflow-hidden">
       {% include "ui/picture.html" with image=work.main_image preset="card" lazy=lazy sizes=sizes alt=work|tr:"title" %}
     </div>
   </a>
+  {% comment %}
+  The collection lives in localStorage, so the state is decided in the browser
+  and never in the response (section 10).
+  {% endcomment %}
+  <div class="absolute right-2 top-2" x-data="{ article: {{ work.article }} }" x-cloak>
+    {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" attrs="@click=\"$store.favorites.toggle(article)\" :aria-pressed=\"$store.favorites.has(article)\" :class=\"$store.favorites.has(article) && 'text-accent'\"" %}
+  </div>
   <div class="mt-3 space-y-1">
     <div class="flex items-baseline justify-between gap-2">
       <a href="{{ work.get_absolute_url }}" class="text-base font-medium text-ink hover:text-accent">

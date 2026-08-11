@@ -40,6 +40,18 @@
         {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="icon" %}
       </div>
 
+      {% comment %}
+      The counter is filled by the browser: the collection lives in
+      localStorage and never reaches the server (section 10).
+      {% endcomment %}
+      <a href="{% url 'favorites' %}" aria-label="{% trans 'Favourites' %}"
+         class="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
+        <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#heart"></use></svg>
+        <span x-cloak x-show="$store.favorites && $store.favorites.count"
+              x-text="$store.favorites ? $store.favorites.count : ''"
+              class="absolute right-1 top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-xs text-white"></span>
+      </a>
+
       <div class="hidden lg:block">
         {% include "ui/social_icons.html" with size="sm" %}
       </div>

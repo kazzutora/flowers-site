@@ -30,6 +30,17 @@
 
   <script defer src="{% static 'js/htmx.min.js' %}"></script>
   <script defer src="{% static 'js/app.js' %}"></script>
+  <script defer src="{% static 'js/favorites.js' %}"></script>
+  {% comment %}
+  Section 16: nothing from the analytics side is on the page unless the id is
+  filled in and the visitor accepted. Both scripts are deferred, so neither
+  touches the LCP.
+  {% endcomment %}
+  {% if analytics_enabled %}
+    <script defer src="https://www.googletagmanager.com/gtag/js?id={{ site_settings.analytics_ga_id }}"></script>
+    <script defer src="{% static 'js/analytics.js' %}" data-ga-id="{{ site_settings.analytics_ga_id }}"></script>
+  {% endif %}
+  {# Alpine last: it starts as soon as it lands and needs the stores defined. #}
   <script defer src="{% static 'js/alpine.min.js' %}"></script>
   {% block extra_head %}{% endblock %}
 </head>
