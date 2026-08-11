@@ -1,0 +1,58 @@
+{% comment %}
+Section 10: this page has to render when the database is down, so it inherits
+nothing, calls no context processor and carries its own styles. The stylesheet
+lives here on purpose - a build artefact is one more thing that can be missing
+at the exact moment this page is needed.
+
+It is also the one template with no translation tags: loading a catalogue is
+another moving part, and the two sentences below are worth less than certainty.
+{% endcomment %}<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Щось пішло не так</title>
+  <meta name="robots" content="noindex, follow">
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FBF8F4;
+      color: #2A2724;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    main { max-width: 32rem; padding: 2rem 1rem; text-align: center; }
+    h1 { font-size: 1.75rem; margin: 0 0 0.75rem; }
+    p { margin: 0 0 1.5rem; color: #7A736C; }
+    a {
+      display: inline-block;
+      min-height: 44px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      background: #B25C4B;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a.secondary { background: #fff; color: #2A2724; border: 1px solid #E7E0D8; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Щось пішло не так</h1>
+    <p>
+      Ми вже про це знаємо і лагодимо. Спробуйте оновити сторінку за кілька хвилин,
+      а якщо справа термінова — просто зателефонуйте нам.
+    </p>
+    <p>
+      <a href="/">На головну</a>
+      <a class="secondary" href="/galereya/">До галереї</a>
+    </p>
+  </main>
+</body>
+</html>
