@@ -9,6 +9,8 @@ from apps.core import views as core_views
 from apps.leads import views as lead_views
 
 urlpatterns: list[URLPattern | URLResolver] = [
+    # Ahead of the admin site: it owns the prefix, not this address.
+    path("admin/upload-image/", core_views.upload_image, name="upload_image"),
     path("admin/", admin.site.urls),
     path("tinymce/", include("tinymce.urls")),
     path("i18n/", include("django.conf.urls.i18n")),

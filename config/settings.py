@@ -216,16 +216,23 @@ UNFOLD = {
 
 TINYMCE_DEFAULT_CONFIG = {
     "menubar": False,
-    "plugins": "lists link table code",
+    "plugins": "lists link table image code",
     "toolbar": (
         "undo redo | blocks | bold italic underline | bullist numlist | "
-        "link table | removeformat | code"
+        "link image table | removeformat | code"
     ),
     "block_formats": "Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4",
     "width": "100%",
     "height": 480,
     "convert_urls": False,
     "browser_spellcheck": True,
+    # django-tinymce resolves a bare name against `window`, which is the only
+    # way to hand it a function: the config travels as JSON. The handler lives
+    # in static/js/tinymce-upload.js and carries the CSRF token, so the
+    # endpoint keeps its ordinary protection.
+    "images_upload_handler": "uploadEditorImage",
+    "automatic_uploads": True,
+    "images_reuse_filename": False,
 }
 
 LOGGING = {
