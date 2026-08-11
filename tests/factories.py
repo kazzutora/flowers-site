@@ -2,10 +2,11 @@
 
 import factory
 
+from apps.catalog.models import Occasion, Tag, TagGroup, Work, WorkImage
 from apps.core.models import HowToStep, SiteSettings, StaticPage
 
 
-class SiteSettingsFactory(factory.django.DjangoModelFactory):
+class SiteSettingsFactory(factory.django.DjangoModelFactory[SiteSettings]):
     class Meta:
         model = SiteSettings
         django_get_or_create = ("id",)
@@ -17,7 +18,7 @@ class SiteSettingsFactory(factory.django.DjangoModelFactory):
     working_hours_uk = "Щодня 9:00 - 20:00"
 
 
-class StaticPageFactory(factory.django.DjangoModelFactory):
+class StaticPageFactory(factory.django.DjangoModelFactory[StaticPage]):
     class Meta:
         model = StaticPage
         django_get_or_create = ("slug",)
@@ -28,7 +29,7 @@ class StaticPageFactory(factory.django.DjangoModelFactory):
     is_published = True
 
 
-class HowToStepFactory(factory.django.DjangoModelFactory):
+class HowToStepFactory(factory.django.DjangoModelFactory[HowToStep]):
     class Meta:
         model = HowToStep
 
@@ -37,3 +38,65 @@ class HowToStepFactory(factory.django.DjangoModelFactory):
     text_uk = "Опис кроку"
     icon = "flower"
     is_active = True
+
+
+class OccasionFactory(factory.django.DjangoModelFactory[Occasion]):
+    class Meta:
+        model = Occasion
+        django_get_or_create = ("slug",)
+
+    slug = factory.Sequence(lambda n: f"pryvid-{n}")
+    name_uk = factory.Sequence(lambda n: f"Привід {n}")
+    name_ru = factory.Sequence(lambda n: f"Повод {n}")
+    is_active = True
+    show_on_home = True
+
+
+class TagGroupFactory(factory.django.DjangoModelFactory[TagGroup]):
+    class Meta:
+        model = TagGroup
+        django_get_or_create = ("slug",)
+
+    slug = factory.Sequence(lambda n: f"hrupa-{n}")
+    name_uk = factory.Sequence(lambda n: f"Група {n}")
+    filter_kind = TagGroup.FilterKind.CHECKBOX
+    is_active = True
+
+
+class TagFactory(factory.django.DjangoModelFactory[Tag]):
+    class Meta:
+        model = Tag
+        django_get_or_create = ("slug",)
+
+    group = factory.SubFactory(TagGroupFactory)
+    slug = factory.Sequence(lambda n: f"teh-{n}")
+    name_uk = factory.Sequence(lambda n: f"Тег {n}")
+    is_active = True
+
+
+class WorkFactory(factory.django.DjangoModelFactory[Work]):
+    class Meta:
+        model = Work
+        skip_postgeneration_save = True
+
+    title_uk = factory.Sequence(lambda n: f"Робота {n}")
+    status = Work.Status.PUBLISHED
+
+    @factory.post_generation
+    def occasions(self, create: bool, extracted: list[Occasion] | None, **kwargs: object) -> None:
+        if create and extracted:
+            self.occasions.set(extracted)
+
+    @factory.post_generation
+    def tags(self, create: bool, extracted: list[Tag] | None, **kwargs: object) -> None:
+        if create and extracted:
+            self.tags.set(extracted)
+
+
+class WorkImageFactory(factory.django.DjangoModelFactory[WorkImage]):
+    class Meta:
+        model = WorkImage
+
+    work = factory.SubFactory(WorkFactory)
+    # Real pixels: the rendition pipeline has to have something to resize.
+    image = factory.django.ImageField(width=800, height=1000, color="#F2C9C9", format="JPEG")
