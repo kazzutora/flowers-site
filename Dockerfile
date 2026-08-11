@@ -60,10 +60,22 @@ RUN useradd --system --create-home --uid 10001 app
 COPY --chown=app:app . /app
 # Empty DJANGO_SETTINGS_MODULE keeps compilemessages from loading settings: the
 # real environment does not exist at build time.
+#
+# collectstatic does need settings, so it gets throwaway ones. They are only
+# ever seen by this one command inside the build: nothing is connected to, and
+# the image carries no trace of them.
 RUN set -eu; \
     tailwindcss -i static/css/input.css -o static/css/app.css --minify; \
     DJANGO_SETTINGS_MODULE= django-admin compilemessages; \
     mkdir -p /app/media/public /app/media/private /app/staticfiles; \
+    SECRET_KEY=build-only \
+    SITE_URL=http://build.invalid \
+    DATABASE_URL=postgresql://build:build@127.0.0.1:5432/build \
+    REDIS_URL=redis://127.0.0.1:6379/0 \
+    CELERY_BROKER_URL=redis://127.0.0.1:6379/1 \
+    CELERY_RESULT_BACKEND=redis://127.0.0.1:6379/2 \
+    IP_HASH_SALT=build-only \
+    python manage.py collectstatic --noinput --clear; \
     chown -R app:app /app/media /app/staticfiles /app/static
 USER app
 EXPOSE 8000
