@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import URLPattern, URLResolver, include, path
 
+from apps.catalog import views as catalog_views
 from apps.core import views as core_views
 
 urlpatterns: list[URLPattern | URLResolver] = [
@@ -14,6 +15,11 @@ urlpatterns: list[URLPattern | URLResolver] = [
 
 localized = [
     path("", core_views.home, name="home"),
+    path("galereya/", catalog_views.gallery, name="gallery"),
+    path("galereya/<slug:occasion_slug>/", catalog_views.gallery, name="gallery_occasion"),
+    path("robota/<slug:slug>/", catalog_views.work_detail, name="work_detail"),
+    # Fragments. Closed to crawlers by robots.txt, noindex in the markup.
+    path("hx/gallery/", catalog_views.hx_gallery, name="hx_gallery"),
     # Registered always, answers only while DEBUG is on: the view checks.
     path("kitchen-sink/", core_views.kitchen_sink, name="kitchen_sink"),
     # Stays last: it matches any single segment, so every new URL must be
