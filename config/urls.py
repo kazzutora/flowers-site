@@ -33,6 +33,8 @@ urlpatterns: list[URLPattern | URLResolver] = [
         name="sitemap_section",
     ),
     path("robots.txt", core_views.robots_txt, name="robots_txt"),
+    # Watched by the load balancer, so it never takes a language prefix.
+    path("healthz/", core_views.healthz, name="healthz"),
 ]
 
 localized = [

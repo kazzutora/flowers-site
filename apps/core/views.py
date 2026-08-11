@@ -1,7 +1,10 @@
+import logging
 from typing import Any
 
 from django.apps import apps
 from django.conf import settings as django_settings
+from django.core.cache import cache
+from django.db import connection
 from django.db.models import Avg, Count
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -15,6 +18,8 @@ from apps.core.models import HowToStep, SiteSettings, StaticPage
 from apps.core.services.images import compress_simple_image
 from apps.leads.views import lead_form_context
 from config.storages import public_storage
+
+logger = logging.getLogger(__name__)
 
 FRESH_WORKS = 12
 FEATURED_REVIEWS = 3
@@ -178,6 +183,37 @@ def upload_image(request: HttpRequest) -> HttpResponse:
     storage = public_storage()
     name = storage.save(f"content/{timezone.now():%Y/%m}/{compressed.name}", compressed)
     return JsonResponse({"location": storage.url(name)})
+
+
+def healthz(request: HttpRequest) -> HttpResponse:
+    """`/healthz/` (section 9). 200 while the dependencies answer, 503 otherwise.
+
+    The check is deliberately cheap and honest: one round trip to Postgres and
+    one to Redis. A load balancer needs to know whether this instance can serve
+    a page, not how fast it is.
+    """
+    checks: dict[str, str] = {}
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+        checks["database"] = "ok"
+    except Exception as error:
+        logger.error("healthz: the database is unreachable", exc_info=True)
+        checks["database"] = f"error: {type(error).__name__}"
+
+    try:
+        cache.set("healthz", "ok", 10)
+        checks["cache"] = "ok" if cache.get("healthz") == "ok" else "error: no round trip"
+    except Exception as error:
+        logger.error("healthz: the cache is unreachable", exc_info=True)
+        checks["cache"] = f"error: {type(error).__name__}"
+
+    healthy = all(value == "ok" for value in checks.values())
+    return JsonResponse(
+        {"status": "ok" if healthy else "error", **checks}, status=200 if healthy else 503
+    )
 
 
 def robots_txt(request: HttpRequest) -> HttpResponse:

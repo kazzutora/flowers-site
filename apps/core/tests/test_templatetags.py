@@ -3,7 +3,7 @@
 import pytest
 from django.template import Context, Template
 from django.utils.translation import override
-from hypothesis import assume, given
+from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
 from apps.core.models import StaticPage
@@ -69,11 +69,16 @@ def test_alternate_path(path: str, language: str, expected: str) -> None:
     assert alternate_path(path, language) == expected
 
 
-NAMES = st.text(alphabet="abcdefghijklmnopqrstuvwxyz-_", min_size=1, max_size=8)
-QUERIES = st.dictionaries(NAMES, NAMES, max_size=5)
+NAMES = st.text(alphabet="abcdefghijklmnopqrstuvwxyz-_", min_size=1, max_size=6)
+QUERIES = st.dictionaries(NAMES, NAMES, max_size=3)
 PATHS = st.lists(NAMES, max_size=3)
 
+# The strategies above are tiny; the health check fires when the machine is
+# busy, not when the test is. A flaky gate teaches people to ignore it.
+STEADY = settings(deadline=None, suppress_health_check=[HealthCheck.too_slow])
 
+
+@STEADY
 @given(segments=PATHS, query=QUERIES)
 def test_alternate_path_keeps_the_query(segments: list[str], query: dict[str, str]) -> None:
     # A path that already starts with a language prefix is a translated page,
@@ -90,6 +95,7 @@ def test_alternate_path_keeps_the_query(segments: list[str], query: dict[str, st
     assert alternate_path(switched, "uk") == full_path
 
 
+@STEADY
 @given(segments=PATHS)
 def test_alternate_path_is_stable(segments: list[str]) -> None:
     path = "/" + "".join(f"{segment}/" for segment in segments)

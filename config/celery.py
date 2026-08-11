@@ -35,13 +35,9 @@ app.conf.task_routes = {
 app.conf.task_track_started = True
 app.conf.worker_hijack_root_logger = False
 
-# Section 8. core.ping goes away with the skeleton.
+# The schedule of section 8. core.ping is gone: it existed to prove the queue
+# worked in the skeleton, and the launch checklist asks for its removal.
 app.conf.beat_schedule = {
-    "ping": {
-        "task": "core.ping",
-        "schedule": 60.0,
-        "kwargs": {"payload": {}},
-    },
     "expire-banner": {
         "task": "core.expire_banner",
         "schedule": 3600.0,
