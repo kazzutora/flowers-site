@@ -98,4 +98,5 @@ django_settings_module = "config.settings"
 addopts = "-q --strict-markers"
 python_files = ["test_*.py"]
 testpaths = ["apps", "clients", "tests"]
+markers = ["e2e: drives a real browser through Playwright"]
 DJANGO_SETTINGS_MODULE = "config.settings"

@@ -63,6 +63,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install ".[dev]"
 
+      # Without it the end to end scenarios skip themselves instead of running.
+      - name: Install the browser
+        run: playwright install --with-deps chromium
+
       - name: Lint
         run: ruff check .
 
