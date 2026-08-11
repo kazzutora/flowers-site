@@ -86,6 +86,19 @@ class Settings(BaseSettings):
     time_zone: str = "Europe/Kyiv"
     language_code: str = "uk"
 
+    # --- Read by docker compose, never by Django --------------------------
+    # `.env` is shared: compose substitutes variables from it and Django
+    # loads it here. Because `extra="forbid"` is what catches a mistyped
+    # variable name, a compose-only key that is *not* declared below stops
+    # the app at startup — which is how `IMAGE`, written into the server's
+    # `.env` by deploy.yml on every release, would have taken prod down.
+    # Declaring them keeps the typo guard while letting both readers share
+    # one file.
+    site_domain: str | None = None
+    image: str | None = None
+    postgres_host_port: int = 5432
+    redis_host_port: int = 6379
+
     @field_validator("allowed_hosts", "csrf_trusted_origins", mode="before")
     @classmethod
     def _split_csv(cls, value: object) -> object:
