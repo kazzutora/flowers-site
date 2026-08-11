@@ -19,11 +19,14 @@ from django.contrib import admin, messages
 from django.db import models
 from django.db.models import QuerySet
 from django.forms.models import BaseInlineFormSet
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import ngettext
 from unfold.admin import ModelAdmin, TabularInline
+from unfold.decorators import action as unfold_action
 
 from apps.catalog.models import (
     Occasion,
@@ -33,6 +36,7 @@ from apps.catalog.models import (
     WorkImage,
     WorkImageRendition,
 )
+from apps.catalog.tasks import regenerate_all_renditions
 
 
 def _thumbnail(image: WorkImage | None) -> str:
@@ -105,7 +109,9 @@ class WorkAdmin(SortableAdminBase, ModelAdmin):
     search_fields = ("title_uk", "title_ru", "composition_uk", "composition_ru")
     readonly_fields = ("article", "slug", "views_count", "created_at", "updated_at")
     inlines = [WorkImageInline]
-    actions = ["publish", "archive", "pin"]
+    actions = ["publish", "archive", "pin", "regenerate_photos"]
+    # Changelist button, for the moment after the watermark changed.
+    actions_list = ["regenerate_every_photo"]
     # Checkboxes rather than a horizontal filter: the owner fills this in on a
     # phone, and the sets are small.
     formfield_overrides = {models.ManyToManyField: {"widget": forms.CheckboxSelectMultiple}}
@@ -251,6 +257,22 @@ class WorkAdmin(SortableAdminBase, ModelAdmin):
             ngettext("%(count)d work pinned.", "%(count)d works pinned.", updated)
             % {"count": updated},
         )
+
+    @admin.action(description=_("Rebuild the photos of the selected works"))
+    def regenerate_photos(self, request: HttpRequest, queryset: QuerySet[Work]) -> None:
+        for work_id in queryset.values_list("pk", flat=True):
+            regenerate_all_renditions.apply_async(
+                kwargs={"payload": {"force": True, "work_id": work_id}}, queue="media"
+            )
+        self.message_user(request, _("The photos are being rebuilt in the background."))
+
+    @unfold_action(description=_("Rebuild every photo"), url_path="regenerate-renditions")
+    def regenerate_every_photo(self, request: HttpRequest) -> HttpResponse:
+        """Used after the watermark changed: file names carry the version, so
+        the new images reach visitors through the CDN."""
+        regenerate_all_renditions.apply_async(kwargs={"payload": {"force": True}}, queue="media")
+        messages.info(request, _("Every photo is being rebuilt in the background."))
+        return redirect(reverse("admin:catalog_work_changelist"))
 
 
 @admin.register(Occasion)

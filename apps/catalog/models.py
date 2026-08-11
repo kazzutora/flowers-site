@@ -8,14 +8,16 @@ from typing import Any
 from django.core.exceptions import ValidationError
 from django.db import connection, models, transaction
 from django.db.models import F, Q
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+from apps.catalog.services.images import process_original, validate_work_photo
 from apps.core.models import TranslatedMixin
+from apps.core.services.images import compress_field
 from config.storages import private_storage, public_storage
 
 # Query parameter names the gallery owns (section 4.3). A tag slug may not
@@ -114,6 +116,11 @@ class Occasion(TranslatedMixin, models.Model):
 
     def __str__(self) -> str:
         return self.name_uk
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        # Section 14.2: tiles get no rendition pipeline, they are squeezed once.
+        compress_field(self, "cover")
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self) -> str:
         return reverse("gallery_occasion", kwargs={"occasion_slug": self.slug})
@@ -307,6 +314,7 @@ class WorkImage(TranslatedMixin, models.Model):
         storage=private_storage,
         width_field="width",
         height_field="height",
+        validators=[validate_work_photo],
     )
     width = models.PositiveIntegerField(default=0, editable=False)
     height = models.PositiveIntegerField(default=0, editable=False)
@@ -334,6 +342,11 @@ class WorkImage(TranslatedMixin, models.Model):
     def save(self, *args: Any, **kwargs: Any) -> None:
         creating = self._state.adding
         siblings = WorkImage.objects.filter(work_id=self.work_id).exclude(pk=self.pk)
+
+        # `_committed` is False only while the field holds a fresh upload, which
+        # is exactly when the original has to be stripped of its metadata.
+        if self.image and not getattr(self.image, "_committed", True):
+            self.image = process_original(self.image.file, str(self.image.name))
 
         if creating and not self.order:
             # Photos added one after another line up 0, 1, 2; dragging in the
@@ -363,6 +376,22 @@ class WorkImage(TranslatedMixin, models.Model):
         if occasion is not None:
             return str(occasion.tr("name"))
         return ""
+
+
+@receiver(post_save, sender=WorkImage)
+def enqueue_renditions(sender: type[WorkImage], instance: WorkImage, **kwargs: Any) -> None:
+    """Queue the derived images once the row is really committed (section 14.1).
+
+    Imported inside the function: `tasks` imports the models back.
+    """
+    from apps.catalog.tasks import generate_renditions
+
+    work_image_id = instance.pk
+    transaction.on_commit(
+        lambda: generate_renditions.apply_async(
+            kwargs={"payload": {"work_image_id": work_image_id}}, queue="media"
+        )
+    )
 
 
 @receiver(post_delete, sender=WorkImage)
