@@ -12,6 +12,12 @@ JavaScript the same post is an ordinary form submit ending in a 302 to
       hx-post="{% url 'hx_lead' %}"
       hx-target="this"
       hx-swap="outerHTML"
+      {% comment %}
+      `find button[type=submit]`, never `this`: a <form> has no disabled
+      attribute, so disabling the form itself does nothing and a second tap
+      creates a second enquiry.
+      {% endcomment %}
+      hx-disabled-elt="find button[type=submit]"
       {% if work %}data-analytics-article="{{ work.article }}"{% endif %}
       class="space-y-4">
   {% csrf_token %}
