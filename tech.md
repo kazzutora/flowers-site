@@ -1,9 +1,10 @@
 # tech.md — ядро проекта «Квіткова майстерня»
 
-**Версия ядра: v2** · 2026-08-09
+**Версия ядра: v3** · 2026-08-12
 
 ## Changelog
 
+- **v3** — правки по разделу 17 `FRONTEND.md`. Раздел 13 получил `fontFamily`, `fontSize`, `spacing.section`/`section-lg`, `maxWidth.content`, `maxHeight.drawer`, `width.filters`, `ringOffsetColor`; `muted` и `accent` затемнены до `#6E675F` и `#9E4E3F` ради порога контраста 4.5:1. Раздел 12: параметр `priority` у `picture.html`, закрытый перечень `tone`, `cookie_banner.html` перенесён в `layout/`, добавлен подраздел 12.1 с контрактами DOM. Раздел 3: `layout/orders_paused.html`, `partials/gallery_cards.html`, `pages/kitchen_sink.html`. Раздел 4.3: `occasion` в зарезервированных именах. Раздел 9: `/hx/gallery/` принимает `occasion`, адрес после HTMX-фильтрации ставится заголовком `HX-Push-Url` с сервера. Раздел 16: бюджет 60 КБ gzip на CSS и JS, ориентир INP.
 - **v2** — ревизия по итогам сквозной проверки. Существенное: задачи Celery получили явные имена, отправка в Telegram вынесена из транзакции; `Review` получил поля уведомления и антиспама; оригиналы изображений переехали в непубличное хранилище; рендишены генерируются только для фото работ; добавлены `tr_html`, cookie-согласие, эндпоинты `/hx/lead/`, `/hx/review/`, `/hx/favorites/`, `/healthz/`, код 410 для архива; сортировка галереи задана точными ключами; masonry заменён на сетку с фиксированной пропорцией; `PostCategory` и `season_hint` удалены; зафиксированы часовой пояс, кэш галереи, лимит избранного, поведение при лимитах.
 - **v1** — первичная фиксация.
 
@@ -150,9 +151,12 @@ flowers/
 │   ├── 410.html
 │   ├── 500.html                  # самостоятельный, без наследования base.html
 │   ├── layout/                   # header, footer, banner, mobile_menu, cookie_banner
+│   │                             # + orders_paused.html — полоса «не приймаємо замовлення»
 │   ├── ui/                       # примитивы, раздел 12
-│   ├── pages/
-│   └── partials/
+│   ├── pages/                    # + kitchen_sink.html — рендер примитивов, только при DEBUG=True
+│   └── partials/                 # ответы HTMX-эндпоинтов
+│       ├── gallery_grid.html     # полный ответ /hx/gallery/: сетка + OOB-блоки
+│       └── gallery_cards.html    # только карточки, для догрузки «Показати ще»
 ├── static/
 │   ├── css/
 │   ├── js/                       # htmx.min.js, alpine.min.js, app.js, favorites.js, analytics.js
@@ -223,7 +227,9 @@ Meta: `ordering = ['order', 'id']`; indexes: `(is_active, order)`.
 Валидация в `clean()`:
 
 - у группы `color_swatch` поле `color_hex` обязательно, у остальных пустое;
-- слаг тега не совпадает ни с одним `TagGroup.slug` и ни с одним зарезервированным именем параметра: `sort`, `page`, `q`, `a`.
+- слаг тега не совпадает ни с одним `TagGroup.slug` и ни с одним зарезервированным именем параметра: `sort`, `page`, `q`, `a`, `occasion`.
+
+`occasion` зарезервирован, хотя на публичном URL повод живёт в пути: этим именем форма фильтров передаёт слаг текущего раздела в `/hx/gallery/` (раздел 9).
 
 ### 4.4 `catalog.Work` — работа
 
@@ -636,7 +642,7 @@ beat_schedule = {
 | `/blog/` | GET | post_list | index |
 | `/blog/<slug>/` | GET | post_detail | index |
 | `/dyakuyemo/` | GET | thanks | noindex |
-| `/hx/gallery/` | GET | фрагмент сетки | noindex |
+| `/hx/gallery/` | GET | фрагмент сетки. Дополнительно принимает параметр `occasion` со слагом раздела | noindex |
 | `/hx/favorites/` | POST | фрагмент карточек по списку номеров из браузера | noindex |
 | `/hx/lead/` | POST | приём заявки | noindex |
 | `/hx/review/` | POST | приём отзыва | noindex |
@@ -666,6 +672,7 @@ beat_schedule = {
 - `page` — целое от 1.
 - Неизвестные параметры и слаги отбрасываются молча.
 - Canonical нормализуется: группы по `TagGroup.order`, значения внутри группы по алфавиту слага.
+- `occasion` — **только для `/hx/gallery/`**. Эндпоинт HTMX один на все разделы, поэтому форма фильтров передаёт слаг текущего раздела скрытым полем. На публичном адресе повод остаётся частью пути и в query не появляется никогда. Имя зарезервировано в 4.3.
 
 ### Точные ключи сортировки
 
@@ -701,6 +708,8 @@ beat_schedule = {
 ### История браузера и «Показати ще»
 
 `hx-push-url` обновляет адрес при смене фильтров и при подгрузке следующей страницы (меняется только `page`). Кнопка «назад» возвращает состояние с соответствующей страницей; догруженные поверх блоки не восстанавливаются, страница рендерится сервером заново.
+
+**Адрес ставит сервер.** Обновление строки адреса выполняется заголовком ответа `HX-Push-Url` с готовым публичным нормализованным URL (`/galereya/vesillya/?color=bilyi&type=buket`), собранным по правилам канонизации этого раздела. Атрибут `hx-push-url="true"` на запросах к `/hx/gallery/` **не используется**: он записал бы в адресную строку служебный эндпоинт, закрытый в `robots.txt` и не отдающий страницу целиком. Нормализация — серверная логика и на клиенте не воспроизводится.
 
 ---
 
@@ -834,7 +843,7 @@ class TranslatedMixin:
 
 ## 12. UI-примитивы
 
-Собираются в скелете **до** начала фич, лежат в `templates/ui/`, подключаются через `{% include %}`.
+Собираются в скелете **до** начала фич, лежат в `templates/ui/` (исключение — `cookie_banner.html`, см. строку таблицы), подключаются через `{% include %}`.
 
 | Файл | Параметры |
 |---|---|
@@ -845,7 +854,7 @@ class TranslatedMixin:
 | `card_work.html` | `work`, `show_price`, `lazy`, `sizes` |
 | `card_post.html` | `post` |
 | `card_review.html` | `review`, `compact` |
-| `picture.html` | `image` (WorkImage), `preset`, `sizes`, `lazy`, `alt`. Рендерит `<picture>` с avif и webp, `width`/`height`. Пока `renditions_ready` False — рендерит `skeleton.html`, **не оригинал** |
+| `picture.html` | `image` (WorkImage), `preset`, `sizes`, `lazy`, `alt`, `priority`. Рендерит `<picture>` с avif и webp, `width`/`height`. Пока `renditions_ready` False — рендерит `skeleton.html`, **не оригинал**. `priority=True` даёт `loading="eager"` и `fetchpriority="high"` и ставится только у hero и первых четырёх карточек первой страницы галереи |
 | `image_simple.html` | `field` (любой ImageField, кроме WorkImage), `alt`, `lazy`, `sizes`. Для обложек, hero, фото отзывов |
 | `input.html` | `name`, `label`, `type`, `value`, `error`, `required`, `hint`, `autocomplete` |
 | `textarea.html` | те же плюс `rows`, `maxlength` |
@@ -866,9 +875,31 @@ class TranslatedMixin:
 | `social_icons.html` | `size` |
 | `map_embed.html` | `src`, `title` |
 | `skeleton.html` | `kind`, `count`, `ratio` |
-| `cookie_banner.html` | без параметров |
+| `cookie_banner.html` | без параметров. **Лежит в `templates/layout/`**, а не в `ui/`: это часть каркаса страницы, а не переиспользуемый примитив. На `/kitchen-sink/` присутствует наравне с остальными |
+
+**Перечень значений `tone`** для `alert.html` и `badge.html` закрытый: `info`, `success`, `warning`, `danger`. Значения `error` в палитре раздела 13 нет, вместо него `danger`.
 
 Роут `/kitchen-sink/` (только при `DEBUG=True`) рендерит все примитивы во всех состояниях. Для примитивов, принимающих модели, используются стабы из `tests/stubs.py` — kitchen-sink не должен зависеть от наличия данных в базе.
+
+### 12.1 Контракты DOM
+
+Идентификаторы и `data`-атрибуты, на которые опираются HTMX и JavaScript, — такая же часть контракта, как имена полей моделей. Список **закрытый**, новый идентификатор — изменение контракта и бамп версии ядра.
+
+| Идентификатор | Где живёт | Зачем |
+|---|---|---|
+| `#gallery-grid` | галерея | цель swap сетки, приёмник карточек при догрузке |
+| `#gallery-count` | галерея | «Знайдено 47 робіт», OOB-блок |
+| `#gallery-chips` | галерея | активные фильтры чипами, OOB-блок |
+| `#gallery-filters` | галерея | панель фильтров, OOB-блок |
+| `#filters-count` | галерея | число на мобильной кнопке «Фільтри», OOB-блок |
+| `#load-more` | галерея | кнопка догрузки, подменяет сама себя через `outerHTML` |
+| `#favorites-grid` | `/obrane/` | цель ответа `/hx/favorites/` |
+| `#favorites-count` | шапка | счётчик избранного |
+| `#lead-form` | формы заявки | цель ответа `/hx/lead/` при ошибках валидации |
+| `#review-form` | форма отзыва | цель ответа `/hx/review/` при ошибках валидации |
+| `data-favorite="<article>"` | карточка работы | кнопка избранного, связь с номером работы |
+
+Панель фильтров обязана обновляться вместе с сеткой: иначе снятие фильтра чипом не снимет галочку в панели, и следующая отправка формы вернёт только что убранный фильтр.
 
 ---
 
@@ -880,16 +911,35 @@ class TranslatedMixin:
 colors: {
   cream:      '#FBF8F4',  // фон страницы
   ink:        '#2A2724',  // основной текст
-  muted:      '#7A736C',  // вторичный текст
+  muted:      '#6E675F',  // вторичный текст. v3: затемнён с #7A736C
   line:       '#E7E0D8',  // границы
-  accent:     '#B25C4B',  // терракота: кнопки, ссылки, активные фильтры
+  accent:     '#9E4E3F',  // терракота: кнопки, ссылки, активные фильтры. v3: затемнён с #B25C4B
   accentSoft: '#F2E3DF',
   leaf:       '#5E7355',
   success:    '#4B7A52',
   danger:     '#A6413A',
 },
-maxWidth: { site: '1280px' },
+maxWidth: { site: '1280px', content: '68ch' },
 aspectRatio: { card: '4 / 5' },
+
+fontFamily: {
+  display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+  sans:    ['Manrope', 'system-ui', 'sans-serif'],
+},
+fontSize: {
+  'xs':   ['0.75rem',  { lineHeight: '1.1rem'  }],  // подписи, счётчики
+  'sm':   ['0.875rem', { lineHeight: '1.35rem' }],  // вторичный текст, чипы
+  'base': ['1rem',     { lineHeight: '1.6rem'  }],  // основной текст
+  'lg':   ['1.125rem', { lineHeight: '1.75rem' }],  // лид-абзац
+  'h3':   ['1.375rem', { lineHeight: '1.8rem'  }],
+  'h2':   ['1.75rem',  { lineHeight: '2.1rem'  }],
+  'h1':   ['2.25rem',  { lineHeight: '2.5rem'  }],  // мобильный
+  'hero': ['3rem',     { lineHeight: '3.2rem'  }],  // hero от md
+},
+spacing:   { 'section': '3rem', 'section-lg': '5rem' },
+maxHeight: { 'drawer': '90vh' },
+width:     { 'filters': '260px' },
+ringOffsetColor: { DEFAULT: '#FBF8F4' },  // cream, иначе белый ободок фокуса на кремовом фоне
 ```
 
 - **Шрифты.** Заголовки — `Cormorant Garamond`, текст — `Manrope`. Оба обязаны содержать `ї`, `є`, `ґ`, `і`. Подключение локальными `woff2`, `font-display: swap`, без сторонних CDN.
@@ -899,6 +949,17 @@ aspectRatio: { card: '4 / 5' },
 - **Брейкпоинты** — дефолтные Tailwind. Проектирование начинается с 360px.
 - **Анимации:** 150–250 мс, `ease-out`, уважать `prefers-reduced-motion`.
 - **Доступность:** контраст не ниже 4.5:1, зона нажатия от 44×44px, видимый фокус, `aria-label` у каждой иконки-кнопки.
+
+**Затемнение `muted` и `accent` (v3).** Исходные `#7A736C` и `#B25C4B` дают на фоне `cream` около 4.4:1 и не проходят порог 4.5:1, заявленный этим же разделом. Новые значения `#6E675F` и `#9E4E3F` порог проходят. Проверяются инструментом три пары на фоне `cream`: `ink`, `muted`, `accent`.
+
+**Типографика.**
+
+- Ровно один `h1` на странице. На мобильном `text-h1`; `text-hero` — только hero главной от `md`.
+- Заголовки — `font-display` вес 600, текст — `font-sans` вес 400.
+- Ширина колонки основного текста — `max-w-content`.
+- Межстрочный интервал живёт в токенах шкалы `fontSize` и отдельными `leading-*` не переопределяется.
+- Вертикальный ритм: секции разделяются `py-section md:py-section-lg`; отступ ставится сверху у следующего элемента, `mb-*` у последнего элемента блока не ставится.
+- Фокус: `focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2`, цвет отступа кольца — токен `ringOffsetColor`.
 
 ---
 
@@ -975,7 +1036,8 @@ IP хранится только как `sha256(ip + ip_hash_salt)`.
   - `Article` в блоге.
 - `sitemap.xml` через `django.contrib.sitemaps`: главная, разделы поводов, опубликованные работы, статические страницы, посты. Обе языковые версии. Черновики и архив не попадают.
 - `robots.txt` закрывает только `/hx/` и `/admin/`. Страницы `/obrane/`, `/poshuk/`, `/dyakuyemo/` закрываются мета-тегом `noindex`: запрет обхода в `robots.txt` помешал бы краулеру прочитать этот тег. Правила дублируются для `/ru/`-путей.
-- Целевые показатели: LCP до 2.5 с на 4G, CLS до 0.1. Достигается фиксированной пропорцией карточек, размерами в разметке, локальными шрифтами и отсутствием сторонних скриптов.
+- Целевые показатели: LCP до 2.5 с на 4G, CLS до 0.1, INP до 200 мс (ориентир). Достигается фиксированной пропорцией карточек, размерами в разметке, локальными шрифтами и отсутствием сторонних скриптов.
+- **Бюджет веса: CSS плюс JS на главной не больше 60 КБ gzip.** Считается по собранному `app.css`, `htmx.min.js`, `alpine.min.js` и собственным скриптам. Превышение — повод удалять, а не оптимизировать по мелочи.
 - **Аналитика:** Google Analytics 4. Подключается только если заполнен `analytics_ga_id` **и** пользователь выбрал «Прийняти» в cookie-баннере. События: `phone_click`, `viber_click`, `telegram_click`, `lead_submit`, `favorite_add`, `filter_apply`; конверсия на `/dyakuyemo/`. Meta Pixel не подключается: реклама не планируется.
 
 ---
