@@ -6,8 +6,13 @@
   <div class="mx-auto flex max-w-site items-center gap-4 px-4 transition-all md:px-8"
        :class="scrolled ? 'py-2' : 'py-4'">
 
-    <a href="{% url 'home' %}" class="flex shrink-0 items-center gap-2">
-      <svg class="h-8 w-8 text-accent transition-all" :class="scrolled ? 'h-7 w-7' : 'h-8 w-8'" aria-hidden="true">
+    {% comment %}
+    The logo may shrink: at 360 the row is logo plus three 44px targets, and a
+    non-shrinking logo pushed the header 43px past the viewport on every page.
+    The mark keeps its size, the name gives way.
+    {% endcomment %}
+    <a href="{% url 'home' %}" class="flex min-w-0 items-center gap-2">
+      <svg class="h-8 w-8 shrink-0 text-accent transition-all" :class="scrolled ? 'h-7 w-7' : 'h-8 w-8'" aria-hidden="true">
         <use href="{% static 'img/icons.svg' %}#flower"></use>
       </svg>
       <span class="font-display text-2xl leading-none">
