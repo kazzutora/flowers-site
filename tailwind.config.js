@@ -12,9 +12,12 @@ module.exports = {
       colors: {
         cream: "#FBF8F4",
         ink: "#2A2724",
-        muted: "#7A736C",
+        // Darkened in core v3: the previous #7A736C and #B25C4B measured
+        // 4.41:1 and 4.38:1 on cream and missed the 4.5:1 floor that the same
+        // section of tech.md declares. These measure 5.26:1 and 5.49:1.
+        muted: "#6E675F",
         line: "#E7E0D8",
-        accent: "#B25C4B",
+        accent: "#9E4E3F",
         accentSoft: "#F2E3DF",
         leaf: "#5E7355",
         success: "#4B7A52",
