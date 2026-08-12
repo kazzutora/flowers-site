@@ -55,6 +55,22 @@ def times(value: Any) -> range:
         return range(0)
 
 
+@register.filter
+def dimensions(field: Any) -> SafeString:
+    """`width="800" height="1000"` for an ImageField, or nothing.
+
+    Covers, hero and review photos carry no width_field, so the size is read
+    out of the file itself. Broad except on purpose: a file that went missing
+    leaves a broken image, never a 500 on the whole page. The values are
+    integers from Pillow, so marking them safe adds no injection surface.
+    """
+    try:
+        return mark_safe(f'width="{int(field.width)}" height="{int(field.height)}"')
+    # Missing file, unreadable file, a field with no image behind it.
+    except Exception:
+        return mark_safe("")
+
+
 def _renditions(image: Any) -> list[Any]:
     related = getattr(image, "renditions", None)
     if related is None:

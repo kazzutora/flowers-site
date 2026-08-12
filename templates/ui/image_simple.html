@@ -1,8 +1,15 @@
-{% comment %}
+{% load project %}{% comment %}
 Parameters: field (any ImageField except WorkImage), alt, lazy, sizes.
 These files are compressed once on upload; no renditions are generated for them.
 {% endcomment %}{% if field %}
 <img src="{{ field.url }}" alt="{{ alt|default:'' }}"
+     {% comment %}
+     These fields have no width_field/height_field, so the dimensions come out
+     of the file. Required all the same: without them the hero and the occasion
+     tiles shift the page as they load. The filter answers with nothing when
+     the file is gone, so a lost upload costs an image and not the page.
+     {% endcomment %}
+     {{ field|dimensions }}
      {% if sizes %}sizes="{{ sizes }}"{% endif %}
      {% if lazy %}loading="lazy" decoding="async"{% else %}loading="eager" fetchpriority="high"{% endif %}
      class="h-full w-full object-cover">
