@@ -4,21 +4,36 @@
 const FAVORITES_KEY = "favorites";
 const FAVORITES_LIMIT = 50;
 
+/** The same rules `catalog.filters.parse_articles` applies on the server, in
+ *  the same order: digits only, positive, duplicates dropped, and only then
+ *  the limit. Number() was looser - it accepted "7.0" and "0x10", which the
+ *  server throws away - and slicing before the duplicates were gone let a
+ *  repeated number eat a place in the fifty. */
+function normalizeFavorites(values) {
+  const picked = [];
+  for (const value of values) {
+    const candidate = String(value).trim();
+    if (!/^\d+$/.test(candidate)) continue;
+    const number = Number(candidate);
+    if (number <= 0 || picked.includes(number)) continue;
+    picked.push(number);
+    if (picked.length === FAVORITES_LIMIT) break;
+  }
+  return picked;
+}
+
 function readFavorites() {
   try {
     const stored = JSON.parse(window.localStorage.getItem(FAVORITES_KEY));
     if (!Array.isArray(stored)) return [];
-    return stored
-      .map((value) => Number(value))
-      .filter((value) => Number.isInteger(value) && value > 0)
-      .slice(0, FAVORITES_LIMIT);
+    return normalizeFavorites(stored);
   } catch (error) {
     return [];
   }
 }
 
 function writeFavorites(list) {
-  window.localStorage.setItem(FAVORITES_KEY, JSON.stringify(list.slice(0, FAVORITES_LIMIT)));
+  window.localStorage.setItem(FAVORITES_KEY, JSON.stringify(normalizeFavorites(list)));
 }
 
 // Read by the hx-vals of the favourites page, which asks the server to render
@@ -71,7 +86,10 @@ document.addEventListener("alpine:init", () => {
 });
 
 // Every enquiry form carries the collection, so the owner sees the whole list.
+// Only when the server left the field empty: on a shared /obrane/?a=... the
+// visitor is looking at somebody else's collection, and their own browser has
+// a different one, or none at all.
 document.addEventListener("submit", (event) => {
   const field = event.target.querySelector("input[data-favorites]");
-  if (field) field.value = readFavorites().join(",");
+  if (field && !field.value) field.value = readFavorites().join(",");
 });

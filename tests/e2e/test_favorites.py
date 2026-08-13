@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 from playwright.sync_api import expect
 
+from apps.catalog.filters import parse_articles
 from apps.catalog.models import Work
 from tests.factories import SiteSettingsFactory, WorkFactory
 
@@ -82,3 +83,44 @@ def test_an_empty_collection_offers_the_gallery(
     page.goto(f"{live_server.url}/obrane/")
 
     expect(page.get_by_role("link", name="До галереї")).to_be_visible()
+
+
+def test_the_browser_normalises_the_collection_exactly_as_the_server_does(
+    profile: Any, live_server: Any, works: list[Work]
+) -> None:
+    """Section 9: the same rules on both sides, checked by a test.
+
+    The browser list ends up in `?a=` and in the enquiry, so a client that
+    accepted more than the server would show a collection the server refuses to
+    render, and one that accepted less would silently drop works.
+    """
+    junk = ["7.0", "0x10", " 147 ", 147, -5, 0, "abc", 152, 152]
+
+    page = profile
+    page.goto(f"{live_server.url}/galereya/")
+    page.evaluate("(list) => window.localStorage.setItem('favorites', JSON.stringify(list))", junk)
+    page.reload()
+    in_browser = page.evaluate("Alpine.store('favorites').items")
+
+    on_server = parse_articles(",".join(str(value) for value in junk))
+
+    assert in_browser == on_server == [147, 152]
+
+
+def test_a_shared_collection_is_the_one_the_enquiry_carries(
+    profile: Any, live_server: Any, works: list[Work]
+) -> None:
+    """Section 10: an enquiry sent from somebody else's link is about the works
+    on the screen, not about whatever this browser happens to be holding."""
+    shared = [work.article for work in works[:2]]
+
+    page = profile
+    page.goto(f"{live_server.url}/galereya/")
+    page.evaluate("() => window.localStorage.setItem('favorites', JSON.stringify([999999]))")
+    page.goto(f"{live_server.url}/obrane/?a={','.join(str(a) for a in shared)}")
+    page.locator("form[id^=lead-form]").first.evaluate(
+        "form => form.dispatchEvent(new Event('submit', {bubbles: true}))"
+    )
+
+    field = page.locator("form[id^=lead-form] input[data-favorites]").first
+    assert field.input_value() == ",".join(str(a) for a in shared)

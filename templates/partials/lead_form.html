@@ -26,7 +26,12 @@ JavaScript the same post is an ordinary form submit ending in a 302 to
   <input type="hidden" name="ts" value="{{ form_token }}">
   <input type="hidden" name="source_url" value="{{ source_url }}">
   <input type="hidden" name="work_article" value="{{ work.article|default:'' }}">
-  <input type="hidden" name="favorites" value="" data-favorites>
+  {% comment %}
+  On a shared /obrane/?a=... the server already knows which collection is on
+  the screen, and it is not the one in this visitor's browser. favorites.js
+  fills the field only when it arrives empty.
+  {% endcomment %}
+  <input type="hidden" name="favorites" value="{{ articles|default:'' }}" data-favorites>
 
   {% comment %}The trap: hidden by styles, never by type=hidden (section 15).{% endcomment %}
   <div class="sr-only" aria-hidden="true">
