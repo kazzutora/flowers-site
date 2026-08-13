@@ -10,7 +10,7 @@ it out of the results faster (section 9).
 {% block content %}
 <div class="mx-auto max-w-site px-4 pb-16 md:px-8">
   {% url 'gallery' as gallery_url %}
-  {% include "ui/empty_state.html" with title=_("This work is no longer available") text=_("It has moved to the archive. There are similar ones below, or call us and we will pick something together.") action_label=_("To the gallery") action_url=gallery_url %}
+  {% include "ui/empty_state.html" with title=_("This work is no longer available") text=_("It has moved to the archive. There are similar ones below, or call us and we will pick something together.") action_label=_("To the gallery") action_url=gallery_url level=1 %}
 
   <div class="flex justify-center">
     {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}

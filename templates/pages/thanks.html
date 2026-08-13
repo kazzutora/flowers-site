@@ -9,7 +9,7 @@ The conversion mark of section 10. It exists whatever else is switched off.
 {% block content %}
 <div class="mx-auto max-w-site px-4 pb-16 md:px-8">
   {% url 'gallery' as gallery_url %}
-  {% include "ui/empty_state.html" with title=_("Thank you, we have your enquiry") text=_("We will call you back during working hours. If it is urgent, call us and we will answer right away.") action_label=_("Back to the gallery") action_url=gallery_url %}
+  {% include "ui/empty_state.html" with title=_("Thank you, we have your enquiry") text=_("We will call you back during working hours. If it is urgent, call us and we will answer right away.") action_label=_("Back to the gallery") action_url=gallery_url level=1 %}
 
   <div class="flex flex-wrap justify-center gap-3">
     {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}

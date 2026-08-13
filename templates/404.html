@@ -7,7 +7,7 @@
 {% block content %}
 <div class="mx-auto max-w-site px-4 pb-16 md:px-8">
   {% url 'gallery' as gallery_url %}
-  {% include "ui/empty_state.html" with title=_("There is no such page") text=_("Maybe the address has changed. Look through the gallery, or find a work by its number.") action_label=_("To the gallery") action_url=gallery_url %}
+  {% include "ui/empty_state.html" with title=_("There is no such page") text=_("Maybe the address has changed. Look through the gallery, or find a work by its number.") action_label=_("To the gallery") action_url=gallery_url level=1 %}
 
   <div class="mx-auto max-w-md">
     {% include "partials/search_form.html" %}
