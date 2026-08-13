@@ -8,6 +8,10 @@ Htmx appends the next page and pushes the new address, so Back returns to it.
           hx-target="{{ target|default:'#work-grid' }}"
           hx-swap="beforeend"
           hx-select="#work-grid > *"
+          {% comment %}A button does have a disabled attribute, so `this` is
+          the right target here: two taps would otherwise append the same page
+          twice.{% endcomment %}
+          hx-disabled-elt="this"
           hx-push-url="{{ next_url }}"
           hx-indicator="#load-more"
           class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line bg-white px-6 text-base font-medium text-ink transition hover:bg-accentSoft">
