@@ -70,7 +70,7 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
       <a href="{% url 'favorites' %}" aria-label="{% trans 'Favourites' %}"
          class="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
         <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#heart"></use></svg>
-        <span x-cloak x-show="$store.favorites && $store.favorites.count"
+        <span id="favorites-count" x-cloak x-show="$store.favorites && $store.favorites.count"
               x-text="$store.favorites ? $store.favorites.count : ''"
               class="absolute right-1 top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-xs text-white"></span>
       </a>

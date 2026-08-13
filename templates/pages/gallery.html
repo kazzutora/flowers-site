@@ -51,8 +51,9 @@
     </aside>
 
     <div class="lg:min-w-0 lg:flex-1">
-      <div class="mb-4 lg:hidden" x-data>
-        {% include "ui/button.html" with label=filters_label variant="secondary" icon="filter" full_width=True attrs="@click=\"$dispatch('drawer-open', 'filters')\"" %}
+      <div class="mb-4 flex items-center gap-2 lg:hidden" x-data>
+        {% include "ui/button.html" with label=_("Filters") variant="secondary" icon="filter" full_width=True attrs="@click=\"$dispatch('drawer-open', 'filters')\"" %}
+        {% include "partials/filters_count.html" %}
       </div>
 
       {% comment %}

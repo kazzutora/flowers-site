@@ -5,9 +5,9 @@ Htmx appends the next page and pushes the new address, so Back returns to it.
 <div class="flex justify-center py-8" id="load-more">
   <button type="button"
           hx-get="{{ next_url }}"
-          hx-target="{{ target|default:'#work-grid' }}"
+          hx-target="{{ target|default:'#gallery-grid' }}"
           hx-swap="beforeend"
-          hx-select="#work-grid > *"
+          hx-select="#gallery-grid > *"
           {% comment %}A button does have a disabled attribute, so `this` is
           the right target here: two taps would otherwise append the same page
           twice.{% endcomment %}

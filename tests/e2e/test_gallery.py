@@ -46,7 +46,7 @@ def catalog(db: Any) -> dict[str, Any]:
 
 
 def _cards(page: Any) -> Any:
-    return page.locator("#work-grid article")
+    return page.locator("#gallery-grid article")
 
 
 def test_filtering_changes_the_address_and_back_returns(
@@ -85,7 +85,7 @@ def test_a_filtered_address_opens_the_same_set_elsewhere(
     try:
         stranger = fresh.new_page()
         stranger.goto(f"{live_server.url}/galereya/?type=buket")
-        expect(stranger.locator("#work-grid article")).to_have_count(1)
+        expect(stranger.locator("#gallery-grid article")).to_have_count(1)
         expect(stranger.get_by_text("Білий букет")).to_be_visible()
     finally:
         fresh.close()

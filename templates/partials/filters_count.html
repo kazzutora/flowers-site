@@ -1,0 +1,12 @@
+{% load i18n %}{% comment %}
+The number of active filters on the mobile "Filters" button. Its own partial
+because the button lives outside the swapped block: after a filter changes,
+this arrives out of band, the way the panel and the apply button do.
+It is always in the markup, empty when nothing is active, so the swap always
+has a target.
+{% endcomment %}
+<span id="filters-count"{% if oob %} hx-swap-oob="true"{% endif %}>
+  {% if active_slugs %}
+    {% include "ui/badge.html" with label=active_slugs|length tone="info" %}
+  {% endif %}
+</span>

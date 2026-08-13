@@ -6,23 +6,28 @@ the response before the main swap, so anything nested inside the swapped block
 would disappear.
 {% endcomment %}
 <div id="gallery-results">
-  {% if chips %}
-    <div class="mb-4 flex flex-wrap items-center gap-2">
+  {% comment %}
+  The wrapper is always in the markup, even with nothing in it: the names below
+  are the closed DOM contract, and an element that disappears when the last
+  chip goes leaves an out of band swap with no target to find.
+  {% endcomment %}
+  <div id="gallery-chips" class="flex flex-wrap items-center gap-2 empty:hidden">
+    {% if chips %}
       {% for chip in chips %}
         {% include "ui/chip.html" with label=chip.label color_hex=chip.color_hex removable=True remove_url=chip.remove_url %}
       {% endfor %}
       <a href="{{ base_path }}" class="inline-flex min-h-11 items-center px-2 text-sm text-accent underline">
         {% trans "Clear all" %}
       </a>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 
-  <p class="mb-4 text-sm text-muted" role="status">
+  <p id="gallery-count" class="mb-4 mt-4 text-sm text-muted" role="status">
     {% blocktrans count counter=found_count %}Found {{ counter }} work{% plural %}Found {{ counter }} works{% endblocktrans %}
   </p>
 
   {% if works %}
-    <div id="work-grid" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div id="gallery-grid" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {% for work in works %}
         {% if forloop.counter0 < 4 and page_obj.number == 1 %}
           {% include "ui/card_work.html" with work=work lazy=False sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" %}
@@ -38,7 +43,7 @@ would disappear.
 </div>
 
 <div id="load-more-slot"{% if is_fragment %} hx-swap-oob="true"{% endif %}>
-  {% include "ui/load_more.html" with next_url=next_url target="#work-grid" %}
+  {% include "ui/load_more.html" with next_url=next_url target="#gallery-grid" %}
   <noscript>
     <div class="py-8">
       {% include "ui/pagination.html" with page_obj=page_obj base_url=base_url %}

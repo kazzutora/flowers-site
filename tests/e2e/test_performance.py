@@ -122,7 +122,7 @@ def test_the_grid_reserves_its_space(profile: Any, live_server: Any, filled_site
     image carries its width and height (section 10)."""
     profile.goto(f"{live_server.url}/galereya/", wait_until="load")
 
-    images = profile.locator("#work-grid img")
+    images = profile.locator("#gallery-grid img")
     assert images.count() > 0
     for index in range(images.count()):
         image = images.nth(index)
