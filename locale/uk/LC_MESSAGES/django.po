@@ -1127,3 +1127,7 @@ msgstr "Зв'язок обірвався. Сторінка ціла, нічог�
 #: templates/base.html
 msgid "Try again"
 msgstr "Спробувати ще"
+
+#: templates/partials/lead_form.html
+msgid "Sending…"
+msgstr "Надсилаємо…"

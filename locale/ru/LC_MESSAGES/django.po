@@ -1122,3 +1122,7 @@ msgstr "Связь оборвалась. Страница цела, ничего
 #: templates/base.html
 msgid "Try again"
 msgstr "Попробовать ещё"
+
+#: templates/partials/lead_form.html
+msgid "Sending…"
+msgstr "Отправляем…"

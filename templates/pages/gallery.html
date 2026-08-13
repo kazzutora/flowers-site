@@ -33,6 +33,7 @@
            hx-select="#gallery-results"
            hx-swap="outerHTML"
            hx-push-url="true"
+           hx-indicator="#gallery-indicator"
            class="inline-flex min-h-11 items-center rounded-md px-3 text-sm
                   {% if key == query.sort %}bg-accentSoft text-accent{% else %}text-ink hover:text-accent{% endif %}">
           {% comment %}"Newest", not "New": the enquiry status is a different word.{% endcomment %}
@@ -52,6 +53,15 @@
     <div class="lg:min-w-0 lg:flex-1">
       <div class="mb-4 lg:hidden" x-data>
         {% include "ui/button.html" with label=filters_label variant="secondary" icon="filter" full_width=True attrs="@click=\"$dispatch('drawer-open', 'filters')\"" %}
+      </div>
+
+      {% comment %}
+      Section 10: the loading state of the grid. It sits outside the swapped
+      block so the swap cannot take it away mid request, and .htmx-indicator
+      carries the 150ms delay that keeps it from blinking on fast answers.
+      {% endcomment %}
+      <div id="gallery-indicator" class="htmx-indicator mb-4">
+        {% include "ui/skeleton.html" with kind="text" count=1 %}
       </div>
 
       {% include "partials/gallery_results.html" %}

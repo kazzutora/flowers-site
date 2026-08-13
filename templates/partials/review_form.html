@@ -15,6 +15,7 @@ Posts to /hx/review/ and replaces itself with the answer. The review lands in
       hx-encoding="multipart/form-data"
       {% comment %}A <form> has no disabled attribute; the button does.{% endcomment %}
       hx-disabled-elt="find button[type=submit]"
+      hx-indicator="find [data-sending]"
       class="space-y-4">
   {% csrf_token %}
   <input type="hidden" name="ts" value="{{ review_form_token }}">
@@ -57,5 +58,6 @@ Posts to /hx/review/ and replaces itself with the answer. The review lands in
   {% endif %}
 
   {% include "ui/button.html" with type="submit" label=_("Send the review") variant="primary" full_width=True %}
+  <p data-sending class="htmx-indicator text-center text-sm text-muted">{% trans "Sending…" %}</p>
   <p class="text-sm text-muted">{% trans "We publish reviews after reading them." %}</p>
 </form>

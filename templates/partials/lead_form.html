@@ -18,6 +18,7 @@ JavaScript the same post is an ordinary form submit ending in a 302 to
       creates a second enquiry.
       {% endcomment %}
       hx-disabled-elt="find button[type=submit]"
+      hx-indicator="find [data-sending]"
       {% if work %}data-analytics-article="{{ work.article }}"{% endif %}
       class="space-y-4">
   {% csrf_token %}
@@ -70,6 +71,9 @@ JavaScript the same post is an ordinary form submit ending in a 302 to
 
   {% if site_settings.accepting_orders %}
     {% include "ui/button.html" with type="submit" label=_("Send") variant="primary" full_width=True attrs='data-analytics="lead_submit"' %}
+    {% comment %}Section 10: the submitting state. The button is disabled by
+    hx-disabled-elt, this says why.{% endcomment %}
+    <p data-sending class="htmx-indicator text-center text-sm text-muted">{% trans "Sending…" %}</p>
   {% else %}
     {% comment %}Section 10: the order button goes quiet, the tel: link never does.{% endcomment %}
     {% firstof site_settings|tr:"not_accepting_message" _("We are not taking new orders right now. Call us, we will suggest a date.") as not_accepting %}
