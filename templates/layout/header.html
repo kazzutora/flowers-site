@@ -1,9 +1,12 @@
 {% load static i18n project %}
-<header x-data="{ menuOpen: false, scrolled: false }"
-        @scroll.window="scrolled = window.scrollY > 24"
-        x-effect="document.body.classList.toggle('is-locked', menuOpen)"
+{% comment %}
+Two scopes: `mobileMenu` owns the panel, so it also owns the header's stacking
+order while the panel is open; `stickyHeader` owns nothing but the shrink.
+{% endcomment %}
+<header x-data="mobileMenu"
         class="sticky top-0 z-30 border-b border-line bg-cream">
-  <div class="mx-auto flex max-w-site items-center gap-4 px-4 transition-all md:px-8"
+  <div x-data="stickyHeader" @scroll.window.passive="onScroll()"
+       class="mx-auto flex max-w-site items-center gap-4 px-4 transition-all md:px-8"
        :class="scrolled ? 'py-2' : 'py-4'">
 
     {% comment %}
@@ -61,7 +64,8 @@
         {% include "ui/social_icons.html" with size="sm" %}
       </div>
 
-      <button type="button" @click="menuOpen = true" aria-label="{% trans 'Open menu' %}" aria-controls="mobile-menu"
+      <button type="button" @click="openPanel()" :aria-expanded="isOpen"
+              aria-label="{% trans 'Open menu' %}" aria-controls="mobile-menu"
               class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft lg:hidden">
         <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#menu"></use></svg>
       </button>

@@ -6,7 +6,8 @@ Thumbnails open the overlay; arrows, swipe and Escape drive it.
      @keydown.escape.window="close()"
      @keydown.arrow-left.window="prev()"
      @keydown.arrow-right.window="next()">
-  <div x-show="open" x-transition.opacity class="fixed inset-0 z-50 flex flex-col bg-ink/95"
+  <div x-ref="panel" x-cloak x-show="open" x-transition.opacity
+       class="fixed inset-0 z-50 flex flex-col bg-ink/95"
        @touchstart="touchStart($event)" @touchend="touchEnd($event)">
     <div class="flex justify-end p-4">
       <button type="button" @click="close()" aria-label="{% trans 'Close' %}"
@@ -20,7 +21,7 @@ Thumbnails open the overlay; arrows, swipe and Escape drive it.
         <svg class="h-7 w-7" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#chevron-left"></use></svg>
       </button>
       {% for image in images %}
-        <div x-show="index === {{ forloop.counter0 }}" class="max-h-full">
+        <div x-cloak x-show="index === {{ forloop.counter0 }}" class="max-h-full">
           {% include "ui/picture.html" with image=image preset="large" lazy=True alt=alt %}
         </div>
       {% endfor %}

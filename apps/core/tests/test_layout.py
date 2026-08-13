@@ -30,8 +30,13 @@ def test_header_keeps_the_menu_behind_a_button_on_mobile(
 
     assert 'id="mobile-menu"' in body
     assert 'aria-label="Відкрити меню"' in body or "Open menu" in body
-    assert 'x-show="menuOpen"' in body
-    assert '@keydown.escape.window="menuOpen = false"' in body
+    # The panel is a dialog and the button points at it (section 12 of
+    # FRONTEND.md). aria-expanded is bound to the state, never written flat:
+    # a static value lies the moment the panel opens.
+    assert 'role="dialog"' in body
+    assert 'aria-modal="true"' in body
+    assert 'aria-controls="mobile-menu"' in body
+    assert ":aria-expanded=" in body
 
 
 def test_header_has_no_floating_call_button(client: Client, settings_row: SiteSettings) -> None:

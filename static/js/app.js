@@ -1,7 +1,110 @@
 // Alpine components and analytics hooks. Templates carry no inline script:
 // only x-* and hx-* attributes, per section 2 of tech.md.
 
+// Alpine core ships no x-trap, and the focus plugin would be a fourth script
+// inside a 60 KB budget. Section 6 allows this to live here instead.
+const FOCUSABLE = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
+function focusableInside(container) {
+  // offsetParent weeds out anything the panel keeps hidden.
+  return Array.from(container.querySelectorAll(FOCUSABLE)).filter((el) => el.offsetParent !== null);
+}
+
+/** Hold the focus inside `container`; the returned call releases it and gives
+ *  the focus back to whatever had it before. */
+function trapFocus(container) {
+  const previous = document.activeElement;
+
+  const onKeydown = (event) => {
+    if (event.key !== "Tab") return;
+    const items = focusableInside(container);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (!container.contains(document.activeElement)) {
+      event.preventDefault();
+      first.focus();
+    } else if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  document.addEventListener("keydown", onKeydown, true);
+
+  // The panel is still hidden while open() runs, and a transition keeps it
+  // hidden for a few frames more, so the first focusable has to be waited for.
+  let attempts = 0;
+  const moveFocusInside = () => {
+    const items = focusableInside(container);
+    if (items.length) {
+      items[0].focus();
+    } else if (++attempts < 6) {
+      window.setTimeout(moveFocusInside, 60);
+    }
+  };
+  window.requestAnimationFrame(moveFocusInside);
+
+  return () => {
+    document.removeEventListener("keydown", onKeydown, true);
+    if (previous && typeof previous.focus === "function") previous.focus();
+  };
+}
+
+function lockScroll(locked) {
+  document.body.classList.toggle("is-locked", locked);
+}
+
+/** Shared behaviour of every overlay: open, close, lock, trap, hand back. */
+function overlay(id, extra = {}) {
+  return {
+    isOpen: false,
+    release: null,
+    id: id,
+    openPanel() {
+      if (this.isOpen) return;
+      this.isOpen = true;
+      lockScroll(true);
+      this.release = trapFocus(this.$refs.panel);
+    },
+    close() {
+      if (!this.isOpen) return;
+      this.isOpen = false;
+      lockScroll(false);
+      if (this.release) {
+        this.release();
+        this.release = null;
+      }
+    },
+    openIfMine(event) {
+      if (event.detail === this.id) this.openPanel();
+    },
+    ...extra,
+  };
+}
+
 document.addEventListener("alpine:init", () => {
+  Alpine.data("filterDrawer", (id) => overlay(id));
+  Alpine.data("modalDialog", (id) => overlay(id));
+  Alpine.data("mobileMenu", () => overlay("mobile-menu"));
+
+  Alpine.data("stickyHeader", () => ({
+    scrolled: false,
+    onScroll() {
+      this.scrolled = window.scrollY > 24;
+    },
+  }));
+
   // Festive banner. The dismissal is stored per banner identity, so changing
   // the text or the date brings it back.
   Alpine.data("banner", (hash) => ({
@@ -81,14 +184,21 @@ document.addEventListener("alpine:init", () => {
     index: startIndex,
     total: total,
     touchX: 0,
+    release: null,
     openAt(index) {
       this.index = Number(index) || 0;
       this.open = true;
-      document.body.classList.add("is-locked");
+      lockScroll(true);
+      this.release = trapFocus(this.$refs.panel);
     },
     close() {
+      if (!this.open) return;
       this.open = false;
-      document.body.classList.remove("is-locked");
+      lockScroll(false);
+      if (this.release) {
+        this.release();
+        this.release = null;
+      }
     },
     next() {
       if (this.total > 0) this.index = (this.index + 1) % this.total;
