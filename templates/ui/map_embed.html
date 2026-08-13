@@ -1,7 +1,25 @@
-{% comment %}Parameters: src, title. Loads only when it scrolls into view.{% endcomment %}
-{% if src %}
-<div class="aspect-video w-full overflow-hidden rounded-md border border-line">
-  <iframe src="{{ src }}" title="{{ title }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          class="h-full w-full border-0" allowfullscreen></iframe>
+{% comment %}
+Parameters: src, title.
+The iframe is created only once the block scrolls into view. `loading="lazy"`
+alone is not enough: Chrome honours it, Safari does not, and section 13 asks
+for zero third party requests before the visitor reaches the map. The address
+travels in a data attribute rather than a JavaScript argument, because the
+owner types it in the admin and Django escapes attributes for us.
+{% endcomment %}{% if src %}
+<div x-data="lazyMap" data-map-src="{{ src }}"
+     class="aspect-video w-full overflow-hidden rounded-md border border-line">
+  <template x-if="!loaded">
+    {% include "ui/skeleton.html" with kind="image" ratio="video" %}
+  </template>
+  <template x-if="loaded">
+    <iframe :src="$root.dataset.mapSrc" title="{{ title }}" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="h-full w-full border-0" allowfullscreen></iframe>
+  </template>
+  <noscript>
+    <iframe src="{{ src }}" title="{{ title }}" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="h-full w-full border-0" allowfullscreen></iframe>
+  </noscript>
 </div>
 {% endif %}

@@ -98,6 +98,27 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("modalDialog", (id) => overlay(id));
   Alpine.data("mobileMenu", () => overlay("mobile-menu"));
 
+  // The map is the only third party request on a public page, and it waits
+  // until the visitor is nearly at it.
+  Alpine.data("lazyMap", () => ({
+    loaded: false,
+    init() {
+      if (!("IntersectionObserver" in window)) {
+        this.loaded = true;
+        return;
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          this.loaded = true;
+          observer.disconnect();
+        },
+        { rootMargin: "200px" },
+      );
+      observer.observe(this.$el);
+    },
+  }));
+
   Alpine.data("stickyHeader", () => ({
     scrolled: false,
     onScroll() {
