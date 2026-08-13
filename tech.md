@@ -1,9 +1,10 @@
 # tech.md — ядро проекта «Квіткова майстерня»
 
-**Версия ядра: v3** · 2026-08-12
+**Версия ядра: v4** · 2026-08-13
 
 ## Changelog
 
+- **v4** — `empty_state.html` получил параметр `level`. Причина: на страницах, где пустое состояние занимает всю страницу (`/dyakuyemo/`, `404`, `410`), заголовок обязан быть первого уровня, а примитив рисовал только `h2`, и эти страницы уходили вовсе без `h1` вопреки разделу 12 FRONTEND.md и чек-листу раздела 15.
 - **v3** — правки по разделу 17 `FRONTEND.md`. Раздел 13 получил `fontFamily`, `fontSize`, `spacing.section`/`section-lg`, `maxWidth.content`, `maxHeight.drawer`, `width.filters`, `ringOffsetColor`; `muted` и `accent` затемнены до `#6E675F` и `#9E4E3F` ради порога контраста 4.5:1. Раздел 12: параметр `priority` у `picture.html`, закрытый перечень `tone`, `cookie_banner.html` перенесён в `layout/`, добавлен подраздел 12.1 с контрактами DOM. Раздел 3: `layout/orders_paused.html`, `partials/gallery_cards.html`, `pages/kitchen_sink.html`. Раздел 4.3: `occasion` в зарезервированных именах. Раздел 9: `/hx/gallery/` принимает `occasion`, адрес после HTMX-фильтрации ставится заголовком `HX-Push-Url` с сервера. Раздел 16: бюджет 60 КБ gzip на CSS и JS, ориентир INP.
 - **v2** — ревизия по итогам сквозной проверки. Существенное: задачи Celery получили явные имена, отправка в Telegram вынесена из транзакции; `Review` получил поля уведомления и антиспама; оригиналы изображений переехали в непубличное хранилище; рендишены генерируются только для фото работ; добавлены `tr_html`, cookie-согласие, эндпоинты `/hx/lead/`, `/hx/review/`, `/hx/favorites/`, `/healthz/`, код 410 для архива; сортировка галереи задана точными ключами; masonry заменён на сетку с фиксированной пропорцией; `PostCategory` и `season_hint` удалены; зафиксированы часовой пояс, кэш галереи, лимит избранного, поведение при лимитах.
 - **v1** — первичная фиксация.
@@ -868,7 +869,7 @@ class TranslatedMixin:
 | `pagination.html` | `page_obj`, `base_url` |
 | `load_more.html` | `next_url`, `label` |
 | `section_heading.html` | `title`, `subtitle`, `link_url`, `link_label` |
-| `empty_state.html` | `title`, `text`, `action_label`, `action_url` |
+| `empty_state.html` | `title`, `text`, `action_label`, `action_url`, `level` (`2` по умолчанию; `1` там, где пустое состояние занимает страницу целиком — `/dyakuyemo/`, `404`, `410`, иначе такая страница остаётся вовсе без `h1`) |
 | `alert.html` | `tone`, `text` |
 | `breadcrumbs.html` | `items`, плюс микроразметка BreadcrumbList |
 | `phone_link.html` | `phone`, `variant`. Ссылка `tel:` с событием аналитики |
