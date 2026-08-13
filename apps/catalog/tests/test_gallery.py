@@ -115,12 +115,16 @@ def test_occasions_are_links_in_the_panel_not_checkboxes(
     client: Client, catalog: dict[str, Any]
 ) -> None:
     body = client.get("/galereya/").content.decode()
+    panel = body.split("<form")[1].split("</form>")[0]
 
+    # An occasion is a link into the path, never a value inside the query.
     assert 'href="/galereya/vesillya/"' in body
-    assert 'name="occasion" value=""' in body
-    assert 'value="vesillya"' not in body.split("<form")[1].split("</form>")[0].replace(
-        'name="occasion"', ""
-    )
+    assert 'value="vesillya"' not in panel
+
+    # Inside a section the form does carry it, so the fragment endpoint knows
+    # which section it is answering for (section 9).
+    inside = client.get("/galereya/vesillya/").content.decode()
+    assert 'name="occasion" value="vesillya"' in inside
 
 
 def test_active_filters_show_as_chips_that_can_be_removed(
