@@ -26,8 +26,13 @@ public address into the history.
       hx-indicator="#gallery-indicator"
       data-analytics="filter_apply"
       class="space-y-1">
-  <input type="hidden" name="occasion" value="{{ occasion.slug|default:'' }}">
-  <input type="hidden" name="sort" value="{{ query.sort }}">
+  {% comment %}
+  Both carry a value only when there is one to carry. An empty occasion and the
+  default sort are what the endpoint assumes anyway, and without JavaScript
+  every field of this form lands in the address bar the visitor keeps.
+  {% endcomment %}
+  {% if occasion %}<input type="hidden" name="occasion" value="{{ occasion.slug }}">{% endif %}
+  {% if query.sort and query.sort != "new" %}<input type="hidden" name="sort" value="{{ query.sort }}">{% endif %}
 
   <fieldset class="border-b border-line py-4">
     <legend class="mb-3 text-sm font-medium uppercase tracking-wide text-muted">{% trans "Occasion" %}</legend>
@@ -49,7 +54,12 @@ public address into the history.
     {% include "ui/filter_group.html" with group=group active_slugs=active_slugs %}
   {% endfor %}
 
-  {% if panel_id == "desktop" %}
+  {% comment %}
+  Every panel except the drawer carries its own submit: the drawer applies on
+  change and has "Show N works" in its footer, while the sidebar and the
+  noscript copy are the whole mechanism when there is no JavaScript.
+  {% endcomment %}
+  {% if panel_id != "mobile" %}
     <div class="py-4">
       {% include "ui/button.html" with type="submit" label=_("Show works") variant="secondary" full_width=True %}
     </div>

@@ -56,6 +56,18 @@
       </div>
 
       {% comment %}
+      Section 1: the filters have to work with JavaScript off. Below lg the
+      sidebar is hidden and the drawer is an Alpine panel that x-cloak keeps
+      invisible forever, so without this block a phone had no filters at all.
+      Its own panel_id keeps the ids unique on the one pass where both exist.
+      {% endcomment %}
+      <noscript>
+        <div class="mb-6 rounded-md border border-line px-4 lg:hidden">
+          {% include "partials/filter_panel.html" with panel_id="noscript" %}
+        </div>
+      </noscript>
+
+      {% comment %}
       Section 10: the loading state of the grid. It sits outside the swapped
       block so the swap cannot take it away mid request, and .htmx-indicator
       carries the 150ms delay that keeps it from blinking on fast answers.
