@@ -1,5 +1,9 @@
 {% load project %}{% comment %}
-Parameters: image (WorkImage), preset (thumb|card|large|og), sizes, lazy, alt.
+Parameters: image (WorkImage), preset (thumb|card|large|og), sizes, lazy, alt, priority.
+Lazy is the default. `priority` is the only way to eager load, and it belongs
+to the hero and the first four cards of the first gallery page, nothing else:
+the old shape treated a missing `lazy` as "load me first", so any caller that
+forgot it competed with the LCP image for bandwidth.
 Until the renditions are ready this renders a skeleton, never the original:
 originals live in the private storage and have no URL.
 {% endcomment %}{% if image and image.renditions_ready %}
@@ -15,7 +19,8 @@ originals live in the private storage and have no URL.
            width="{% if webp %}{{ webp.width }}{% else %}{{ avif.width }}{% endif %}"
            height="{% if webp %}{{ webp.height }}{% else %}{{ avif.height }}{% endif %}"
            alt="{{ alt|default:'' }}"
-           {% if lazy %}loading="lazy" decoding="async"{% else %}loading="eager" fetchpriority="high"{% endif %}
+           {% if priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+           decoding="async"
            class="h-full w-full object-cover">
     </picture>
   {% else %}

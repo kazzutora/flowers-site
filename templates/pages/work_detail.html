@@ -24,7 +24,7 @@
               class="block w-full overflow-hidden rounded-lg"
               aria-label="{% trans 'Open the photo' %}">
         <div class="aspect-card w-full">
-          {% include "ui/picture.html" with image=main_image preset="large" lazy=False alt=main_image.alt_text sizes="(min-width: 768px) 50vw, 100vw" %}
+          {% include "ui/picture.html" with image=main_image preset="large" priority=True alt=main_image.alt_text sizes="(min-width: 768px) 50vw, 100vw" %}
         </div>
       </button>
 

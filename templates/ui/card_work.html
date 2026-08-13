@@ -6,7 +6,20 @@ is rendered only when the caller has already checked SiteSettings.prices_enabled
 {% endcomment %}<article class="group relative">
   <a href="{{ work.get_absolute_url }}" class="block overflow-hidden rounded-md bg-white shadow-card">
     <div class="aspect-card w-full overflow-hidden">
-      {% include "ui/picture.html" with image=work.main_image preset="card" lazy=lazy sizes=sizes alt=work|tr:"title" %}
+      {% comment %}
+      An explicit `lazy=False` is how the grid marks the first four cards of
+      the first page, the ones section 13 wants loaded first. A caller that
+      passes nothing at all resolves to the empty string, and that has to stay
+      lazy: treating "not told" as "load me first" is exactly the defect this
+      replaces. Only False, never absence, asks for priority.
+      {% endcomment %}
+      {% if lazy %}
+        {% include "ui/picture.html" with image=work.main_image preset="card" lazy=True sizes=sizes alt=work|tr:"title" %}
+      {% elif lazy != "" %}
+        {% include "ui/picture.html" with image=work.main_image preset="card" priority=True sizes=sizes alt=work|tr:"title" %}
+      {% else %}
+        {% include "ui/picture.html" with image=work.main_image preset="card" lazy=True sizes=sizes alt=work|tr:"title" %}
+      {% endif %}
     </div>
   </a>
   {% comment %}
