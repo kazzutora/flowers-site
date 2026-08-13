@@ -50,8 +50,10 @@ Posts to /hx/review/ and replaces itself with the answer. The review lands in
     <a href="{{ policy_url }}" class="underline hover:text-accent">{% trans "Privacy policy" %}</a>
   </p>
 
+  {% comment %}Without its script the widget is inert and the token never arrives.{% endcomment %}
   {% if turnstile_site_key %}
     <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   {% endif %}
 
   {% include "ui/button.html" with type="submit" label=_("Send the review") variant="primary" full_width=True %}

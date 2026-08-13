@@ -218,6 +218,17 @@ document.addEventListener("alpine:init", () => {
   }));
 });
 
+// Turnstile renders the widgets it finds when its script loads. A form that
+// comes back from /hx/lead/ with validation errors carries a fresh, unrendered
+// one, and without this the second attempt would post no token at all.
+document.addEventListener("htmx:afterSwap", (event) => {
+  if (!window.turnstile) return;
+  const target = event.target;
+  const widgets = Array.from(target.querySelectorAll(".cf-turnstile:empty"));
+  if (target.matches && target.matches(".cf-turnstile:empty")) widgets.push(target);
+  widgets.forEach((widget) => window.turnstile.render(widget));
+});
+
 // Analytics events are declared in markup with data-analytics; the actual
 // tracker is wired only after cookie consent.
 document.addEventListener("click", (event) => {

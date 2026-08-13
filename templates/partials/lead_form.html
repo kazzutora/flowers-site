@@ -56,8 +56,16 @@ JavaScript the same post is an ordinary form submit ending in a 302 to
     <a href="{{ policy_url }}" class="underline hover:text-accent">{% trans "Privacy policy" %}</a>
   </p>
 
+  {% comment %}
+  The widget is inert markup without its script, so with Turnstile switched on
+  every real enquiry would have arrived without a token. Both the block and the
+  script hang off the same condition: switched off, the form carries neither
+  and no empty space where they were. This is the one external script section 1
+  allows on a form.
+  {% endcomment %}
   {% if turnstile_site_key %}
     <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   {% endif %}
 
   {% if site_settings.accepting_orders %}
