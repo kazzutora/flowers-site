@@ -1114,3 +1114,11 @@ msgstr "Предыдущая страница"
 
 msgid "Next page"
 msgstr "Следующая страница"
+
+#: templates/base.html
+msgid "Connection lost. The page is intact, nothing was sent."
+msgstr "Связь оборвалась. Страница цела, ничего не отправлено."
+
+#: templates/base.html
+msgid "Try again"
+msgstr "Попробовать ещё"

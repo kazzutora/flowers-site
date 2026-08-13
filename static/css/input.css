@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer components {
+  /* Htmx brings its own .htmx-indicator rule; this adds the delay of section
+     10, so a fast answer never makes the indicator blink. */
+  .htmx-indicator {
+    transition-delay: 150ms;
+  }
+
   /* Owner authored HTML: sanitised on save, styled here because preflight
      strips the browser defaults. */
   .content > * + * {

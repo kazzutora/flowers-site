@@ -59,6 +59,22 @@
 
   {% include "layout/footer.html" %}
   {% include "ui/cookie_banner.html" %}
+
+  {% comment %}
+  The error state every htmx request owes the visitor (section 10). Rendered
+  here and hidden, so app.js only has to unhide it: no message and no button
+  label ever lives in JavaScript, where it could not be translated.
+  {% endcomment %}
+  <div id="htmx-error" hidden
+       class="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-site space-y-3 px-4 pb-4">
+    {% trans "Connection lost. The page is intact, nothing was sent." as htmx_error_text %}
+    {% include "ui/alert.html" with tone="danger" text=htmx_error_text %}
+    <div class="flex justify-end gap-2">
+      {% include "ui/button.html" with label=_("Try again") variant="secondary" size="sm" attrs="data-htmx-retry" %}
+      {% include "ui/button.html" with label=_("Close") variant="ghost" size="sm" attrs="data-htmx-error-dismiss" %}
+    </div>
+  </div>
+
   {% block scripts %}{% endblock %}
 </body>
 </html>

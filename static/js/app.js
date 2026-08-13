@@ -218,6 +218,51 @@ document.addEventListener("alpine:init", () => {
   }));
 });
 
+// Ten seconds, the same ceiling the Telegram client works to. Without it a
+// request that never answers leaves the button disabled for good.
+if (window.htmx) window.htmx.config.timeout = 10000;
+
+// Every htmx request owes the visitor an error state (section 7). The markup
+// and its wording are rendered by the server into #htmx-error; this only shows
+// it and remembers what to retry. The existing page is never torn down.
+let lastFailedRequest = null;
+
+function htmxErrorRegion() {
+  return document.getElementById("htmx-error");
+}
+
+function showHtmxError(detail) {
+  lastFailedRequest = (detail && detail.requestConfig) || null;
+  const region = htmxErrorRegion();
+  if (region) region.hidden = false;
+}
+
+function hideHtmxError() {
+  const region = htmxErrorRegion();
+  if (region) region.hidden = true;
+}
+
+document.addEventListener("htmx:responseError", (event) => showHtmxError(event.detail));
+document.addEventListener("htmx:sendError", (event) => showHtmxError(event.detail));
+document.addEventListener("htmx:timeout", (event) => showHtmxError(event.detail));
+document.addEventListener("htmx:beforeRequest", hideHtmxError);
+
+document.addEventListener("click", (event) => {
+  if (event.target.closest("[data-htmx-error-dismiss]")) {
+    hideHtmxError();
+    return;
+  }
+  if (!event.target.closest("[data-htmx-retry]")) return;
+  hideHtmxError();
+  const config = lastFailedRequest;
+  if (!config || !window.htmx) return;
+  window.htmx.ajax(config.verb, config.path, {
+    source: config.elt,
+    target: config.target,
+    values: config.parameters,
+  });
+});
+
 // Turnstile renders the widgets it finds when its script loads. A form that
 // comes back from /hx/lead/ with validation errors carries a fresh, unrendered
 // one, and without this the second attempt would post no token at all.
