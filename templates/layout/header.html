@@ -18,7 +18,7 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
       <svg class="h-8 w-8 shrink-0 text-accent transition-all" :class="scrolled ? 'h-7 w-7' : 'h-8 w-8'" aria-hidden="true">
         <use href="{% static 'img/icons.svg' %}#flower"></use>
       </svg>
-      <span class="font-display text-2xl leading-none">
+      <span class="truncate font-display text-2xl leading-none">
         {% firstof site_settings|tr:"site_name" _("Flower studio") %}
       </span>
     </a>
@@ -31,7 +31,22 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
     </nav>
 
     <div class="ml-auto flex items-center gap-1">
-      <div class="hidden items-center gap-1 lg:flex" role="group" aria-label="{% trans 'Language' %}">
+      {% comment %}
+      Section 5: the switcher is present at every width. Below md there is room
+      for one target only, so it points straight at the other language; from md
+      the pair is shown and the current one is marked.
+      {% endcomment %}
+      <div class="flex items-center md:hidden" role="group" aria-label="{% trans 'Language' %}">
+        {% for code, name in LANGUAGES %}{% if code != LANGUAGE_CODE %}
+          <a href="{% alternate_path request.get_full_path code %}" hreflang="{{ code }}" lang="{{ code }}"
+             class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md
+                    text-sm font-medium text-muted hover:text-accent">
+            {% if code == "uk" %}UA{% else %}{{ code|upper }}{% endif %}
+          </a>
+        {% endif %}{% endfor %}
+      </div>
+
+      <div class="hidden items-center gap-1 md:flex" role="group" aria-label="{% trans 'Language' %}">
         {% for code, name in LANGUAGES %}
           <a href="{% alternate_path request.get_full_path code %}" hreflang="{{ code }}"
              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-sm font-medium
