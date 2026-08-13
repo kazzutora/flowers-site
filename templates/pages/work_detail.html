@@ -126,9 +126,17 @@
         {% include "ui/alert.html" with tone="accent" text=not_accepting %}
       {% endif %}
 
-      <div class="flex flex-wrap items-center gap-2" x-data="shareLink()">
-        {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" %}
-        {% include "ui/icon_button.html" with icon="share" label=_("Share") variant="outline" attrs="@click=\"share()\"" %}
+      <div class="flex flex-wrap items-center gap-2">
+        {% comment %}
+        The heart used to be an icon with nothing behind it: no handler, no
+        state, no article. It is the same component the cards use.
+        {% endcomment %}
+        <span data-favorite="{{ work.article }}" x-data="favoriteButton({{ work.article }})" x-cloak>
+          {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" attrs="@click=\"toggle()\" :aria-pressed=\"active\" :class=\"active && 'text-accent'\"" %}
+        </span>
+        <span x-data="shareLink()">
+          {% include "ui/icon_button.html" with icon="share" label=_("Share") variant="outline" attrs="@click=\"share()\"" %}
+        </span>
       </div>
     </div>
   </div>

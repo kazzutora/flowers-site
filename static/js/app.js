@@ -98,6 +98,20 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("modalDialog", (id) => overlay(id));
   Alpine.data("mobileMenu", () => overlay("mobile-menu"));
 
+  // The collection lives in the browser, so the heart reads its own state out
+  // of the store rather than out of the response.
+  Alpine.data("favoriteButton", (article) => ({
+    article: Number(article),
+    get active() {
+      const store = Alpine.store("favorites");
+      return store ? store.has(this.article) : false;
+    },
+    toggle() {
+      const store = Alpine.store("favorites");
+      if (store) store.toggle(this.article);
+    },
+  }));
+
   // The map is the only third party request on a public page, and it waits
   // until the visitor is nearly at it.
   Alpine.data("lazyMap", () => ({

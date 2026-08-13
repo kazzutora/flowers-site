@@ -115,7 +115,12 @@ def test_the_header_counts_the_collection(client: Client, works: list[Work]) -> 
 def test_a_card_carries_the_heart(client: Client, works: list[Work]) -> None:
     body = client.get("/galereya/").content.decode()
 
-    assert "$store.favorites.toggle(article)" in body
+    # The control knows which work it belongs to, is the named component of
+    # section 8 rather than an expression in an attribute, and reports its
+    # state from the browser instead of a value baked into the response.
+    assert f'data-favorite="{works[0].article}"' in body
+    assert f"favoriteButton({works[0].article})" in body
+    assert ':aria-pressed="active"' in body
 
 
 def test_no_registration_is_asked_for(client: Client, works: list[Work]) -> None:
