@@ -11,6 +11,12 @@ asks /hx/gallery/, which answers with the results fragment and pushes the
 public address into the history.
 {% endcomment %}
 <form id="filters-{{ panel_id }}"
+      {% comment %}
+      Out of band on every fragment: the panel lives outside the swapped block,
+      and without this a chip removed above the grid leaves its checkbox ticked
+      here, so the next change puts the filter straight back.
+      {% endcomment %}
+      {% if oob %}hx-swap-oob="true"{% endif %}
       method="get"
       action="{{ base_path }}"
       hx-get="{% url 'hx_gallery' %}"

@@ -3,3 +3,10 @@ Answer of /hx/gallery/: the results block that replaces the target, plus the
 out of band slots that live outside it on the page.
 {% endcomment %}{% include "partials/gallery_results.html" %}
 {% include "partials/filter_apply.html" %}
+{% comment %}
+Both renderings of the panel travel back with every fragment: the desktop
+sidebar and the drawer hold separate copies of the same checkboxes, and either
+one left stale would resurrect a filter the visitor just dropped.
+{% endcomment %}
+{% include "partials/filter_panel.html" with panel_id="desktop" oob=True %}
+{% include "partials/filter_panel.html" with panel_id="mobile" oob=True %}
