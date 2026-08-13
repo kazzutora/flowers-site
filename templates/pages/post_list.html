@@ -8,7 +8,8 @@
 {% block content %}
 <div class="mx-auto max-w-site px-4 pb-16 md:px-8">
   {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
-  {% include "ui/section_heading.html" with title=_("Blog") %}
+  {% comment %}section_heading renders an h2; the list page needs a real h1.{% endcomment %}
+  <h1 class="pb-6 text-4xl md:text-5xl">{% trans "Blog" %}</h1>
 
   {% if posts %}
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

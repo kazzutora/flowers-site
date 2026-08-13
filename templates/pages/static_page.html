@@ -10,7 +10,11 @@
 {% block content %}
   <div class="mx-auto max-w-site px-4 pb-16 md:px-8">
     {% include "ui/breadcrumbs.html" with items=breadcrumbs %}
-    {% include "ui/section_heading.html" with title=page|tr:"title" %}
+    {% comment %}
+    A real h1: section_heading renders an h2, and this page had no first level
+    heading at all.
+    {% endcomment %}
+    <h1 class="pb-6 text-4xl md:text-5xl">{{ page|tr:"title" }}</h1>
     <div class="content max-w-3xl">{{ page|tr_html:"body" }}</div>
   </div>
 {% endblock %}
