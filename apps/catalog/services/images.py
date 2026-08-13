@@ -15,6 +15,7 @@ import pillow_avif  # noqa: F401  importing registers the AVIF plugin
 import pillow_heif
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import UploadedFile
 from django.db.models.fields.files import FieldFile
 from django.utils.translation import gettext_lazy as _
 from PIL import Image, ImageOps, UnidentifiedImageError
@@ -87,7 +88,16 @@ class UnreadableImage(Exception):
 
 
 def validate_work_photo(file: Any) -> None:
-    """Field validator: format, weight and the shortest side (section 14.1)."""
+    """Field validator: format, weight and the shortest side (section 14.1).
+
+    Only a file that has just been uploaded is worth reading. Saving a work
+    again sends the stored FieldFile through the validators, and that one is
+    closed: `tell()` on it raised and the owner could not edit a work at all.
+    It also passed this check once already, on the day it arrived.
+    """
+    if not isinstance(file, UploadedFile):
+        return
+
     size = getattr(file, "size", 0) or 0
     if size > MAX_UPLOAD_BYTES:
         raise ValidationError(

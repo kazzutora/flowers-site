@@ -6,7 +6,13 @@ import pytest
 from django.test import Client
 
 from apps.catalog.models import Work
-from tests.factories import OccasionFactory, TagGroupFactory, WorkFactory, uploaded_photo
+from tests.factories import (
+    OccasionFactory,
+    TagGroupFactory,
+    WorkFactory,
+    WorkImageFactory,
+    uploaded_photo,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -148,3 +154,33 @@ def test_the_cost_stays_out_of_the_change_list(admin_client: Client) -> None:
     body = admin_client.get("/admin/catalog/work/").content.decode()
 
     assert "777" not in body
+
+
+def test_a_work_that_has_a_photo_can_be_opened_for_editing(admin_client: Client) -> None:
+    """The change page used to answer 500 for every work with a photo.
+
+    Originals live in a storage that refuses to build URLs, on purpose, and the
+    stock file widget links to the current file. The existing "pages open" test
+    misses it because its work has no photo at all, which is exactly the case
+    that works.
+    """
+    work = WorkFactory.create(title_uk="Букет із троянд")
+    WorkImageFactory.create(work=work)
+
+    response = admin_client.get(f"/admin/catalog/work/{work.pk}/change/")
+
+    assert response.status_code == 200
+
+
+def test_saving_a_work_again_keeps_its_photo() -> None:
+    """Validators run on the stored FieldFile when nothing new is uploaded.
+
+    That file is closed, so reading it raised and the owner could not save an
+    edit. It passed the same check on the day it arrived.
+    """
+    image = WorkImageFactory.create()
+
+    image.full_clean()
+
+    image.refresh_from_db()
+    assert image.image.name

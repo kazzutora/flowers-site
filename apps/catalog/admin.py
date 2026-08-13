@@ -86,12 +86,27 @@ class WorkImageInlineFormSet(CustomInlineFormSet):
         return BaseInlineFormSet.save_new(self, form, commit=commit)
 
 
+class PrivateImageInput(forms.ClearableFileInput):
+    """A file input that never asks the storage for a URL.
+
+    Originals live in `private_storage`, which raises on `url()` on purpose:
+    nginx does not serve those files and a public looking address would be a
+    lie. The stock widget links to the current file, so every change page of a
+    work that had a photo answered with ValueError. The photo is already on
+    screen in the `preview` column, through its public rendition.
+    """
+
+    def is_initial(self, value: Any) -> bool:
+        return False
+
+
 class WorkImageInline(SortableInlineAdminMixin, TabularInline):
     model = WorkImage
     formset = WorkImageInlineFormSet
     extra = 1
     fields = ("image", "preview", "alt_uk", "alt_ru", "is_main")
     readonly_fields = ("preview",)
+    formfield_overrides = {models.ImageField: {"widget": PrivateImageInput}}
 
     @admin.display(description=_("preview"))
     def preview(self, obj: WorkImage) -> str:
