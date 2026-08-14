@@ -7,6 +7,28 @@ Every slice that adds a model appends to this script (section 18 of tech.md).
 import io
 from typing import Any
 
+# The name on the sign. The same in both languages: it is a name, not a phrase
+# to translate.
+SITE_NAME = "Квіткова Примха"
+ADDRESS_UK = "вул. Дворецька, 125, Рівне"
+ADDRESS_RU = "ул. Дворецкая, 125, Ровно"
+
+# The shop as Google Maps knows it. The query is the name and the address
+# percent-encoded: Google resolves it to the same pin the owner's short link
+# points to, and an embed built that way carries the shop's name instead of
+# bare coordinates. Encoding is not cosmetic - Google answers a raw Cyrillic
+# query with an empty map.
+MAP_EMBED_URL = (
+    "https://www.google.com/maps?q="
+    "%D0%9A%D0%B2%D1%96%D1%82%D0%BA%D0%BE%D0%B2%D0%B0%20%D0%9F%D1%80%D0%B8%D0%BC%D1%85%D0%B0"
+    "%2C%20%D0%B2%D1%83%D0%BB.%20%D0%94%D0%B2%D0%BE%D1%80%D0%B5%D1%86%D1%8C%D0%BA%D0%B0"
+    "%2C%20125%2C%20%D0%A0%D1%96%D0%B2%D0%BD%D0%B5"
+    "&z=17&hl=uk&output=embed"
+)
+# Directions go by coordinates: getting the visitor to the door must not depend
+# on a text search resolving inside their navigation app.
+MAP_DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=50.6098648%2C26.2294084"
+
 
 def seed_site_settings() -> None:
     from apps.core.models import SiteSettings
@@ -17,10 +39,14 @@ def seed_site_settings() -> None:
     settings.viber_url = settings.viber_url or "viber://chat?number=%2B380501112233"
     settings.telegram_url = settings.telegram_url or "https://t.me/example"
     settings.instagram_url = settings.instagram_url or "https://instagram.com/example"
-    settings.site_name_uk = settings.site_name_uk or "Квіткова майстерня"
-    settings.site_name_ru = settings.site_name_ru or "Цветочная мастерская"
-    settings.address_uk = settings.address_uk or "вул. Квіткова, 1"
-    settings.address_ru = settings.address_ru or "ул. Цветочная, 1"
+    # Assigned, not defaulted: unlike the demo contacts above these are the real
+    # shop, so re-seeding a database that still carries the old name fixes it.
+    settings.site_name_uk = SITE_NAME
+    settings.site_name_ru = SITE_NAME
+    settings.address_uk = ADDRESS_UK
+    settings.address_ru = ADDRESS_RU
+    settings.map_embed_url = MAP_EMBED_URL
+    settings.map_directions_url = MAP_DIRECTIONS_URL
     settings.working_hours_uk = settings.working_hours_uk or "Щодня 9:00 - 20:00"
     settings.working_hours_ru = settings.working_hours_ru or "Ежедневно 9:00 - 20:00"
     settings.hero_title_uk = settings.hero_title_uk or "Квіти, які запам'ятовують"
@@ -39,8 +65,8 @@ STATIC_PAGES: tuple[dict[str, Any], ...] = (
         "slug": "pro-nas",
         "title_uk": "Про нас",
         "title_ru": "О нас",
-        "seo_description_uk": "Квіткова майстерня: букети, композиції та оформлення залів.",
-        "seo_description_ru": "Цветочная мастерская: букеты, композиции и оформление залов.",
+        "seo_description_uk": f"{SITE_NAME}: букети, композиції та оформлення залів.",
+        "seo_description_ru": f"{SITE_NAME}: букеты, композиции и оформление залов.",
         "body_uk": (
             "<p>Ми збираємо букети вручну і працюємо з квітами щодня. Кожна робота в"
             " галереї — наша, зроблена для конкретної людини і конкретного дня.</p>"

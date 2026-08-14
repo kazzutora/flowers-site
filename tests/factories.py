@@ -31,8 +31,8 @@ class SiteSettingsFactory(factory.django.DjangoModelFactory[SiteSettings]):
 
     id = 1
     phone_primary = "+380501112233"
-    site_name_uk = "Квіткова майстерня"
-    site_name_ru = "Цветочная мастерская"
+    site_name_uk = "Квіткова Примха"
+    site_name_ru = "Квіткова Примха"
     working_hours_uk = "Щодня 9:00 - 20:00"
 
 

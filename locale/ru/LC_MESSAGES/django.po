@@ -561,8 +561,10 @@ msgstr "Вопросы и ответы"
 msgid "Privacy policy"
 msgstr "Политика конфиденциальности"
 
+# The shop's own name: it stands in for site_name while the admin is empty,
+# and titles the admin itself, so it is the name and not a translation.
 msgid "Flower studio"
-msgstr "Цветочная мастерская"
+msgstr "Квіткова Примха"
 
 msgid "Enquiry"
 msgstr "Заявка"
