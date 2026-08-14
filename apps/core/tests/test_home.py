@@ -115,15 +115,16 @@ def test_the_hero_fan_shortens_when_there_are_no_photos(
     assert "Квіти, які запамʼятовують" in body
 
 
-def test_the_hero_fan_is_hidden_from_a_screen_reader(
+def test_the_hero_photos_are_hidden_from_a_screen_reader(
     client: Client, filled_home: SiteSettings
 ) -> None:
-    """The fan is decoration; the heading and the subtitle carry the meaning."""
+    """The band is decoration; the heading and the subtitle carry the meaning."""
     _with_photos(filled_home, tiles=2)
 
     body = client.get("/").content.decode()
 
-    assert 'class="hero-fan" x-data="heroFan" aria-hidden="true"' in body
+    for decoration in ("hero-fan", "hero-scrim", "hero-cards"):
+        assert f'class="{decoration}" aria-hidden="true"' in body
 
 
 def test_an_empty_block_is_not_rendered_at_all(client: Client, filled_home: SiteSettings) -> None:

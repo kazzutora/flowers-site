@@ -3,94 +3,105 @@
 @tailwind utilities;
 
 @layer components {
-  /* Hero of section 10: a fan of photographs with the text over the nearest
-     card. It lives here and not in the template because perspective and
-     rotateY have no Tailwind 3 utilities, and section 2 forbids writing the
-     values in brackets. */
+  /* Hero of section 10: one photograph across the whole screen with the text
+     on it, and the other images standing on it as tilted cards. It lives here
+     and not in the template because perspective and rotateY have no Tailwind 3
+     utilities, and section 2 forbids writing the values in brackets. */
   .hero-showcase {
-    display: grid;
-    gap: 2rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-height: 30rem;
   }
 
-  .hero-fan {
+  .hero-fan,
+  .hero-scrim,
+  .hero-cards {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-fan-card--1 {
+    height: 100%;
+    width: 100%;
+  }
+
+  /* Deliberately heavier than the current photograph needs. The owner swaps
+     the hero in the admin and nobody re-measures the contrast afterwards, so
+     the darkening carries a margin for a brighter picture. */
+  .hero-scrim {
+    background: linear-gradient(
+      to bottom,
+      rgb(42 39 36 / 0.8) 0%,
+      rgb(42 39 36 / 0.7) 55%,
+      rgb(42 39 36 / 0.8) 100%
+    );
+  }
+
+  .hero-cards {
+    /* Decoration in front of the darkening: it must never swallow a tap meant
+       for the buttons underneath it. */
+    pointer-events: none;
+    perspective: 1400px;
+  }
+
+  .hero-fan-text {
     position: relative;
   }
 
-  .hero-fan-card {
-    @apply overflow-hidden rounded-lg shadow-card;
-    aspect-ratio: 4 / 5;
-  }
-
   @screen md {
-    /* From md the two share one grid cell: the text sits left and in front,
-       the fan opens to the right. */
     .hero-showcase {
-      gap: 0;
+      min-height: 38rem;
     }
 
-    .hero-showcase > * {
-      grid-area: 1 / 1;
+    /* The words sit on the left, so the darkening lets go towards the right,
+       where the cards stand. */
+    .hero-scrim {
+      background: linear-gradient(
+        to right,
+        rgb(42 39 36 / 0.76) 0%,
+        rgb(42 39 36 / 0.66) 38%,
+        rgb(42 39 36 / 0.32) 72%,
+        rgb(42 39 36 / 0.22) 100%
+      );
     }
 
-    .hero-fan-text {
-      position: relative;
-      z-index: 2;
-      align-self: center;
-      justify-self: start;
-      width: 42%;
+    /* The cards stand at full brightness from 48% of the width onwards, and
+       white type over them measures 1.3:1. The words stop short of that: the
+       limit is a share of the width, so it holds at every screen size. */
+    .hero-fan-text h1,
+    .hero-fan-text p {
+      max-width: 44%;
     }
 
-    /* The heading runs over the edge of the nearest card, and text on a
-       photograph does not hold the 4.5:1 of section 13. The page colour fades
-       out behind it, so the fan looks like it emerges from the page. The fade
-       is kept short: past the last letter the photograph belongs to itself. */
-    .hero-fan-text::before {
-      content: "";
+    .hero-cards .hero-fan-card {
+      @apply overflow-hidden rounded-lg shadow-overlay;
       position: absolute;
-      /* Tall on purpose: the fade has to start and end above and below the
-         cards, otherwise its own horizontal edges show up on the photograph
-         as a rectangle. */
-      inset: -12rem -5rem -12rem -3rem;
-      z-index: -1;
-      background: linear-gradient(to right, theme(colors.cream) 72%, transparent);
-    }
-
-    .hero-fan {
-      justify-self: end;
-      width: 64%;
-      aspect-ratio: 5 / 4;
-      perspective: 1200px;
-    }
-
-    .hero-fan-card {
-      position: absolute;
-      top: 50%;
-      width: 46%;
-      /* --hero-tilt follows the pointer; see heroFan in app.js. */
-      transform: translateY(-50%) rotateY(calc(-9deg + var(--hero-tilt, 0deg)))
-        translateZ(var(--hero-depth, 0px));
+      width: 22%;
+      aspect-ratio: 4 / 5;
+      /* Hinged on the left edge so the far side of the card visibly recedes.
+         --hero-tilt follows the pointer; see heroFan in app.js. */
+      transform-origin: left center;
+      transform: rotateY(calc(-16deg + var(--hero-tilt, 0deg)))
+        rotate(var(--hero-turn, 0deg)) translateZ(var(--hero-depth, 0px));
       transition: transform 250ms;
     }
 
-    .hero-fan-card--1 {
-      left: 0;
-      z-index: 3;
-      --hero-depth: 120px;
-      @apply shadow-overlay;
-    }
-
     .hero-fan-card--2 {
-      left: 27%;
-      top: 46%;
+      right: 30%;
+      top: 12%;
       z-index: 2;
-      --hero-depth: 0px;
+      --hero-depth: 60px;
+      --hero-turn: -3deg;
     }
 
     .hero-fan-card--3 {
-      left: 54%;
-      top: 54%;
+      right: 10%;
+      top: 26%;
       z-index: 1;
-      --hero-depth: -120px;
+      --hero-depth: 0px;
+      --hero-turn: 2deg;
     }
   }
 
