@@ -1,0 +1,41 @@
+{% load i18n %}{% comment %}
+Parameters: images (2-4, the first one is the nearest card), title, subtitle,
+body_template.
+
+Section 10: a fan of photographs with the text over the nearest card. The
+geometry is in `.hero-fan*` in static/css/input.css, because perspective and
+rotateY have no Tailwind 3 utilities and bracketed values are forbidden by
+section 2. The fan is decoration: the heading and the subtitle carry the
+meaning, so a screen reader is told to skip it.
+{% endcomment %}
+<section class="hero-showcase mx-auto max-w-site px-4 py-10 md:px-8 md:py-16">
+  {% comment %}
+  The text comes first in the source: on a phone the two stack, and the
+  heading has to be above the photograph rather than on top of it.
+  {% endcomment %}
+  <div class="hero-fan-text">
+    <h1 class="text-4xl leading-tight md:text-6xl">{{ title }}</h1>
+    {% if subtitle %}
+      <p class="mt-4 text-lg text-muted">{{ subtitle }}</p>
+    {% endif %}
+    {% if body_template %}
+      <div class="mt-6 flex flex-wrap gap-3">{% include body_template %}</div>
+    {% endif %}
+  </div>
+
+  <div class="hero-fan" x-data="heroFan" aria-hidden="true">
+    {% for image in images %}
+      {% comment %}
+      Only the nearest card exists on a phone: the rest sit off screen there
+      and would be downloads for nothing.
+      {% endcomment %}
+      <div class="hero-fan-card hero-fan-card--{{ forloop.counter }}{% if not forloop.first %} hidden md:block{% endif %}">
+        {% if forloop.first %}
+          {% include "ui/image_simple.html" with field=image alt="" sizes="(min-width: 768px) 34vw, 92vw" %}
+        {% else %}
+          {% include "ui/image_simple.html" with field=image alt="" lazy=True sizes="(min-width: 768px) 30vw, 0px" %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>

@@ -133,6 +133,28 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
+  // The hero fan leans a little towards the pointer. Decoration only: without
+  // a pointer, and for a visitor who asked for less motion, the fan simply
+  // stands still.
+  Alpine.data("heroFan", () => ({
+    init() {
+      const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (still.matches || !window.matchMedia("(hover: hover)").matches) return;
+      this.$el.addEventListener("pointermove", (event) => this.lean(event));
+      this.$el.addEventListener("pointerleave", () => this.rest());
+    },
+    lean(event) {
+      const box = this.$el.getBoundingClientRect();
+      // -1 at the left edge, 1 at the right one. Six degrees is enough to read
+      // as depth and small enough not to distort the photographs.
+      const across = (event.clientX - box.left) / box.width - 0.5;
+      this.$el.style.setProperty("--hero-tilt", `${(across * 12).toFixed(2)}deg`);
+    },
+    rest() {
+      this.$el.style.removeProperty("--hero-tilt");
+    },
+  }));
+
   Alpine.data("stickyHeader", () => ({
     scrolled: false,
     onScroll() {

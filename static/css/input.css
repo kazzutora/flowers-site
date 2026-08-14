@@ -3,6 +3,97 @@
 @tailwind utilities;
 
 @layer components {
+  /* Hero of section 10: a fan of photographs with the text over the nearest
+     card. It lives here and not in the template because perspective and
+     rotateY have no Tailwind 3 utilities, and section 2 forbids writing the
+     values in brackets. */
+  .hero-showcase {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .hero-fan {
+    position: relative;
+  }
+
+  .hero-fan-card {
+    @apply overflow-hidden rounded-lg shadow-card;
+    aspect-ratio: 4 / 5;
+  }
+
+  @screen md {
+    /* From md the two share one grid cell: the text sits left and in front,
+       the fan opens to the right. */
+    .hero-showcase {
+      gap: 0;
+    }
+
+    .hero-showcase > * {
+      grid-area: 1 / 1;
+    }
+
+    .hero-fan-text {
+      position: relative;
+      z-index: 2;
+      align-self: center;
+      justify-self: start;
+      width: 42%;
+    }
+
+    /* The heading runs over the edge of the nearest card, and text on a
+       photograph does not hold the 4.5:1 of section 13. The page colour fades
+       out behind it, so the fan looks like it emerges from the page. The fade
+       is kept short: past the last letter the photograph belongs to itself. */
+    .hero-fan-text::before {
+      content: "";
+      position: absolute;
+      /* Tall on purpose: the fade has to start and end above and below the
+         cards, otherwise its own horizontal edges show up on the photograph
+         as a rectangle. */
+      inset: -12rem -5rem -12rem -3rem;
+      z-index: -1;
+      background: linear-gradient(to right, theme(colors.cream) 72%, transparent);
+    }
+
+    .hero-fan {
+      justify-self: end;
+      width: 64%;
+      aspect-ratio: 5 / 4;
+      perspective: 1200px;
+    }
+
+    .hero-fan-card {
+      position: absolute;
+      top: 50%;
+      width: 46%;
+      /* --hero-tilt follows the pointer; see heroFan in app.js. */
+      transform: translateY(-50%) rotateY(calc(-9deg + var(--hero-tilt, 0deg)))
+        translateZ(var(--hero-depth, 0px));
+      transition: transform 250ms;
+    }
+
+    .hero-fan-card--1 {
+      left: 0;
+      z-index: 3;
+      --hero-depth: 120px;
+      @apply shadow-overlay;
+    }
+
+    .hero-fan-card--2 {
+      left: 27%;
+      top: 46%;
+      z-index: 2;
+      --hero-depth: 0px;
+    }
+
+    .hero-fan-card--3 {
+      left: 54%;
+      top: 54%;
+      z-index: 1;
+      --hero-depth: -120px;
+    }
+  }
+
   /* Htmx brings its own .htmx-indicator rule; this adds the delay of section
      10, so a fast answer never makes the indicator blink. */
   .htmx-indicator {
