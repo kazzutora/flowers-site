@@ -8,24 +8,10 @@ rendered at all, it is not printed as an empty heading.
 {% block og_description %}{{ site_settings|tr:"hero_subtitle" }}{% endblock %}
 
 {% block content %}
-  <section class="mx-auto grid max-w-site items-center gap-8 px-4 py-10 md:grid-cols-2 md:px-8 md:py-16">
-    <div class="space-y-5">
-      <h1 class="text-4xl leading-tight md:text-6xl">
-        {% firstof site_settings|tr:"hero_title" _("Flowers for your day") %}
-      </h1>
-      <p class="text-lg text-muted">
-        {% firstof site_settings|tr:"hero_subtitle" _("Bouquets, compositions and hall decoration, made by hand.") %}
-      </p>
-      <div class="flex flex-wrap gap-3">
-        {% url 'gallery' as gallery_url %}
-        {% include "ui/button.html" with href=gallery_url label=_("See the gallery") variant="primary" size="lg" %}
-        {% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
-      </div>
-    </div>
-    <div class="aspect-card w-full overflow-hidden rounded-lg bg-accentSoft">
-      {% include "ui/image_simple.html" with field=site_settings.hero_image alt=site_settings|tr:"hero_title" %}
-    </div>
-  </section>
+  {% url 'gallery' as gallery_url %}
+  {% firstof site_settings|tr:"hero_title" _("Flowers for your day") as hero_title %}
+  {% firstof site_settings|tr:"hero_subtitle" _("Bouquets, compositions and hall decoration, made by hand.") as hero_subtitle %}
+  {% include "ui/hero_showcase.html" with images=hero_images title=hero_title subtitle=hero_subtitle body_template="partials/hero_actions.html" %}
 
   {% if occasions %}
     <section class="mx-auto max-w-site px-4 py-10 md:px-8">

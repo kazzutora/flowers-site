@@ -22,6 +22,8 @@ from config.storages import public_storage
 logger = logging.getLogger(__name__)
 
 FRESH_WORKS = 12
+# Section 12, `hero_showcase.html`: the fan holds three cards at most.
+HERO_FAN_CARDS = 3
 FEATURED_REVIEWS = 3
 LATEST_POSTS = 3
 # Section 16: an average below this many opinions is noise, not a rating.
@@ -109,15 +111,27 @@ def _local_business(site: SiteSettings) -> dict[str, Any]:
     return data
 
 
+def _hero_images(site: SiteSettings, occasions: list[Occasion]) -> list[Any]:
+    """The fan of section 10: the hero in front, occasion covers behind it.
+
+    Built from the tiles the page already holds, so the fan costs no query of
+    its own. Missing photographs simply shorten the fan.
+    """
+    candidates = [site.hero_image, *(occasion.cover for occasion in occasions)]
+    return [image for image in candidates if image][:HERO_FAN_CARDS]
+
+
 def home(request: HttpRequest) -> HttpResponse:
     """Section 10. A block with nothing in it is not rendered at all."""
     site = SiteSettings.load()
+    occasions = list(Occasion.objects.filter(is_active=True, show_on_home=True))
 
     return render(
         request,
         "pages/home.html",
         {
-            "occasions": Occasion.objects.filter(is_active=True, show_on_home=True),
+            "occasions": occasions,
+            "hero_images": _hero_images(site, occasions),
             "works": Work.published.prefetch_related("images__renditions")[:FRESH_WORKS],
             "steps": HowToStep.objects.filter(is_active=True),
             "reviews": _featured_reviews(),

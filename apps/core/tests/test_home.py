@@ -82,6 +82,50 @@ def test_the_hero_is_eager_while_the_tiles_are_lazy(
     assert 'loading="lazy"' in body
 
 
+def _with_photos(settings: SiteSettings, tiles: int) -> None:
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    from tests.factories import photo_bytes
+
+    settings.hero_image = SimpleUploadedFile("hero.jpg", photo_bytes(), "image/jpeg")
+    settings.save()
+    for number in range(tiles):
+        tile = OccasionFactory.create(slug=f"pryvid-hero-{number}")
+        tile.cover = SimpleUploadedFile(f"tile{number}.jpg", photo_bytes(), "image/jpeg")
+        tile.save()
+
+
+def test_the_hero_fan_holds_three_cards_at_most(client: Client, filled_home: SiteSettings) -> None:
+    """Section 12: the fan is three cards, however many tiles the shop has."""
+    _with_photos(filled_home, tiles=5)
+
+    body = client.get("/").content.decode()
+
+    # One modifier per card: `hero-fan-card` alone also matches the base class.
+    assert body.count("hero-fan-card--") == 3
+
+
+def test_the_hero_fan_shortens_when_there_are_no_photos(
+    client: Client, filled_home: SiteSettings
+) -> None:
+    body = client.get("/").content.decode()
+
+    assert "hero-fan-card--" not in body
+    # The words still carry the page: only the photographs are missing.
+    assert "Квіти, які запамʼятовують" in body
+
+
+def test_the_hero_fan_is_hidden_from_a_screen_reader(
+    client: Client, filled_home: SiteSettings
+) -> None:
+    """The fan is decoration; the heading and the subtitle carry the meaning."""
+    _with_photos(filled_home, tiles=2)
+
+    body = client.get("/").content.decode()
+
+    assert 'class="hero-fan" x-data="heroFan" aria-hidden="true"' in body
+
+
 def test_an_empty_block_is_not_rendered_at_all(client: Client, filled_home: SiteSettings) -> None:
     """With no reviews and no posts, neither section appears.
 

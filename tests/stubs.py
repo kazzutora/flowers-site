@@ -156,6 +156,8 @@ def kitchen_sink_context() -> dict[str, Any]:
         "image": image,
         "image_pending": empty_image,
         "images": Related([image, image]),
+        # hero_showcase.html takes plain image fields, so stub files are enough.
+        "hero_images": [sample, sample, sample],
         "post": StubPost(cover=sample),
         "post_without_cover": StubPost(title_uk="Пост без обкладинки", cover=None),
         "review": StubReview(work=work, photo=sample),

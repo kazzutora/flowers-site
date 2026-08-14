@@ -53,6 +53,13 @@ only: the view answers 404 unless DEBUG is on.
   </section>
 
   <section>
+    {% include "ui/section_heading.html" with title="hero_showcase.html" subtitle="three cards, then one, then none" %}
+    {% include "ui/hero_showcase.html" with images=hero_images title="Квіти, які запамʼятовують" subtitle="Букети, композиції та оформлення залів ручної роботи." %}
+    {% include "ui/hero_showcase.html" with images=hero_images|slice:":1" title="Одна картка" subtitle="Веєр коротшає, коли фото менше." %}
+    {% include "ui/hero_showcase.html" with images=None title="Без фото" subtitle="Порожній веєр не ламає верстку." %}
+  </section>
+
+  <section>
     {% include "ui/section_heading.html" with title="picture.html" subtitle="ready, pending (skeleton), missing image" %}
     <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
       <div class="aspect-card overflow-hidden rounded-md">

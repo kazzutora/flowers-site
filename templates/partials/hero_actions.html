@@ -1,0 +1,8 @@
+{% load i18n %}{% comment %}
+The two calls of the hero, section 10. Passed to `hero_showcase.html` as its
+body_template: the primitive knows nothing about the phone or the gallery.
+The phone link stays live whatever the order settings say.
+{% endcomment %}
+{% url 'gallery' as gallery_url %}
+{% include "ui/button.html" with href=gallery_url label=_("See the gallery") variant="primary" size="lg" %}
+{% include "ui/phone_link.html" with phone=site_settings.phone_primary variant="button" %}
