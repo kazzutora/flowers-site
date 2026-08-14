@@ -4,10 +4,13 @@ from datetime import timedelta
 from typing import Any
 
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.utils.translation import override
+from PIL import Image
 
 from apps.core.models import HowToStep, SiteSettings, StaticPage
+from tests.factories import photo_bytes
 
 pytestmark = pytest.mark.django_db
 
@@ -121,3 +124,26 @@ def test_how_to_steps_are_ordered() -> None:
     HowToStep.objects.create(order=1, title_uk="Перший")
 
     assert [step.title_uk for step in HowToStep.objects.all()] == ["Перший", "Другий"]
+
+
+def test_the_hero_is_squeezed_once_on_upload() -> None:
+    """Section 14.2. The hero is the heaviest image of the home page, and the
+    owner uploads it straight from a phone."""
+    settings = SiteSettings.load()
+    settings.hero_image = SimpleUploadedFile("hero.jpg", photo_bytes(3000, 2000), "image/jpeg")
+    settings.save()
+
+    assert str(settings.hero_image.name).endswith(".webp")
+    with Image.open(settings.hero_image) as stored:
+        assert stored.format == "WEBP"
+        assert max(stored.size) == 1600
+
+
+def test_the_og_image_is_left_as_it_was_uploaded() -> None:
+    """Messengers do not read webp in a link preview (section 4.6), so the OG
+    image must not follow the hero into the converter."""
+    settings = SiteSettings.load()
+    settings.og_default_image = SimpleUploadedFile("og.jpg", photo_bytes(1200, 630), "image/jpeg")
+    settings.save()
+
+    assert str(settings.og_default_image.name).endswith(".jpg")

@@ -13,6 +13,7 @@ from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
+from apps.core.services.images import compress_field
 from apps.core.services.sanitize import sanitize_html
 
 logger = logging.getLogger(__name__)
@@ -124,6 +125,11 @@ class SiteSettings(TranslatedMixin, models.Model):
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         self.pk = 1
+        # Section 14.2 counts the hero among the images squeezed once on upload,
+        # and it is the largest thing on the home page. The OG image and the
+        # watermark are deliberately left alone: messengers want the first one
+        # in jpeg, and the second one is a PNG whose transparency we keep.
+        compress_field(self, "hero_image")
         # `objects.create()` asks for an insert; for a singleton that has to be
         # an update instead of an integrity error.
         kwargs.pop("force_insert", None)
