@@ -3,11 +3,16 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from django.apps import apps
 from django.core.cache import cache
+from django.core.files.storage import DefaultStorage, FileSystemStorage
+from django.db.models import FileField
+
+from config.storages import PrivateFileSystemStorage
 
 
 @pytest.fixture(autouse=True)
-def isolated_media(settings: Any, tmp_path: Path) -> None:
+def isolated_media(settings: Any, tmp_path: Path) -> Iterator[None]:
     """Every test writes its uploads into its own directory, never into media/."""
     settings.MEDIA_ROOT = tmp_path / "public"
     settings.MEDIA_PRIVATE_ROOT = tmp_path / "private"
@@ -22,6 +27,28 @@ def isolated_media(settings: Any, tmp_path: Path) -> None:
         },
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     }
+
+    # A field declared with `storage=public_storage` called that callable once,
+    # at import, and kept the answer. Rewriting STORAGES above moves the default
+    # storage and nothing else, so those fields would keep filling the developer's
+    # media/ volume with test uploads. Point them at the same temporary directory
+    # for the length of the test and hand them back afterwards.
+    public = FileSystemStorage(location=tmp_path / "public", base_url="/media/")
+    private = PrivateFileSystemStorage(location=tmp_path / "private")
+    swapped: list[tuple[Any, Any]] = []
+    for model in apps.get_models():
+        for field in model._meta.get_fields():
+            if not isinstance(field, FileField) or isinstance(field.storage, DefaultStorage):
+                continue
+            swapped.append((field, field.storage))
+            field.storage = (
+                private if isinstance(field.storage, PrivateFileSystemStorage) else public
+            )
+
+    yield
+
+    for field, original in swapped:
+        field.storage = original
 
 
 @pytest.fixture(autouse=True)
