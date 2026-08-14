@@ -5,7 +5,12 @@ Every slice that adds a model appends to this script (section 18 of tech.md).
 """
 
 import io
+import pathlib
 from typing import Any
+
+# Stand-in photographs for the occasion tiles and the hero, so a fresh database
+# does not open with empty boxes. Provenance and licences in CREDITS.md there.
+ASSETS = pathlib.Path(__file__).resolve().parent / "seed_assets"
 
 # The name on the sign. The same in both languages: it is a name, not a phrase
 # to translate.
@@ -28,6 +33,22 @@ MAP_EMBED_URL = (
 # Directions go by coordinates: getting the visitor to the door must not depend
 # on a text search resolving inside their navigation app.
 MAP_DIRECTIONS_URL = "https://www.google.com/maps/dir/?api=1&destination=50.6098648%2C26.2294084"
+
+
+def attach_photo(instance: Any, field_name: str, path: pathlib.Path) -> None:
+    """Fill an empty image field from the bundled fixtures.
+
+    Only when it is empty. These photographs are stand-ins until the owner
+    uploads their own work, and `make seed` must not undo that upload. The
+    files are already webp within the limits of section 14.2, so the squeeze
+    on save has nothing left to do.
+    """
+    from django.core.files.base import ContentFile
+
+    field = getattr(instance, field_name)
+    if field or not path.exists():
+        return
+    field.save(path.name, ContentFile(path.read_bytes()), save=True)
 
 
 def seed_site_settings() -> None:
@@ -58,6 +79,7 @@ def seed_site_settings() -> None:
         settings.hero_subtitle_ru or "Букеты, композиции и оформление залов ручной работы."
     )
     settings.save()
+    attach_photo(settings, "hero_image", ASSETS / "hero.webp")
 
 
 STATIC_PAGES: tuple[dict[str, Any], ...] = (
@@ -389,7 +411,10 @@ def seed_occasions() -> None:
     from apps.catalog.models import Occasion
 
     for occasion in OCCASIONS:
-        Occasion.objects.update_or_create(slug=occasion["slug"], defaults=occasion)
+        saved, _created = Occasion.objects.update_or_create(
+            slug=occasion["slug"], defaults=occasion
+        )
+        attach_photo(saved, "cover", ASSETS / "occasions" / f"{saved.slug}.webp")
 
 
 def seed_tags() -> None:
