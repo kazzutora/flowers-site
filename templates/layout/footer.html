@@ -2,8 +2,13 @@
 <footer class="mt-16 border-t border-line bg-white">
   <div class="mx-auto grid max-w-site gap-8 px-4 py-10 md:grid-cols-3 md:px-8">
     <div class="space-y-3">
+      {% comment %}
+      The same short mark as the header, one step larger. The full lockup would
+      need around 96px of height before its tagline became readable, and that
+      is a lot of footer for a line that repeats what the page already says.
+      {% endcomment %}
       <a href="{% url 'home' %}" class="flex items-center">
-        <img src="{% static 'img/logo.webp' %}" width="443" height="160"
+        <img src="{% static 'img/logo-mark.webp' %}" width="318" height="96"
              alt="{% firstof site_settings|tr:'site_name' _('Flower studio') %}" class="h-12 w-auto">
       </a>
       {% include "ui/social_icons.html" %}

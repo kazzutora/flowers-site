@@ -10,15 +10,16 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
        :class="scrolled ? 'py-2' : 'py-4'">
 
     {% comment %}
-    The lockup carries the shop's name, so there is no separate word beside it
-    and the name lives in the alt text. It shrinks with the header: at 360 the
-    row is the logo plus three 44px targets, and a fixed one pushed the header
-    past the viewport on every page.
+    The short mark, not the full lockup: the tagline under it is unreadable at
+    header size and the figure beside it only eats width. The mark carries the
+    shop's name, so there is no separate word beside it and the name lives in
+    the alt text. It shrinks with the header: at 360 the row is the logo plus
+    three 44px targets, and a fixed one pushed the header past the viewport.
     {% endcomment %}
     <a href="{% url 'home' %}" class="flex min-w-0 items-center">
-      <img src="{% static 'img/logo.webp' %}" width="443" height="160"
+      <img src="{% static 'img/logo-mark.webp' %}" width="318" height="96"
            alt="{% firstof site_settings|tr:'site_name' _('Flower studio') %}"
-           class="w-auto shrink-0 transition-all" :class="scrolled ? 'h-7 md:h-8' : 'h-9 md:h-11'">
+           class="w-auto shrink-0 transition-all" :class="scrolled ? 'h-6 md:h-7' : 'h-7 md:h-8'">
     </a>
 
     {% main_menu as menu %}

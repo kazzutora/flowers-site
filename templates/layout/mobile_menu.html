@@ -9,8 +9,8 @@ scope: it holds the focus inside while open and hands it back on close.
        aria-label="{% trans 'Main menu' %}"
        class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-cream">
     <div class="flex items-center justify-between border-b border-line px-4 py-4">
-      <img src="{% static 'img/logo.webp' %}" width="443" height="160"
-           alt="{% firstof site_settings|tr:'site_name' _('Flower studio') %}" class="h-9 w-auto">
+      <img src="{% static 'img/logo-mark.webp' %}" width="318" height="96"
+           alt="{% firstof site_settings|tr:'site_name' _('Flower studio') %}" class="h-8 w-auto">
       <button type="button" @click="close()" aria-label="{% trans 'Close menu' %}"
               class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
         <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#close"></use></svg>
