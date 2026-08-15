@@ -32,8 +32,8 @@ def test_seed_fills_the_catalog() -> None:
 
     assert counts["occasions"] == 7
     assert counts["tag_groups"] == 4
-    assert counts["works"] == 30
-    assert counts["work_images"] == 30
+    assert counts["works"] == 5
+    assert counts["work_images"] == 11
     assert counts["reviews"] == 5
     assert counts["posts"] == 3
     assert set(TagGroup.objects.values_list("slug", flat=True)) == {
@@ -43,7 +43,7 @@ def test_seed_fills_the_catalog() -> None:
         "season",
     }
     assert "vesillya" in set(Occasion.objects.values_list("slug", flat=True))
-    assert Work.published.count() == 30
+    assert Work.published.count() == 5
 
 
 def test_seed_is_idempotent() -> None:
@@ -56,8 +56,8 @@ def test_seed_is_idempotent() -> None:
     assert HowToStep.objects.count() == 3
     assert Occasion.objects.count() == 7
     assert Tag.objects.count() == 20
-    assert Work.objects.count() == 30
-    assert WorkImage.objects.count() == 30
+    assert Work.objects.count() == 5
+    assert WorkImage.objects.count() == 11
     assert Review.objects.count() == 5
     assert Review.published.count() == 5
     assert Post.objects.count() == 3
