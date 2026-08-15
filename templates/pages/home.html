@@ -18,9 +18,12 @@ rendered at all, it is not printed as an empty heading.
       {% include "ui/section_heading.html" with title=_("Choose the occasion") link_url=gallery_url link_label=_("All works") %}
       <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {% for occasion in occasions %}
-          <a href="{{ occasion.get_absolute_url }}" class="group block overflow-hidden rounded-md bg-white shadow-card">
+          <a href="{{ occasion.get_absolute_url }}"
+             class="group block overflow-hidden rounded-md bg-white shadow-card transition hover:-translate-y-0.5 hover:shadow-overlay">
             <div class="aspect-card w-full overflow-hidden bg-accentSoft">
-              {% include "ui/image_simple.html" with field=occasion.cover alt=occasion|tr:"name" lazy=True sizes="(min-width: 1024px) 25vw, 50vw" %}
+              <span class="block h-full w-full transition group-hover:scale-105">
+                {% include "ui/image_simple.html" with field=occasion.cover alt=occasion|tr:"name" lazy=True sizes="(min-width: 1024px) 25vw, 50vw" %}
+              </span>
             </div>
             <span class="block px-4 py-3 text-base font-medium text-ink group-hover:text-accent">{{ occasion|tr:"name" }}</span>
           </a>
@@ -45,9 +48,9 @@ rendered at all, it is not printed as an empty heading.
       {% include "ui/section_heading.html" with title=_("How to order") %}
       <ol class="grid gap-6 md:grid-cols-3">
         {% for step in steps %}
-          <li class="space-y-2 rounded-md bg-white p-5 shadow-card">
+          <li class="group space-y-2 rounded-md bg-white p-5 shadow-card transition hover:-translate-y-0.5 hover:shadow-overlay">
             {% if step.icon %}
-              <svg class="h-8 w-8 text-accent" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#{{ step.icon }}"></use></svg>
+              <svg class="h-8 w-8 text-accent transition group-hover:scale-110" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#{{ step.icon }}"></use></svg>
             {% endif %}
             <h3 class="text-xl">{{ step|tr:"title" }}</h3>
             <p class="text-base text-muted">{{ step|tr:"text" }}</p>
