@@ -17,8 +17,12 @@ module.exports = {
         // section of tech.md declares. These measure 5.26:1 and 5.49:1.
         muted: "#6E675F",
         line: "#E7E0D8",
-        accent: "#9E4E3F",
-        accentSoft: "#F2E3DF",
+        // Core v8: the accent follows the logo. The mark itself is #A95DA0,
+        // which measures 4.17:1 on cream and 4.41:1 under white type - both
+        // under the 4.5:1 floor of section 13. This is the same hue and
+        // saturation carried down to 44% lightness: 5.32:1 and 5.63:1.
+        accent: "#944E8C",
+        accentSoft: "#F0E4EF",
         leaf: "#5E7355",
         success: "#4B7A52",
         danger: "#A6413A",

@@ -2,9 +2,9 @@
 <footer class="mt-16 border-t border-line bg-white">
   <div class="mx-auto grid max-w-site gap-8 px-4 py-10 md:grid-cols-3 md:px-8">
     <div class="space-y-3">
-      <a href="{% url 'home' %}" class="flex items-center gap-2">
-        <svg class="h-7 w-7 text-accent" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#flower"></use></svg>
-        <span class="font-display text-2xl">{% firstof site_settings|tr:"site_name" _("Flower studio") %}</span>
+      <a href="{% url 'home' %}" class="flex items-center">
+        <img src="{% static 'img/logo.webp' %}" width="443" height="160"
+             alt="{% firstof site_settings|tr:'site_name' _('Flower studio') %}" class="h-12 w-auto">
       </a>
       {% include "ui/social_icons.html" %}
     </div>
