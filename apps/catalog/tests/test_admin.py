@@ -184,3 +184,24 @@ def test_saving_a_work_again_keeps_its_photo() -> None:
 
     image.refresh_from_db()
     assert image.image.name
+
+
+@pytest.mark.parametrize(
+    "url",
+    ["/admin/catalog/occasion/", "/admin/catalog/tag/", "/admin/catalog/taggroup/"],
+)
+def test_the_sortable_lists_can_run_an_action(admin_client: Client, url: str) -> None:
+    """Deleting from these lists was impossible, and nothing said so.
+
+    The drag-and-drop mixin replaces the action form with its own, built on the
+    plain Django one. Unfold only reveals the button that starts an action once
+    the select writes its value into Alpine through `x-model`, so on these three
+    models the button stayed hidden whatever was ticked.
+    """
+    OccasionFactory.create()
+    TagGroupFactory.create()
+
+    body = admin_client.get(url).content.decode()
+
+    assert 'name="action"' in body
+    assert 'x-model="action"' in body
