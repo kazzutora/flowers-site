@@ -37,7 +37,7 @@ is rendered only when the caller has already checked SiteSettings.prices_enabled
 
     <div class="absolute right-2 top-2 z-10" data-favorite="{{ work.article }}"
          x-data="favoriteButton({{ work.article }})" x-cloak>
-      {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" attrs="@click=\"toggle()\" :aria-pressed=\"active\" :class=\"active && 'text-accent'\"" %}
+      {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" attrs="@click=\"toggle()\" :aria-pressed=\"active\" :class=\"{ 'text-accent': active, 'heart-pop': popping }\"" %}
     </div>
   </div>
 

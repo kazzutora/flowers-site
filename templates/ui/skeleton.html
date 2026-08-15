@@ -2,19 +2,19 @@
 Parameters: kind (image|text|card), count, ratio (card|square|video).
 {% endcomment %}{% if kind == "text" %}
 <div class="space-y-2" aria-hidden="true">
-  {% for _ in count|default:3|times %}<div class="h-4 w-full animate-pulse rounded-sm bg-line"></div>{% endfor %}
+  {% for _ in count|default:3|times %}<div class="h-4 w-full skeleton rounded-sm bg-line"></div>{% endfor %}
 </div>
 {% elif kind == "card" %}
 <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" aria-hidden="true">
   {% for _ in count|default:4|times %}
     <div class="space-y-3">
-      <div class="w-full animate-pulse rounded-md bg-line {% if ratio == 'square' %}aspect-square{% else %}aspect-card{% endif %}"></div>
-      <div class="h-4 w-2/3 animate-pulse rounded-sm bg-line"></div>
+      <div class="w-full skeleton rounded-md bg-line {% if ratio == 'square' %}aspect-square{% else %}aspect-card{% endif %}"></div>
+      <div class="h-4 w-2/3 skeleton rounded-sm bg-line"></div>
     </div>
   {% endfor %}
 </div>
 {% else %}
-<div class="w-full animate-pulse rounded-md bg-line
+<div class="w-full skeleton rounded-md bg-line
             {% if ratio == 'square' %}aspect-square{% elif ratio == 'video' %}aspect-video{% else %}aspect-card{% endif %}"
      aria-hidden="true"></div>
 {% endif %}

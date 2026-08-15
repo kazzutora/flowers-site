@@ -262,5 +262,5 @@ def test_a_photo_without_renditions_renders_a_skeleton_not_the_original() -> Non
 
     html = render_to_string("ui/picture.html", {"image": image, "preset": "card"})
 
-    assert "animate-pulse" in html
+    assert "skeleton" in html
     assert "<img" not in html

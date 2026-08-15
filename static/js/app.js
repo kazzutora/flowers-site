@@ -102,13 +102,24 @@ document.addEventListener("alpine:init", () => {
   // of the store rather than out of the response.
   Alpine.data("favoriteButton", (article) => ({
     article: Number(article),
+    // Set for the length of the beat, so the heart answers the tap.
+    popping: false,
     get active() {
       const store = Alpine.store("favorites");
       return store ? store.has(this.article) : false;
     },
     toggle() {
       const store = Alpine.store("favorites");
-      if (store) store.toggle(this.article);
+      if (!store) return;
+      const adding = !store.has(this.article);
+      store.toggle(this.article);
+      // Only on the way in: removing something does not deserve a flourish.
+      if (!adding) return;
+      this.popping = false;
+      requestAnimationFrame(() => {
+        this.popping = true;
+        setTimeout(() => (this.popping = false), 320);
+      });
     },
   }));
 

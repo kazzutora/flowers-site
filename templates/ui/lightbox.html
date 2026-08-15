@@ -6,7 +6,13 @@ Thumbnails open the overlay; arrows, swipe and Escape drive it.
      @keydown.escape.window="close()"
      @keydown.arrow-left.window="prev()"
      @keydown.arrow-right.window="next()">
-  <div x-ref="panel" x-cloak x-show="open" x-transition.opacity
+  <div x-ref="panel" x-cloak x-show="open"
+       x-transition:enter="transition duration-200 ease-out"
+       x-transition:enter-start="opacity-0 scale-95"
+       x-transition:enter-end="opacity-100 scale-100"
+       x-transition:leave="transition duration-200 ease-out"
+       x-transition:leave-start="opacity-100 scale-100"
+       x-transition:leave-end="opacity-0 scale-95"
        class="fixed inset-0 z-50 flex flex-col bg-ink/95"
        @touchstart="touchStart($event)" @touchend="touchEnd($event)">
     <div class="flex justify-end p-4">
