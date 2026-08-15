@@ -25,7 +25,7 @@ scope: it holds the focus inside while open and hands it back on close.
     <nav class="flex flex-col px-4 py-2">
       {% for item in menu %}
         <a href="{{ item.url }}" @click="close()"
-           class="flex min-h-14 items-center border-b border-line text-lg text-ink">{{ item.label }}</a>
+           class="flex min-h-14 items-center border-b border-line text-lg text-ink transition active:translate-x-1 active:text-accent">{{ item.label }}</a>
       {% endfor %}
     </nav>
 

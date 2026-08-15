@@ -25,7 +25,7 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
     {% main_menu as menu %}
     <nav class="mx-auto hidden items-center gap-6 lg:flex" aria-label="{% trans 'Main menu' %}">
       {% for item in menu %}
-        <a href="{{ item.url }}" class="inline-flex min-h-11 items-center text-base text-ink hover:text-accent">{{ item.label }}</a>
+        <a href="{{ item.url }}" class="nav-link inline-flex min-h-11 items-center text-base text-ink transition hover:text-accent">{{ item.label }}</a>
       {% endfor %}
     </nav>
 
@@ -38,8 +38,8 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
       <div class="flex items-center md:hidden" role="group" aria-label="{% trans 'Language' %}">
         {% for code, name in LANGUAGES %}{% if code != LANGUAGE_CODE %}
           <a href="{% alternate_path request.get_full_path code %}" hreflang="{{ code }}" lang="{{ code }}"
-             class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md
-                    text-sm font-medium text-muted hover:text-accent">
+             class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-sm
+                    font-medium text-muted transition hover:scale-110 hover:text-accent active:scale-95">
             {% if code == "uk" %}UA{% else %}{{ code|upper }}{% endif %}
           </a>
         {% endif %}{% endfor %}
@@ -48,8 +48,8 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
       <div class="hidden items-center gap-1 md:flex" role="group" aria-label="{% trans 'Language' %}">
         {% for code, name in LANGUAGES %}
           <a href="{% alternate_path request.get_full_path code %}" hreflang="{{ code }}"
-             class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-sm font-medium
-                    {% if code == LANGUAGE_CODE %}bg-accentSoft text-accent{% else %}text-muted hover:text-accent{% endif %}">
+             class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-sm font-medium transition
+                    {% if code == LANGUAGE_CODE %}bg-accentSoft text-accent{% else %}text-muted hover:scale-110 hover:text-accent active:scale-95{% endif %}">
             {% if code == "uk" %}UA{% else %}{{ code|upper }}{% endif %}
           </a>
         {% endfor %}

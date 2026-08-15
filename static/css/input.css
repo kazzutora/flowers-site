@@ -105,6 +105,32 @@
     }
   }
 
+  /* Menu items. A line grows from the left rather than the middle, so the
+     eye follows the reading direction; the keyboard gets the same answer as
+     the pointer. It cannot be written as utilities: the pseudo-element needs
+     `content`, and section 2 forbids the bracket syntax that sets it. */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: theme(colors.accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms;
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
   /* Waiting and confirmation, section 13. Hover lives in the templates on the
      shared transition token; these need frames of their own. */
   @keyframes heart-pop {
