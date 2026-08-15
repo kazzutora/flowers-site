@@ -16,7 +16,7 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
     the alt text. It shrinks with the header: at 360 the row is the logo plus
     three 44px targets, and a fixed one pushed the header past the viewport.
     {% endcomment %}
-    <a href="{% url 'home' %}" class="flex min-w-0 items-center">
+    <a href="{% url 'home' %}" class="flex min-w-0 items-center transition hover:opacity-80">
       <img src="{% static 'img/logo-mark.webp' %}" width="318" height="96"
            alt="{% firstof site_settings|tr:'site_name' _('Flower studio') %}"
            class="w-auto shrink-0 transition-all" :class="scrolled ? 'h-6 md:h-7' : 'h-7 md:h-8'">
@@ -67,7 +67,7 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
       localStorage and never reaches the server (section 10).
       {% endcomment %}
       <a href="{% url 'favorites' %}" aria-label="{% trans 'Favourites' %}"
-         class="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
+         class="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink transition hover:scale-110 hover:bg-accentSoft active:scale-95">
         <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#heart"></use></svg>
         <span id="favorites-count" x-cloak x-show="$store.favorites && $store.favorites.count"
               x-text="$store.favorites ? $store.favorites.count : ''"
@@ -80,7 +80,7 @@ order while the panel is open; `stickyHeader` owns nothing but the shrink.
 
       <button type="button" @click="openPanel()" :aria-expanded="isOpen"
               aria-label="{% trans 'Open menu' %}" aria-controls="mobile-menu"
-              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft lg:hidden">
+              class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink transition hover:scale-110 hover:bg-accentSoft active:scale-95 lg:hidden">
         <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#menu"></use></svg>
       </button>
     </div>

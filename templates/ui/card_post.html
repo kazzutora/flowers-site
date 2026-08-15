@@ -1,7 +1,10 @@
 {% load i18n project %}{% comment %}Parameters: post.{% endcomment %}
-<article class="flex h-full flex-col overflow-hidden rounded-md bg-white shadow-card">
+<article class="group flex h-full flex-col overflow-hidden rounded-md bg-white shadow-card transition hover:-translate-y-0.5 hover:shadow-overlay">
   <a href="{{ post.get_absolute_url }}" class="block aspect-video w-full overflow-hidden">
-    {% include "ui/image_simple.html" with field=post.cover alt=post|tr:"title" lazy=True %}
+    {% comment %}The zoom rides on this wrapper: image_simple owns its own classes.{% endcomment %}
+    <span class="block h-full w-full transition group-hover:scale-105">
+      {% include "ui/image_simple.html" with field=post.cover alt=post|tr:"title" lazy=True %}
+    </span>
   </a>
   <div class="flex flex-1 flex-col gap-2 p-4">
     <h3 class="text-xl">

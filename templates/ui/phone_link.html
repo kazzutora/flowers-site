@@ -4,12 +4,12 @@ Always active: tel: links stay clickable whatever the site settings say.
 {% endcomment %}{% if phone %}
 {% if variant == "icon" %}
 <a href="tel:{{ phone }}" data-analytics="phone_click" aria-label="{{ phone }}"
-   class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink hover:bg-accentSoft">
+   class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-ink transition hover:scale-110 hover:bg-accentSoft active:scale-95">
   <svg class="h-6 w-6" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#phone"></use></svg>
 </a>
 {% elif variant == "button" %}
 <a href="tel:{{ phone }}" data-analytics="phone_click"
-   class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-base font-medium text-white transition hover:opacity-90">
+   class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-base font-medium text-white transition hover:-translate-y-0.5 hover:opacity-90 hover:shadow-card active:translate-y-0">
   <svg class="h-5 w-5" aria-hidden="true"><use href="{% static 'img/icons.svg' %}#phone"></use></svg>
   <span>{% firstof phone.as_national phone %}</span>
 </a>
