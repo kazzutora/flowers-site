@@ -102,3 +102,49 @@ def test_kitchen_sink_renders_every_primitive(client: Client, settings: Any) -> 
     assert response.status_code == 200
     for marker in ("button.html", "picture.html", "card_work.html", "breadcrumbs.html"):
         assert marker in body
+
+
+def test_the_delivery_page_opens_with_the_four_columns(client: Client) -> None:
+    """Section 10. The band cannot live in the page body: bleach keeps no
+    classes, so the columns would collapse into one text."""
+    StaticPage.objects.create(
+        slug="dostavka-i-oplata", title_uk="Доставка і оплата", body_uk="<p>Текст</p>"
+    )
+    settings = SiteSettings.load()
+    settings.address_uk = "вул. Дворецька, 125, Рівне"
+    settings.working_hours_uk = "Щодня 9:00 - 20:00"
+    settings.pickup_text_uk = "Заберіть замовлення з магазину."
+    settings.delivery_text_uk = "Доставка по місту."
+    settings.save()
+
+    body = client.get("/dostavka-i-oplata/").content.decode()
+
+    for text in (
+        "вул. Дворецька, 125, Рівне",
+        "Щодня 9:00 - 20:00",
+        "Заберіть замовлення з магазину.",
+        "Доставка по місту.",
+    ):
+        assert text in body
+
+
+def test_a_column_the_owner_left_empty_is_not_drawn(client: Client) -> None:
+    StaticPage.objects.create(
+        slug="dostavka-i-oplata", title_uk="Доставка і оплата", body_uk="<p>Текст</p>"
+    )
+    settings = SiteSettings.load()
+    settings.address_uk = "вул. Дворецька, 125, Рівне"
+    settings.pickup_text_uk = ""
+    settings.delivery_text_uk = ""
+    settings.working_hours_uk = ""
+    settings.save()
+
+    body = client.get("/dostavka-i-oplata/").content.decode()
+
+    assert body.count('class="flex flex-col items-center gap-3') == 1
+
+
+def test_another_static_page_carries_no_columns(client: Client, page: StaticPage) -> None:
+    body = client.get("/pro-nas/").content.decode()
+
+    assert 'class="flex flex-col items-center gap-3' not in body
