@@ -21,6 +21,13 @@ ADDRESS_RU = "ул. Дворецкая, 125, Ровно"
 WORKING_HOURS_UK = "Цілодобово, без вихідних"
 WORKING_HOURS_RU = "Круглосуточно, без выходных"
 
+# The numbers the shop answers and the account it posts from. Stored in E.164:
+# PhoneNumberField keeps whatever it is given, and `tel:` links have to carry
+# the country code to work from a phone abroad.
+PHONE_PRIMARY = "+380992050565"
+PHONE_SECONDARY = "+380972050565"
+INSTAGRAM_URL = "https://www.instagram.com/kvitkova_prymkha"
+
 # The shop as Google Maps knows it. The query is the name and the address
 # percent-encoded: Google resolves it to the same pin the owner's short link
 # points to, and an embed built that way carries the shop's name instead of
@@ -58,13 +65,15 @@ def seed_site_settings() -> None:
     from apps.core.models import SiteSettings
 
     settings = SiteSettings.load()
-    settings.phone_primary = settings.phone_primary or "+380501112233"
+    # Still demo: the owner has not given an address for either of these yet.
     settings.email = settings.email or "hello@example.com"
     settings.viber_url = settings.viber_url or "viber://chat?number=%2B380501112233"
     settings.telegram_url = settings.telegram_url or "https://t.me/example"
-    settings.instagram_url = settings.instagram_url or "https://instagram.com/example"
     # Assigned, not defaulted: unlike the demo contacts above these are the real
     # shop, so re-seeding a database that still carries the old name fixes it.
+    settings.phone_primary = PHONE_PRIMARY
+    settings.phone_secondary = PHONE_SECONDARY
+    settings.instagram_url = INSTAGRAM_URL
     settings.site_name_uk = SITE_NAME
     settings.site_name_ru = SITE_NAME
     settings.address_uk = ADDRESS_UK

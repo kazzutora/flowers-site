@@ -92,6 +92,23 @@ def test_seed_corrects_working_hours_left_over_from_an_older_run() -> None:
     assert refreshed.working_hours_ru == "Круглосуточно, без выходных"
 
 
+def test_seed_carries_the_real_contacts() -> None:
+    """The phones and the Instagram account are shop data, so they are assigned."""
+    run()
+    site = SiteSettings.load()
+    site.phone_primary = "+380501112233"
+    site.phone_secondary = ""
+    site.instagram_url = "https://instagram.com/example"
+    site.save()
+
+    run()
+
+    refreshed = SiteSettings.load()
+    assert str(refreshed.phone_primary) == "+380992050565"
+    assert str(refreshed.phone_secondary) == "+380972050565"
+    assert refreshed.instagram_url == "https://www.instagram.com/kvitkova_prymkha"
+
+
 def test_seeding_again_keeps_a_photo_the_owner_uploaded() -> None:
     """The tiles ship with stand-ins; the owner's own work outranks them."""
     run()
