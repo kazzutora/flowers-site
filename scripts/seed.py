@@ -709,6 +709,7 @@ def seed_posts() -> None:
         saved, _created = Post.objects.update_or_create(
             slug=post["slug"], defaults={**post, "status": Post.Status.PUBLISHED}
         )
+        attach_photo(saved, "cover", ASSETS / "blog" / f"{saved.slug}.webp")
         if works and not saved.related_works.exists():
             saved.related_works.set(works)
 

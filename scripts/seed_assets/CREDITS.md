@@ -14,6 +14,15 @@ each one can be checked. Replace them with the shop's own work.
 - `occasions/oformlennya-zaly.webp` — Peach Flower Theme Decoration at Hilton Gurgaon, videek, PDM. Source: https://www.flickr.com/photos/193845755@N03/52264703376
 - `hero.webp` — A close-up of a vibrant bouquet with pink and purple roses, red and orange blooms, white flowers, and lush green foliage., mdburnette, CC0. Source: https://wordpress.org/photos/photo/34868ffcec/
 
+## Blog covers
+
+Wikimedia Commons, all CC0. Named after the post slug: `seed_posts`
+picks the file up by it.
+
+- `blog/yak-obraty-buket.webp` — File:Colorful tulip bouquets (Unsplash).jpg, CC0. Source: https://commons.wikimedia.org/wiki/File:Colorful_tulip_bouquets_(Unsplash).jpg
+- `blog/skilky-stoyat-kvity.webp` — File:Flowers in a glass vase (Unsplash).jpg, CC0. Source: https://commons.wikimedia.org/wiki/File:Flowers_in_a_glass_vase_(Unsplash).jpg
+- `blog/kvity-po-sezonah.webp` — File:Annie Spratt 2016-02-14 (Unsplash).jpg, CC0. Source: https://commons.wikimedia.org/wiki/File:Annie_Spratt_2016-02-14_(Unsplash).jpg
+
 ## Work photos
 
 Wikimedia Commons, all of them CC0, public domain or

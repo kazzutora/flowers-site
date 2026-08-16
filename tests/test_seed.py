@@ -71,6 +71,12 @@ def test_seed_gives_every_occasion_a_cover_and_the_home_a_hero() -> None:
     assert SiteSettings.load().hero_image
 
 
+def test_seed_gives_every_post_a_cover() -> None:
+    run()
+
+    assert not Post.objects.filter(cover="").exists()
+
+
 def test_seed_corrects_working_hours_left_over_from_an_older_run() -> None:
     """The hours are shop data, like the name and the address: they are assigned."""
     run()

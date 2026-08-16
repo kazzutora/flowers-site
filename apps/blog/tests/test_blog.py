@@ -162,6 +162,18 @@ def test_a_cover_is_squeezed_once_and_gets_no_renditions() -> None:
     assert WorkImageRendition.objects.count() == 0
 
 
+def test_a_cover_is_shown_on_the_list_and_on_the_post(client: Client, post: Post) -> None:
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    from tests.factories import photo_bytes
+
+    post.cover = SimpleUploadedFile("cover.jpg", photo_bytes(1600, 1000), "image/jpeg")
+    post.save()
+
+    assert post.cover.url in client.get("/blog/").content.decode()
+    assert post.cover.url in client.get(post.get_absolute_url()).content.decode()
+
+
 def test_publishing_stamps_published_at_once(post: Post) -> None:
     stamped = post.published_at
 
