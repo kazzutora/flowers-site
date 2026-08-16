@@ -17,6 +17,10 @@ SITE_NAME = "Квіткова Примха"
 ADDRESS_UK = "вул. Дворецька, 125, Рівне"
 ADDRESS_RU = "ул. Дворецкая, 125, Ровно"
 
+# The shop is open around the clock, every day.
+WORKING_HOURS_UK = "Цілодобово, без вихідних"
+WORKING_HOURS_RU = "Круглосуточно, без выходных"
+
 # The shop as Google Maps knows it. The query is the name and the address
 # percent-encoded: Google resolves it to the same pin the owner's short link
 # points to, and an embed built that way carries the shop's name instead of
@@ -79,8 +83,11 @@ def seed_site_settings() -> None:
     settings.delivery_text_ru = (
         settings.delivery_text_ru or "Доставка по городу и Западной Украине согласно тарифов такси."
     )
-    settings.working_hours_uk = settings.working_hours_uk or "Щодня 9:00 - 20:00"
-    settings.working_hours_ru = settings.working_hours_ru or "Ежедневно 9:00 - 20:00"
+    # Assigned rather than defaulted, for the same reason as the name and the
+    # address above: the shop is open around the clock, and a database seeded
+    # back when it kept daytime hours has to pick the correction up.
+    settings.working_hours_uk = WORKING_HOURS_UK
+    settings.working_hours_ru = WORKING_HOURS_RU
     settings.hero_title_uk = settings.hero_title_uk or "Квіти, які запам'ятовують"
     settings.hero_title_ru = settings.hero_title_ru or "Цветы, которые запоминают"
     settings.hero_subtitle_uk = (

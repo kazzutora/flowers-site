@@ -71,6 +71,21 @@ def test_seed_gives_every_occasion_a_cover_and_the_home_a_hero() -> None:
     assert SiteSettings.load().hero_image
 
 
+def test_seed_corrects_working_hours_left_over_from_an_older_run() -> None:
+    """The hours are shop data, like the name and the address: they are assigned."""
+    run()
+    site = SiteSettings.load()
+    site.working_hours_uk = "Щодня 9:00 - 20:00"
+    site.working_hours_ru = "Ежедневно 9:00 - 20:00"
+    site.save()
+
+    run()
+
+    refreshed = SiteSettings.load()
+    assert refreshed.working_hours_uk == "Цілодобово, без вихідних"
+    assert refreshed.working_hours_ru == "Круглосуточно, без выходных"
+
+
 def test_seeding_again_keeps_a_photo_the_owner_uploaded() -> None:
     """The tiles ship with stand-ins; the owner's own work outranks them."""
     run()
