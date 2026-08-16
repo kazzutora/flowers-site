@@ -163,13 +163,37 @@ def contacts(request: HttpRequest) -> HttpResponse:
     )
 
 
+DELIVERY_PAGE_SLUG = "dostavka-i-oplata"
+
+
+def _delivery_columns(site: SiteSettings) -> list[dict[str, Any]]:
+    """The band opening the delivery page (section 10).
+
+    Assembled here rather than in the template: the primitive takes a plain
+    list, and a column whose text the owner has not filled in is dropped
+    instead of standing empty.
+    """
+    columns = [
+        {"icon": "map-pin", "title": _("Shop"), "text": site.tr("address")},
+        {"icon": "clock", "title": _("We work"), "text": site.tr("working_hours")},
+        {"icon": "gift", "title": _("Pickup"), "text": site.tr("pickup_text")},
+        {"icon": "truck", "title": _("Delivery"), "text": site.tr("delivery_text")},
+    ]
+    return [column for column in columns if column["text"]]
+
+
 def static_page(request: HttpRequest, slug: str) -> HttpResponse:
     page = get_object_or_404(StaticPage, slug=slug, is_published=True)
     breadcrumbs = [
         {"label": _("Home"), "url": reverse("home")},
         {"label": page.tr("title")},
     ]
-    return render(request, "pages/static_page.html", {"page": page, "breadcrumbs": breadcrumbs})
+    columns = _delivery_columns(SiteSettings.load()) if slug == DELIVERY_PAGE_SLUG else []
+    return render(
+        request,
+        "pages/static_page.html",
+        {"page": page, "breadcrumbs": breadcrumbs, "info_columns": columns},
+    )
 
 
 @require_POST

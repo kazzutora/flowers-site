@@ -1,7 +1,20 @@
-{% load i18n project %}{% comment %}Parameters: post.{% endcomment %}
-<article class="flex h-full flex-col overflow-hidden rounded-md bg-white shadow-card">
+{% load i18n static project %}{% comment %}Parameters: post.{% endcomment %}
+<article class="group flex h-full flex-col overflow-hidden rounded-md bg-white shadow-card transition hover:-translate-y-0.5 hover:shadow-overlay">
   <a href="{{ post.get_absolute_url }}" class="block aspect-video w-full overflow-hidden">
-    {% include "ui/image_simple.html" with field=post.cover alt=post|tr:"title" lazy=True %}
+    {% if post.cover %}
+      {% comment %}The zoom rides on this wrapper: image_simple owns its own classes.{% endcomment %}
+      <span class="block h-full w-full transition group-hover:scale-105">
+        {% include "ui/image_simple.html" with field=post.cover alt=post|tr:"title" lazy=True %}
+      </span>
+    {% else %}
+      {% comment %}A post published without a cover keeps the card's proportion:
+      the alternative is a white hole of that size in the grid.{% endcomment %}
+      <span class="flex h-full w-full items-center justify-center bg-accentSoft">
+        <svg class="h-10 w-10 text-accent" aria-hidden="true">
+          <use href="{% static 'img/icons.svg' %}#flower"></use>
+        </svg>
+      </span>
+    {% endif %}
   </a>
   <div class="flex flex-1 flex-col gap-2 p-4">
     <h3 class="text-xl">

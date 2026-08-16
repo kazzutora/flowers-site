@@ -61,6 +61,12 @@ class SiteSettings(TranslatedMixin, models.Model):
     map_embed_url = models.URLField(_("map embed URL"), max_length=500, blank=True)
     map_directions_url = models.URLField(_("directions URL"), max_length=500, blank=True)
 
+    # delivery: two of the four columns opening /dostavka-i-oplata/
+    pickup_text_uk = models.CharField(_("pickup, uk"), max_length=300, blank=True)
+    pickup_text_ru = models.CharField(_("pickup, ru"), max_length=300, blank=True)
+    delivery_text_uk = models.CharField(_("delivery, uk"), max_length=300, blank=True)
+    delivery_text_ru = models.CharField(_("delivery, ru"), max_length=300, blank=True)
+
     # working hours
     working_hours_uk = models.TextField(_("working hours, uk"), blank=True)
     working_hours_ru = models.TextField(_("working hours, ru"), blank=True)

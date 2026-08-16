@@ -46,6 +46,18 @@ class SiteSettingsAdmin(ModelAdmin):
         ),
         (_("Working hours"), {"fields": ("working_hours_uk", "working_hours_ru")}),
         (
+            _("Delivery"),
+            {
+                "description": _("Two of the four columns opening the delivery page."),
+                "fields": (
+                    "pickup_text_uk",
+                    "pickup_text_ru",
+                    "delivery_text_uk",
+                    "delivery_text_ru",
+                ),
+            },
+        ),
+        (
             _("Taking orders"),
             {
                 "fields": (

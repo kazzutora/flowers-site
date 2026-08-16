@@ -15,6 +15,8 @@
     heading at all.
     {% endcomment %}
     <h1 class="pb-6 text-4xl md:text-5xl">{{ page|tr:"title" }}</h1>
-    <div class="content max-w-3xl">{{ page|tr_html:"body" }}</div>
+    {% comment %}Only the delivery page carries columns; the view decides.{% endcomment %}
+    {% include "ui/info_columns.html" with columns=info_columns %}
+    <div class="content max-w-3xl pt-10">{{ page|tr_html:"body" }}</div>
   </div>
 {% endblock %}

@@ -4,7 +4,6 @@
 Every slice that adds a model appends to this script (section 18 of tech.md).
 """
 
-import io
 import pathlib
 from typing import Any
 
@@ -17,6 +16,17 @@ ASSETS = pathlib.Path(__file__).resolve().parent / "seed_assets"
 SITE_NAME = "Квіткова Примха"
 ADDRESS_UK = "вул. Дворецька, 125, Рівне"
 ADDRESS_RU = "ул. Дворецкая, 125, Ровно"
+
+# The shop is open around the clock, every day.
+WORKING_HOURS_UK = "Цілодобово, без вихідних"
+WORKING_HOURS_RU = "Круглосуточно, без выходных"
+
+# The numbers the shop answers and the account it posts from. Stored in E.164:
+# PhoneNumberField keeps whatever it is given, and `tel:` links have to carry
+# the country code to work from a phone abroad.
+PHONE_PRIMARY = "+380992050565"
+PHONE_SECONDARY = "+380972050565"
+INSTAGRAM_URL = "https://www.instagram.com/kvitkova_prymkha"
 
 # The shop as Google Maps knows it. The query is the name and the address
 # percent-encoded: Google resolves it to the same pin the owner's short link
@@ -55,21 +65,38 @@ def seed_site_settings() -> None:
     from apps.core.models import SiteSettings
 
     settings = SiteSettings.load()
-    settings.phone_primary = settings.phone_primary or "+380501112233"
+    # Still demo: the owner has not given an address for either of these yet.
     settings.email = settings.email or "hello@example.com"
     settings.viber_url = settings.viber_url or "viber://chat?number=%2B380501112233"
     settings.telegram_url = settings.telegram_url or "https://t.me/example"
-    settings.instagram_url = settings.instagram_url or "https://instagram.com/example"
     # Assigned, not defaulted: unlike the demo contacts above these are the real
     # shop, so re-seeding a database that still carries the old name fixes it.
+    settings.phone_primary = PHONE_PRIMARY
+    settings.phone_secondary = PHONE_SECONDARY
+    settings.instagram_url = INSTAGRAM_URL
     settings.site_name_uk = SITE_NAME
     settings.site_name_ru = SITE_NAME
     settings.address_uk = ADDRESS_UK
     settings.address_ru = ADDRESS_RU
     settings.map_embed_url = MAP_EMBED_URL
     settings.map_directions_url = MAP_DIRECTIONS_URL
-    settings.working_hours_uk = settings.working_hours_uk or "Щодня 9:00 - 20:00"
-    settings.working_hours_ru = settings.working_hours_ru or "Ежедневно 9:00 - 20:00"
+    settings.pickup_text_uk = (
+        settings.pickup_text_uk or "Можливість самостійно забрати ваше замовлення з магазину."
+    )
+    settings.pickup_text_ru = (
+        settings.pickup_text_ru or "Возможность самостоятельно забрать ваш заказ из магазина."
+    )
+    settings.delivery_text_uk = (
+        settings.delivery_text_uk or "Доставка по місту та Західній Україні згідно тарифів таксі."
+    )
+    settings.delivery_text_ru = (
+        settings.delivery_text_ru or "Доставка по городу и Западной Украине согласно тарифов такси."
+    )
+    # Assigned rather than defaulted, for the same reason as the name and the
+    # address above: the shop is open around the clock, and a database seeded
+    # back when it kept daytime hours has to pick the correction up.
+    settings.working_hours_uk = WORKING_HOURS_UK
+    settings.working_hours_ru = WORKING_HOURS_RU
     settings.hero_title_uk = settings.hero_title_uk or "Квіти, які запам'ятовують"
     settings.hero_title_ru = settings.hero_title_ru or "Цветы, которые запоминают"
     settings.hero_subtitle_uk = (
@@ -363,48 +390,120 @@ TAG_GROUPS: tuple[dict[str, Any], ...] = (
     },
 )
 
-WORK_TITLES: tuple[tuple[str, str], ...] = (
-    ("Букет із троянд", "Букет из роз"),
-    ("Композиція з півоній", "Композиция из пионов"),
-    ("Кошик польових квітів", "Корзина полевых цветов"),
-    ("Коробка з еустомою", "Коробка с эустомой"),
-    ("Весільний букет нареченої", "Свадебный букет невесты"),
-    ("Букет тюльпанів", "Букет тюльпанов"),
-    ("Гортензії в коробці", "Гортензии в коробке"),
-    ("Осіння композиція", "Осенняя композиция"),
-    ("Зимовий вінок", "Зимний венок"),
-    ("Букет на день народження", "Букет на день рождения"),
+# Five works, filled the way the owner is meant to fill one: several angles, a
+# description, the composition, the size and a price. The photographs sit in
+# `seed_assets/works`; their provenance is in CREDITS.md beside them.
+WORKS: tuple[dict[str, Any], ...] = (
+    {
+        "photos": "vesilnyi",
+        "photo_count": 3,
+        "title_uk": "Весільний букет нареченої",
+        "title_ru": "Свадебный букет невесты",
+        "description_uk": (
+            "Ніжний букет у пудрових тонах: півонії, троянди і еустома з дрібною"
+            " зеленню. Збираємо вранці у день весілля, щоб квіти простояли всю"
+            " церемонію і вечір."
+        ),
+        "description_ru": (
+            "Нежный букет в пудровых тонах: пионы, розы и эустома с мелкой"
+            " зеленью. Собираем утром в день свадьбы, чтобы цветы простояли всю"
+            " церемонию и вечер."
+        ),
+        "composition_uk": "півонії, троянди, еустома, евкаліпт",
+        "composition_ru": "пионы, розы, эустома, эвкалипт",
+        "size_text_uk": "діаметр 28 см",
+        "size_text_ru": "диаметр 28 см",
+        "price_from": 1450,
+        "occasions": ("vesillya",),
+        "tags": ("buket", "rozhevyi", "pivonii", "lito"),
+    },
+    {
+        "photos": "pivonii",
+        "photo_count": 2,
+        "title_uk": "Букет півоній",
+        "title_ru": "Букет пионов",
+        "description_uk": (
+            "Півонії у сезон, з кінця травня до середини червня. Беремо квіти в"
+            " напівроспуску, щоб букет розкрився вже вдома і простояв довше."
+        ),
+        "description_ru": (
+            "Пионы в сезон, с конца мая до середины июня. Берём цветы в"
+            " полураспуске, чтобы букет раскрылся уже дома и простоял дольше."
+        ),
+        "composition_uk": "півонії, фісташка",
+        "composition_ru": "пионы, фисташка",
+        "size_text_uk": "висота 45 см",
+        "size_text_ru": "высота 45 см",
+        "price_from": 1200,
+        "occasions": ("podarunok", "den-narodzhennya"),
+        "tags": ("buket", "rozhevyi", "pivonii", "vesna"),
+    },
+    {
+        "photos": "tyulpany",
+        "photo_count": 2,
+        "title_uk": "Букет тюльпанів",
+        "title_ru": "Букет тюльпанов",
+        "description_uk": (
+            "Класика березня. Збираємо круглим куполом, від двадцяти п'яти штук;"
+            " колір підбираємо під ваш привід, від білого до насиченого рожевого."
+        ),
+        "description_ru": (
+            "Классика марта. Собираем круглым куполом, от двадцати пяти штук;"
+            " цвет подбираем под ваш повод, от белого до насыщенного розового."
+        ),
+        "composition_uk": "тюльпани",
+        "composition_ru": "тюльпаны",
+        "size_text_uk": "51 тюльпан",
+        "size_text_ru": "51 тюльпан",
+        "price_from": 950,
+        "occasions": ("podarunok", "den-narodzhennya"),
+        "tags": ("buket", "bilyi", "tyulpany", "vesna"),
+    },
+    {
+        "photos": "kompozytsiya",
+        "photo_count": 2,
+        "title_uk": "Авторська композиція",
+        "title_ru": "Авторская композиция",
+        "description_uk": (
+            "Щільна композиція у глибоких відтінках: жоржини, троянди і фактурна"
+            " зелень. Тримає форму без води кілька годин, тому годиться і для"
+            " вручення на сцені, і для столу."
+        ),
+        "description_ru": (
+            "Плотная композиция в глубоких оттенках: георгины, розы и фактурная"
+            " зелень. Держит форму без воды несколько часов, поэтому годится и для"
+            " вручения на сцене, и для стола."
+        ),
+        "composition_uk": "жоржини, троянди, протея, евкаліпт",
+        "composition_ru": "георгины, розы, протея, эвкалипт",
+        "size_text_uk": "висота 40 см",
+        "size_text_ru": "высота 40 см",
+        "price_from": 1350,
+        "occasions": ("korporatyv", "yuvilei"),
+        "tags": ("kompozytsiya", "chervonyi", "troyandy", "osin"),
+    },
+    {
+        "photos": "sklyana",
+        "photo_count": 2,
+        "title_uk": "Квіти у скляній вазі",
+        "title_ru": "Цветы в стеклянной вазе",
+        "description_uk": (
+            "Гортензія і садові квіти у прозорій вазі: букет, який не треба"
+            " перекладати вдома. Ваза входить у вартість."
+        ),
+        "description_ru": (
+            "Гортензия и садовые цветы в прозрачной вазе: букет, который не надо"
+            " перекладывать дома. Ваза входит в стоимость."
+        ),
+        "composition_uk": "гортензія, польові квіти, зелень",
+        "composition_ru": "гортензия, полевые цветы, зелень",
+        "size_text_uk": "висота 35 см",
+        "size_text_ru": "высота 35 см",
+        "price_from": 890,
+        "occasions": ("podarunok", "den-narodzhennya"),
+        "tags": ("kompozytsiya", "rozhevyi", "hortenziyi", "lito"),
+    },
 )
-
-# Which tags each seeded work carries, by position in WORK_TITLES.
-WORK_TAGS: tuple[tuple[str, ...], ...] = (
-    ("buket", "chervonyi", "troyandy", "zyma"),
-    ("kompozytsiya", "rozhevyi", "pivonii", "vesna"),
-    ("koshyk", "bilyi", "eustoma", "lito"),
-    ("korobka", "zelenyi", "eustoma", "lito"),
-    ("buket", "bilyi", "troyandy", "vesna"),
-    ("buket", "zhovtyi", "tyulpany", "vesna"),
-    ("korobka", "fioletovyi", "hortenziyi", "osin"),
-    ("kompozytsiya", "zhovtyi", "hortenziyi", "osin"),
-    ("vinok", "zelenyi", "troyandy", "zyma"),
-    ("buket", "rozhevyi", "pivonii", "lito"),
-)
-
-WORK_OCCASIONS: tuple[tuple[str, ...], ...] = (
-    ("podarunok", "den-narodzhennya"),
-    ("podarunok", "yuvilei"),
-    ("podarunok",),
-    ("den-narodzhennya",),
-    ("vesillya",),
-    ("den-narodzhennya", "podarunok"),
-    ("yuvilei", "korporatyv"),
-    ("korporatyv",),
-    ("oformlennya-zaly",),
-    ("den-narodzhennya",),
-)
-
-WORKS_TOTAL = 30
-PLACEHOLDER_COLORS = ("#F2E3DF", "#E7E0D8", "#F1E4C3", "#DFE7DC", "#EFE0EC")
 
 
 def seed_occasions() -> None:
@@ -439,16 +538,6 @@ def seed_tags() -> None:
             )
 
 
-def _placeholder_image(index: int) -> bytes:
-    """A flat coloured JPEG. Real pixels, so the rendition pipeline has work."""
-    from PIL import Image
-
-    color = PLACEHOLDER_COLORS[index % len(PLACEHOLDER_COLORS)]
-    buffer = io.BytesIO()
-    Image.new("RGB", (1200, 1500), color).save(buffer, format="JPEG", quality=70)
-    return buffer.getvalue()
-
-
 def seed_works() -> None:
     from django.core.files.base import ContentFile
 
@@ -457,37 +546,41 @@ def seed_works() -> None:
     occasions = {item.slug: item for item in Occasion.objects.all()}
     tags = {item.slug: item for item in Tag.objects.all()}
 
-    for index in range(WORKS_TOTAL):
-        position = index % len(WORK_TITLES)
-        title_uk, title_ru = WORK_TITLES[position]
-        # The title carries the run number so the natural key stays stable
-        # across runs while the article is left to the sequence.
-        numbered_uk = title_uk if index < len(WORK_TITLES) else f"{title_uk} №{index + 1}"
-        numbered_ru = title_ru if index < len(WORK_TITLES) else f"{title_ru} №{index + 1}"
-
-        work = Work.objects.filter(title_uk=numbered_uk).first()
-        if work is None:
-            work = Work(title_uk=numbered_uk)
-        work.title_ru = numbered_ru
-        work.composition_uk = "троянди, евкаліпт, гіпсофіла"
-        work.composition_ru = "розы, эвкалипт, гипсофила"
-        work.size_text_uk = "висота 45 см"
-        work.size_text_ru = "высота 45 см"
+    for entry in WORKS:
+        # The Ukrainian title is the natural key here: the article comes from a
+        # sequence and would differ on every run.
+        work = Work.objects.filter(title_uk=entry["title_uk"]).first() or Work(
+            title_uk=entry["title_uk"]
+        )
+        for field in (
+            "title_ru",
+            "description_uk",
+            "description_ru",
+            "composition_uk",
+            "composition_ru",
+            "size_text_uk",
+            "size_text_ru",
+            "price_from",
+        ):
+            setattr(work, field, entry[field])
         work.status = Work.Status.PUBLISHED
-        work.price_from = 750 + position * 50
         work.save()
 
-        work.occasions.set(
-            [occasions[slug] for slug in WORK_OCCASIONS[position] if slug in occasions]
-        )
-        work.tags.set([tags[slug] for slug in WORK_TAGS[position] if slug in tags])
+        work.occasions.set([occasions[slug] for slug in entry["occasions"] if slug in occasions])
+        work.tags.set([tags[slug] for slug in entry["tags"] if slug in tags])
 
-        if not work.images.exists():
+        if work.images.exists():
+            continue
+        for number in range(1, entry["photo_count"] + 1):
+            path = ASSETS / "works" / f"{entry['photos']}-{number}.webp"
+            if not path.exists():
+                continue
             WorkImage.objects.create(
                 work=work,
-                alt_uk=numbered_uk,
-                alt_ru=numbered_ru,
-                image=ContentFile(_placeholder_image(index), name=f"seed-{work.article}.jpg"),
+                alt_uk=entry["title_uk"],
+                alt_ru=entry["title_ru"],
+                order=number - 1,
+                image=ContentFile(path.read_bytes(), name=path.name),
             )
 
 
@@ -625,6 +718,7 @@ def seed_posts() -> None:
         saved, _created = Post.objects.update_or_create(
             slug=post["slug"], defaults={**post, "status": Post.Status.PUBLISHED}
         )
+        attach_photo(saved, "cover", ASSETS / "blog" / f"{saved.slug}.webp")
         if works and not saved.related_works.exists():
             saved.related_works.set(works)
 

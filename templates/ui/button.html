@@ -6,6 +6,7 @@ href or type, label, icon, full_width, disabled, attrs.
 {% endcomment %}{% if href and not disabled %}
 <a href="{{ href }}"
    class="inline-flex items-center justify-center gap-2 rounded-md font-medium transition
+          hover:-translate-y-0.5 hover:shadow-card active:translate-y-0
           {% if size == 'sm' %}min-h-11 px-4 text-sm{% elif size == 'lg' %}min-h-14 px-8 text-lg{% else %}min-h-12 px-6 text-base{% endif %}
           {% if variant == 'secondary' %}border border-line bg-white text-ink hover:bg-accentSoft
           {% elif variant == 'ghost' %}text-ink hover:bg-accentSoft
@@ -19,6 +20,7 @@ href or type, label, icon, full_width, disabled, attrs.
 {% else %}
 <button type="{{ type|default:'button' }}"{% if disabled %} disabled aria-disabled="true"{% endif %}
    class="inline-flex items-center justify-center gap-2 rounded-md font-medium transition
+          hover:-translate-y-0.5 hover:shadow-card active:translate-y-0
           disabled:cursor-not-allowed disabled:opacity-50
           {% if size == 'sm' %}min-h-11 px-4 text-sm{% elif size == 'lg' %}min-h-14 px-8 text-lg{% else %}min-h-12 px-6 text-base{% endif %}
           {% if variant == 'secondary' %}border border-line bg-white text-ink hover:bg-accentSoft

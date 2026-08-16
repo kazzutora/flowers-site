@@ -10,6 +10,7 @@ from typing import Any
 
 from adminsortable2.admin import (
     CustomInlineFormSet,
+    MovePageActionForm,
     SortableAdminBase,
     SortableAdminMixin,
     SortableInlineAdminMixin,
@@ -27,6 +28,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import ngettext
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import action as unfold_action
+from unfold.forms import ActionForm as UnfoldActionForm
 
 from apps.catalog.models import (
     Occasion,
@@ -290,8 +292,21 @@ class WorkAdmin(SortableAdminBase, ModelAdmin):
         return redirect(reverse("admin:catalog_work_changelist"))
 
 
+class SortableActionForm(UnfoldActionForm, MovePageActionForm):
+    """Unfold's action select plus the page fields drag-and-drop needs.
+
+    `SortableAdminMixin` sits ahead of unfold in the MRO and replaces the
+    action form with its own, which descends from the plain Django one. The
+    unfold changelist only shows the "Run" button once the select writes the
+    chosen action into Alpine through `x-model`, so with sortable2's form no
+    action could ever be started on these three models - deletion included.
+    Taking both parents keeps the bindings and the page fields.
+    """
+
+
 @admin.register(Occasion)
 class OccasionAdmin(SortableAdminMixin, ModelAdmin):
+    action_form = SortableActionForm
     list_display = ("name_uk", "slug", "is_active", "show_on_home")
     list_filter = ("is_active", "show_on_home")
     search_fields = ("slug", "name_uk", "name_ru")
@@ -326,6 +341,7 @@ class TagInline(SortableInlineAdminMixin, TabularInline):
 
 @admin.register(TagGroup)
 class TagGroupAdmin(SortableAdminMixin, ModelAdmin):
+    action_form = SortableActionForm
     list_display = ("name_uk", "slug", "filter_kind", "is_active")
     list_filter = ("filter_kind", "is_active")
     search_fields = ("slug", "name_uk", "name_ru")
@@ -334,6 +350,7 @@ class TagGroupAdmin(SortableAdminMixin, ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(SortableAdminMixin, ModelAdmin):
+    action_form = SortableActionForm
     list_display = ("name_uk", "slug", "group", "color_hex", "is_active")
     list_filter = ("group", "is_active")
     search_fields = ("slug", "name_uk", "name_ru")

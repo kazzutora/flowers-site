@@ -4,8 +4,10 @@ Parameters: work, show_price, lazy, sizes.
 query from the template. `cost` is never passed into a template, and the price
 is rendered only when the caller has already checked SiteSettings.prices_enabled.
 {% endcomment %}<article class="group relative">
-  <div class="relative aspect-card w-full overflow-hidden rounded-md bg-white shadow-card">
-    <div class="h-full w-full">
+  <div class="relative aspect-card w-full overflow-hidden rounded-md bg-white shadow-card transition group-hover:shadow-overlay">
+    {% comment %}The zoom rides on this wrapper, not on the image: the primitive
+    inside owns its own classes.{% endcomment %}
+    <div class="h-full w-full transition group-hover:scale-105">
       {% comment %}
       An explicit `lazy=False` is how the grid marks the first four cards of
       the first page, the ones section 13 wants loaded first. A caller that
@@ -35,7 +37,7 @@ is rendered only when the caller has already checked SiteSettings.prices_enabled
 
     <div class="absolute right-2 top-2 z-10" data-favorite="{{ work.article }}"
          x-data="favoriteButton({{ work.article }})" x-cloak>
-      {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" attrs="@click=\"toggle()\" :aria-pressed=\"active\" :class=\"active && 'text-accent'\"" %}
+      {% include "ui/icon_button.html" with icon="heart" label=_("Add to favourites") variant="outline" attrs="@click=\"toggle()\" :aria-pressed=\"active\" :class=\"{ 'text-accent': active, 'heart-pop': popping }\"" %}
     </div>
   </div>
 

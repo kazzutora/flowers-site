@@ -239,7 +239,7 @@ def test_the_seeded_site_stays_inside_the_budget(client: Client) -> None:
     run()
     SiteSettings.load()
 
-    assert Work.published.count() == 30
+    assert Work.published.count() == 5
     assert Occasion.objects.count() == 7
     assert Tag.objects.count() == 20
 

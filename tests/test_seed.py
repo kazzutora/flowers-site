@@ -32,8 +32,8 @@ def test_seed_fills_the_catalog() -> None:
 
     assert counts["occasions"] == 7
     assert counts["tag_groups"] == 4
-    assert counts["works"] == 30
-    assert counts["work_images"] == 30
+    assert counts["works"] == 5
+    assert counts["work_images"] == 11
     assert counts["reviews"] == 5
     assert counts["posts"] == 3
     assert set(TagGroup.objects.values_list("slug", flat=True)) == {
@@ -43,7 +43,7 @@ def test_seed_fills_the_catalog() -> None:
         "season",
     }
     assert "vesillya" in set(Occasion.objects.values_list("slug", flat=True))
-    assert Work.published.count() == 30
+    assert Work.published.count() == 5
 
 
 def test_seed_is_idempotent() -> None:
@@ -56,8 +56,8 @@ def test_seed_is_idempotent() -> None:
     assert HowToStep.objects.count() == 3
     assert Occasion.objects.count() == 7
     assert Tag.objects.count() == 20
-    assert Work.objects.count() == 30
-    assert WorkImage.objects.count() == 30
+    assert Work.objects.count() == 5
+    assert WorkImage.objects.count() == 11
     assert Review.objects.count() == 5
     assert Review.published.count() == 5
     assert Post.objects.count() == 3
@@ -69,6 +69,44 @@ def test_seed_gives_every_occasion_a_cover_and_the_home_a_hero() -> None:
 
     assert not Occasion.objects.filter(cover="").exists()
     assert SiteSettings.load().hero_image
+
+
+def test_seed_gives_every_post_a_cover() -> None:
+    run()
+
+    assert not Post.objects.filter(cover="").exists()
+
+
+def test_seed_corrects_working_hours_left_over_from_an_older_run() -> None:
+    """The hours are shop data, like the name and the address: they are assigned."""
+    run()
+    site = SiteSettings.load()
+    site.working_hours_uk = "Щодня 9:00 - 20:00"
+    site.working_hours_ru = "Ежедневно 9:00 - 20:00"
+    site.save()
+
+    run()
+
+    refreshed = SiteSettings.load()
+    assert refreshed.working_hours_uk == "Цілодобово, без вихідних"
+    assert refreshed.working_hours_ru == "Круглосуточно, без выходных"
+
+
+def test_seed_carries_the_real_contacts() -> None:
+    """The phones and the Instagram account are shop data, so they are assigned."""
+    run()
+    site = SiteSettings.load()
+    site.phone_primary = "+380501112233"
+    site.phone_secondary = ""
+    site.instagram_url = "https://instagram.com/example"
+    site.save()
+
+    run()
+
+    refreshed = SiteSettings.load()
+    assert str(refreshed.phone_primary) == "+380992050565"
+    assert str(refreshed.phone_secondary) == "+380972050565"
+    assert refreshed.instagram_url == "https://www.instagram.com/kvitkova_prymkha"
 
 
 def test_seeding_again_keeps_a_photo_the_owner_uploaded() -> None:

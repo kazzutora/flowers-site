@@ -1133,3 +1133,30 @@ msgstr "Спробувати ще"
 #: templates/partials/lead_form.html
 msgid "Sending…"
 msgstr "Надсилаємо…"
+
+msgid "Shop"
+msgstr "Магазин"
+
+msgid "We work"
+msgstr "Працюємо"
+
+msgid "Pickup"
+msgstr "Самовивіз"
+
+msgid "Delivery"
+msgstr "Доставка"
+
+msgid "Two of the four columns opening the delivery page."
+msgstr "Дві з чотирьох колонок, якими відкривається сторінка доставки."
+
+msgid "pickup, uk"
+msgstr "самовивіз, укр"
+
+msgid "pickup, ru"
+msgstr "самовивіз, рос"
+
+msgid "delivery, uk"
+msgstr "доставка, укр"
+
+msgid "delivery, ru"
+msgstr "доставка, рос"

@@ -105,6 +105,76 @@
     }
   }
 
+  /* Menu items. A line grows from the left rather than the middle, so the
+     eye follows the reading direction; the keyboard gets the same answer as
+     the pointer. It cannot be written as utilities: the pseudo-element needs
+     `content`, and section 2 forbids the bracket syntax that sets it. */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: theme(colors.accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms;
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* Waiting and confirmation, section 13. Hover lives in the templates on the
+     shared transition token; these need frames of their own. */
+  @keyframes heart-pop {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  .heart-pop {
+    animation: heart-pop 320ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  @keyframes skeleton-sweep {
+    100% { transform: translateX(100%); }
+  }
+
+  /* A light sweeping across the placeholder: it says "still coming", where a
+     flat grey block says "empty". */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.6), transparent);
+    animation: skeleton-sweep 1.4s infinite;
+  }
+
+  /* Htmx marks what has just arrived. Cards appended by "Show more" and a
+     freshly filtered block start invisible and come up on the same 200ms. */
+  #gallery-results,
+  #gallery-grid > * {
+    transition: opacity 200ms;
+  }
+
+  #gallery-results.htmx-settling,
+  #gallery-grid > .htmx-added {
+    opacity: 0;
+  }
+
   /* Htmx brings its own .htmx-indicator rule; this adds the delay of section
      10, so a fast answer never makes the indicator blink. */
   .htmx-indicator {
